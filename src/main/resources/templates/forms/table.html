@@ -1,0 +1,26 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+    <div th:remove="all">
+        <!-- 
+            Instructions on how to use this file:
+            <div th:include="forms/controls :: CONTROLNAME" th:with="attrName=${attrValue}" />
+         -->
+    </div>
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: input" th:with="fieldName='fieldName',fieldLabel='Label Name',fieldType='text',fieldPlaceholder='placeholder',fieldClass='class',fieldDisabled='false'" th:remove="tag"></div>
+         -->
+    </div>
+    
+    <div th:fragment="sortableHeader(sortKey, currentSortDirection)"  th:remove="tag">
+ 		
+ 		<th>
+ 			<a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+      			th:href="${urlBuilder.replaceQueryParam('sortKey', 'name').replaceQueryParam('sortDirection', sortDirection).toUriString()}">
+      								Full Name
+								</a>
+ 		</th>
+    </div>
+</div>

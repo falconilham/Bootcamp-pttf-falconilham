@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	</head>
+	<body th:fragment="plugin">
+		<!-- #PLUGINS -->
+		<script  th:src="@{/js/libs/jquery-2.1.1.min.js}" src="js/libs/jquery-2.1.1.min.js"></script>
+		<script th:src="@{/js/libs/jquery-ui-1.10.3.min.js}" src="js/libs/jquery-ui-1.10.3.min.js"></script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script th:src="@{/js/app.config.seed.js}" src="js/app.config.seed.js"></script>
+
+		<!-- BOOTSTRAP JS -->
+		<script th:src="@{/js/bootstrap/bootstrap.min.js}" src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!--[if IE 8]>
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>>
+	</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> Customers </title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Sale</li>
+					<li><a th:href="@{/customers}" href="#">Customers</a></li>
+					<li th:text="${customer.name}">Customer Name</li>
+				</ol>
+				<!-- end breadcrumb -->
+				
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
+						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
+					</a>
+				</span>
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				<div class="well">
+<!-- 				<div th:if="${customerOperation}" th:each="opresult : ${customerOperation}"> -->
+<!-- 					<div th:if="${opresult.type == 0}" class="alert alert-success"> -->
+<!-- 						<span th:text="${opresult.message}"></span> -->
+<!-- 					</div> -->
+<!-- 					<div th:if="${opresult.type == 1}" class="alert alert-danger"> -->
+<!-- 						<span th:text="${opresult.message}"></span> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+					<div class="row">
+					<div class="col-sm-12 col-md-8 has-feedback">
+						<fieldset>
+							<legend>Customer</legend>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Name</h6> <span class="text-right" th:text="${customer.name}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Correspondence Address</h6> <span class="text-right" th:text="${customer.correspondenceAddress}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Telephone</h6> <span class="text-right" th:text="${customer.telephone}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>NPWP</h6> <span class="text-right" th:text="${customer.npwp}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>NPWP Address</h6> <span class="text-right" th:text="${customer.npwpAddress}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-6 has-feedback">
+									<h6>Operation Notes</h6> <span class="text-right" th:text="${customer.operationNotes}"></span>
+								</div>
+								<div class="col-sm-12 col-md-6 has-feedback">
+									<h6>Finance Notes</h6> <span class="text-right" th:text="${customer.financeNotes}"></span>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12 col-md-4 has-feedback">
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).DRAFT)}" class="well well-sm bg-color-grey txt-color-black text-center">
+							<h5 th:text="${customer.status}"></h5>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).AWAITING_APPROVAL)}" class="well well-sm bg-color-grey txt-color-black text-center">
+							<h5 th:text="${customer.status}"></h5>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).ACTIVE)}" class="well well-sm bg-color-blue txt-color-white text-center">
+							<h5 th:text="${customer.status}"></h5>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).REJECT)}" class="well well-sm bg-color-red txt-color-white text-center">
+							<h5 th:text="${customer.status}"></h5>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).INACTIVE)}" class="well well-sm bg-color-green txt-color-white text-center">
+							<h5 th:text="${customer.status}"></h5>
+						</div>
+						<h1 class="text-center txt-color-blueDark">Actions</h1>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).DRAFT)}">
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/edit'}"><i class="fa fa-edit"></i> Edit</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/contact'}"><i class="fa fa-plus"></i> Add PIC</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/document'}"><i class="fa fa-paperclip"></i> Add Document</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/customers/}+${customer.id +'/submit'}"><i class="fa fa-check"></i> Submit</a>
+								</div>
+							</div>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).AWAITING_APPROVAL)}" class="row">
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/edit'}"><i class="fa fa-edit"></i> Edit</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/contact'}"><i class="fa fa-plus"></i> Add PIC</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/document'}"><i class="fa fa-paperclip"></i> Add Document</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/customers/}+${customer.id +'/approve'}"><i class="fa fa-check"></i> Approve</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-danger text-left" th:href="@{/customers/}+${customer.id +'/reject'}"><i class="fa fa-times"></i> Reject</a>
+								</div>
+							</div>
+						</div>
+						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).ACTIVE)}" class="row">
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/edit'}"><i class="fa fa-edit"></i> Edit</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/contact'}"><i class="fa fa-plus"></i> Add PIC</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/document'}"><i class="fa fa-paperclip"></i> Add Document</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
+							<h6>Operation PIC</h6>
+								<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>Name</th>
+									<th>Position</th>
+									<th>Telephone</th>
+									<th>Email</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="pic : ${operationPics}">
+										<td><a th:href="@{/customers/{customerId}/contact/{id}(customerId=${customer.id}, id=${pic.id})}" href="#" th:text="${pic.fullName}"></a></td>
+										<td th:text="${pic.position}"></td>
+										<td>
+											<span th:text="${'P: ' +pic.telephone}"></span>
+											<br/>
+											<span th:text="${'M: ' +pic.mobile}"></span>
+											
+										</td>
+										<td th:text="${pic.email}"></td>
+									</tr>
+								</tbody>
+								</table>
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
+						<h6>Finance PIC</h6>
+							<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Name</th>
+								<th>Position</th>
+								<th>Telephone</th>
+								<th>Email</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr th:each="pic : ${financePics}">
+									<td> <a th:href="@{/customers/{customerId}/contact/{id}(customerId=${customer.id}, id=${pic.id})}" href="#" th:text="${pic.fullName}"></a></td>
+									<td th:text="${pic.position}"></td>
+									<td>
+										<span th:text="${'P: ' +pic.telephone}"></span>
+										<br/>
+										<span th:text="${'M: ' +pic.mobile}"></span>
+										
+									</td>
+									<td th:text="${pic.email}"></td>
+								</tr>
+							</tbody>
+							</table>
+							</div>
+					</div>
+				</div>
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
+							<h6>Documents</h6>
+								<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>Name</th>
+									<th>Description</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr th:each="document : ${customerdocuments}">
+										<td><a th:href="@{/customers/{customerId}/contact/{id}(customerId=${customer.id}, id=${document.id})}" href="#" th:text="${document.document.name}"></a></td>
+										<td th:text="${document.document.description}"></td>
+									</tr>
+								</tbody>
+								</table>
+						</div>
+					</div>
+				</div>
+			</section>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+
+
+	</body>
+
+</html>

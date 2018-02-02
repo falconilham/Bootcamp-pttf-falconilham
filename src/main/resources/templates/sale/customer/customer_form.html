@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="form(formAction, method)">
+		<form id="customerForm" method="post" novalidate="novalidate" th:object="${customer}" th:action="${formAction}" class="bv-form">
+			
+			<fieldset>
+				<legend>Customer <span class="pull-right" th:text="${customer.status}"></span></legend>
+				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{status}" />
+			
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='text', fieldLabel='Name', fieldName='name'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='textarea', fieldLabel='Correspondence Address', fieldName='correspondenceAddress'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='text', fieldLabel='Telephone', fieldName='telephone'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<h3>Tax Information</h3>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='text', fieldLabel='NPWP', fieldName='npwp'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='textarea', fieldLabel='NPWP Address', fieldName='npwpAddress'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<h3>Notes</h3>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='textarea', fieldLabel='Finance Notes', fieldName='financeNotes'" th:remove="tag"></div>
+						</div>
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='textarea', fieldLabel='Operation Notes', fieldName='operationNotes'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+			</fieldset>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-default" type="submit">
+							<i class="fa fa-save"></i> Save
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

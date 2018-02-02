@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> FATAL ERROR </title>
+		<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+
+	</head>
+	
+	
+	<body>
+
+	
+		<div>
+			<!-- MAIN CONTENT -->
+			<div id="content">
+
+				<!-- row -->
+				<div class="row">
+				
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="text-center error-box">
+									<h1 class="error-text tada animated"><i class="fa fa-times-circle text-danger error-icon-shadow"></i> Error 500</h1>
+									<h2 class="font-xl"><strong>Oooops, Something went wrong!</strong></h2>
+									<br />
+									<p class="lead semi-bold">
+										<strong>You have experienced a technical error. We apologize.</strong><br/><br/>
+										<small>
+											We are working hard to correct this issue. Please Report this issue to Our Support Team<br/>
+										</small>
+									</p>
+									<br/>
+									<pre th:text="${errorMessage}"></pre>
+									
+									<ul class="error-search text-left font-md">
+							            <li><a href="#" th:href="@{/}"><small>Go to My Dashboard <i class="fa fa-arrow-right"></i></small></a></li>
+							            <li><a href="mailto:support@kreasisentra.com"><small>Contact KSS Support <i class="fa fa-mail-forward"></i></small></a></li>
+							        </ul>
+								</div>
+				
+							</div>
+				
+						</div>
+				
+					</div>
+					
+				</div>
+				<!-- end row -->
+
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN PANEL -->
+		
+
+		<!-- #SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+			 Note: These tiles are completely responsive, you can add as many as you like -->
+		<div id="shortcut">
+			<ul>
+				<li>
+					<a href="index.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+				</li>
+			</ul>
+		</div>
+		<!-- END SHORTCUT AREA -->
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!-- #PLUGINS -->
+		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+		<script  th:src="@{/js/libs/jquery-2.1.1.min.js}" src="js/libs/jquery-2.1.1.min.js"></script>
+		<script th:src="@{/js/libs/jquery-ui-1.10.3.min.js}" src="js/libs/jquery-ui-1.10.3.min.js"></script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script th:src="@{/js/app.config.seed.js}" src="js/app.config.seed.js"></script>
+
+		<!-- BOOTSTRAP JS -->
+		<script th:src="@{/js/bootstrap/bootstrap.min.js}" src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!--[if IE 8]>
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>
+
+
+	</body>
+
+</html>

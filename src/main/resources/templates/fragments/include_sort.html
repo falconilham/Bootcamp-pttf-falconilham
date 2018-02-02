@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	</head>
+	<body th:fragment="sortable (baseUrl, pageSizes, page, selectedPageSize, listObjects, ">
+	 	<div class="row">
+	 		<div class="col-xs-12 col-md-12">
+				<div class="text-center pull-left">
+					<ul class="pagination">
+						<li th:class="${selectedPageSize == pageSize} ? 'active pointer-disabled'"
+							th:each="pageSize : ${pageSizes}">
+							<a class="pageLink" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',pageSize).replaceQueryParam('page',page).toUriString()}"  th:text="${pageSize}"></a>
+						</li>
+					</ul>
+				</div>
+				<div th:if="${listObjects.totalPages != 1}" class="text-center pull-right">
+					<ul class="pagination">
+						<li th:class="${listObjects.number == 0} ? disabled">
+							<a class="pageLink" 
+							th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',selectedPageSize).replaceQueryParam('page','1').toUriString()}" >&laquo;</a>
+						</li>
+						<li th:class="${listObjects.number == 0} ? disabled">
+							<a class="pageLink"
+							th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',selectedPageSize).replaceQueryParam('page',listObjects.number).toUriString()}" >&larr;</a>
+						</li>
+						<li th:class="${listObjects.number == (page - 1)} ? 'active pointer-disabled'"
+							th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+							<a class="pageLink" 
+								th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',selectedPageSize).replaceQueryParam('page',page).toUriString()}" 
+								th:text="${page}"></a>
+						</li>
+						<li th:class="${listObjects.number + 1 == listObjects.totalPages} ? disabled">
+							<a class="pageLink"
+							th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',selectedPageSize).replaceQueryParam('page',listObjects.number+2).toUriString()}" >&rarr;</a>
+						</li>
+						<li th:class="${listObjects.number + 1 == listObjects.totalPages} ? disabled">
+							<a class="pageLink" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('pageSize',selectedPageSize).replaceQueryParam('page',listObjects.totalPages).toUriString()}" >&raquo;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+			
+	</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> Users</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Security</li>
+					<li>Users</li>
+				</ol>
+				<!-- end breadcrumb -->
+
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="#" th:href="@{users/new}" id="add" class="btn btn-ribbon hidden-xs">
+						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New User</span>
+					</a>
+				</span>
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="well">
+						<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>Username</th>
+							<th>Role</th>
+							<th>Enabled</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="user : ${users}">
+								<td><a th:href="@{|users/${user.username}|}" th:text="${user.username}"></a></td>
+								<td th:text="${user.userGroup.name}"></td>
+								<td>
+									<span  th:classappend="${user.enabled == true? 'label-success' : 'label-danger'}"  th:text="${user.enabled == true? 'Active' : 'Inactive'}" class="label">Danger</span>
+								</td>
+							</tr>
+						</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<div th:unless="${pager.totalPages} == 0">
+				<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/users', ${pageSizes}, ${page}, ${selectedPageSize}, ${users})"></th:block> /*/-->
+			</div>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!-- #PLUGINS -->
+		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+		<script src="js/libs/jquery-2.1.1.min.js"></script>
+		<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script src="js/app.config.seed.js"></script>
+
+		<!-- BOOTSTRAP JS -->
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!--[if IE 8]>
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script src="js/app.seed.js"></script>
+
+
+	</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-us" id="extr-page">
+	<head>
+		<meta charset="utf-8" />
+		<title>Login Payroll</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+	
+	<body class="animated fadeInDown">
+
+		<header id="header">
+
+			<div id="logo-group">
+				<span id="logo">  </span>
+			</div>
+
+		</header>
+
+		<div id="main" role="main">
+
+			<!-- MAIN CONTENT -->
+			<div id="content" class="container">
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+						<h1 class="txt-color-red login-header-big">PT Terra Freight Forwarding</h1>
+						<div class="hero">
+
+							<div class="pull-left login-desc-box-l">
+								<h4 class="paragraph-header">
+									Quotation System
+								</h4>
+							</div>
+				
+						</div>
+
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+						<div class="well no-padding">
+							<form th:action="@{/login.html}" method="post" id="login-form" class="smart-form client-form">
+								<header>
+									Sign In
+								</header>
+
+								<fieldset>
+									
+									<section>
+										<label class="label">Username</label>
+										<label class="input"> <i class="icon-append fa fa-user"></i>
+											<input type="text" id="username" name="username" autofocus="autofocus" />
+											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter email address/username</b></label>
+									</section>
+
+									<section>
+										<label class="label">Password</label>
+										<label class="input"> <i class="icon-append fa fa-lock"></i>
+											<input type="password" id="password" name="password" autofocus="autofocus" />
+											<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b> </label>
+										<div class="note">
+											
+										</div>
+									</section>
+								</fieldset>
+								<footer>
+									<button type="submit" class="btn btn-primary">
+										Sign in
+									</button>
+								</footer>
+							</form>
+
+						</div>
+						
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!--================================================== -->	
+
+	    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+	    <script src="js/libs/jquery-2.1.1.min.js"></script>
+
+	    <!--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		<script> if (!window.jQuery.ui) { document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');} </script>-->
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script src="js/app.config.seed.js"></script>
+
+		<!-- JS TOUCH : include this plugin for mobile drag / drop touch events 		
+		<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> -->
+
+		<!-- BOOTSTRAP JS -->		
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+		
+		<!--[if IE 8]>
+			
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+			
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script src="js/app.seed.js"></script>
+
+	</body>
+</html>

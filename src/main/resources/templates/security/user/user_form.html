@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="form(formAction, method)">
+		<form id="userForm" method="${method}" novalidate="novalidate" th:object="${user}" th:action="${formAction}" class="bv-form">
+			
+
+			<fieldset>
+				<legend>User</legend>
+				<input th:if="${method=='PUT'}" type="hidden" th:field="*{username}" />
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldDisabled=${method=='PUT'?true:false}, fieldLabel='User Name', fieldName='username'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='password', fieldLabel='Password', fieldName='password'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='text', fieldLabel='Full Name', fieldName='fullName'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='email', fieldLabel='email', fieldName='email'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 selectContainer has-feedback">
+							<label class="control-label">Role</label>
+							<select class="form-control" name="userGroup" th:field="*{userGroup}" th:remove="all-but-first">
+                				<option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}">Credit card</option>
+				            </select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-4 has-feedback">
+							<div th:include="forms/controls :: checkbox" th:with="fieldLabel='Enabled', fieldName='enabled', fieldChecked=${user.enabled==null?'true':'user.enabled'}" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-default" type="submit">
+							<i class="fa fa-save"></i> Save
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

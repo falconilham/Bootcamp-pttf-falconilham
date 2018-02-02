@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> User </title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	<body class="">
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Security</li>
+					<li><a th:href="@{/users}" href="#"></a>User</li>
+					<li th:text="${user.username}">Edit</li>
+				</ol>
+				<!-- end breadcrumb -->
+				
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
+						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
+					</a>
+				</span>
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				
+				<div class="well">
+    				<!--/*/ <th:block th:include="security/user/user_form :: form(@{/users/update}, PUT)"></th:block> /*/-->
+				</div>
+			</section>
+			</div>
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!-- #PLUGINS -->
+		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+		<script  th:src="@{/js/libs/jquery-2.1.1.min.js}" src="js/libs/jquery-2.1.1.min.js"></script>
+		<script th:src="@{/js/libs/jquery-ui-1.10.3.min.js}" src="js/libs/jquery-ui-1.10.3.min.js"></script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script th:src="@{/js/app.config.seed.js}" src="js/app.config.seed.js"></script>
+
+		<!-- BOOTSTRAP JS -->
+		<script th:src="@{/js/bootstrap/bootstrap.min.js}" src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!--[if IE 8]>
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>
+
+	</body>
+
+</html>

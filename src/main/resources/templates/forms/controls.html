@@ -1,0 +1,129 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+    <div th:remove="all">
+        <!-- 
+            Instructions on how to use this file:
+            <div th:include="forms/controls :: CONTROLNAME" th:with="attrName=${attrValue}" />
+         -->
+    </div>
+    
+        <div th:fragment="textarea" th:remove="tag">
+        <div class="control-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'has-error' : ''">
+            <div th:substituteby="forms/controls :: label"></div>
+            <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">
+                <div th:include="forms/controls :: field" th:with="fieldClass=${'form-control ' + (fieldClass ?: '')}" th:remove="tag"></div>
+                <div th:substituteby="forms/controls :: error"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: input" th:with="fieldName='fieldName',fieldLabel='Label Name',fieldType='text',fieldPlaceholder='placeholder',fieldClass='class',fieldDisabled='false'" th:remove="tag"></div>
+         -->
+    </div>
+    
+    <div th:fragment="input" th:remove="tag">
+        <div class="control-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'has-error' : ''">
+            <div th:substituteby="forms/controls :: label"></div>
+            <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">
+                <div th:include="forms/controls :: field" th:with="fieldClass=${'form-control ' + (fieldClass ?: '')}" th:remove="tag"></div>
+                <div th:substituteby="forms/controls :: error"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: checkbox" th:with="fieldName='fieldName',fieldLabel='Label Name'" th:remove="tag"></div>
+         -->
+    </div>
+    <div th:fragment="checkbox" th:remove="tag">
+        <div class="control-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'error' : ''">
+        	<div class="controls">
+				<input type="checkbox" class="" th:field="*{__${fieldName}__}" th:checked="${fieldChecked}" th:value="${fieldChecked}" />
+					<i></i> <span th:text="${fieldLabel}">Text</span>
+			</div>
+        </div>
+    </div>
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: select" th:with="fieldName='fieldName',fieldLabel='Label Name',fieldOptions=${optionList},fieldClass='class',fieldDisabled='false'" th:remove="tag"></div>
+         -->
+    </div>
+    <div th:fragment="select" th:remove="tag">
+        <div class="control-group" th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'error' : ''">
+            <div th:substituteby="forms/controls :: label"></div>
+            <div class="controls">
+                <div th:include="forms/controls :: field" th:with="fieldType='select',fieldClass=${'span4 ' + (fieldClass ?: '')}" th:remove="tag"></div>
+                <div th:substituteby="forms/controls :: error"></div>
+            </div>
+        </div>
+    </div>
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: field" th:with="fieldName='fieldName',fieldType='text',fieldPlaceholder='Placeholder',fieldClass='class1 class2',fieldOptions=${optionList},fieldDisabled='false'" th:remove="tag"></div>
+         -->
+    </div>
+    
+    <div th:fragment="field" th:remove="tag">
+        <div th:if="${fieldType == 'select'}" th:remove="tag">
+            <select th:field="*{__${fieldName}__}" th:class="${fieldClass}" th:disabled="${fieldDisabled}?: 'false'">
+                <option th:each="option : ${fieldOptions}" th:value="${option.value}" th:text="${option.text}" ></option>
+            </select>
+        </div>
+        
+        
+        <div th:unless="${fieldType == 'select'}" th:remove="tag">
+	        <div th:switch="${fieldType}" th:remove="tag">
+				<div th:case="textarea" th:remove="tag">
+		        	<textarea rows="5"
+		        		th:class="${fieldClass}" th:field="*{__${fieldName}__}"
+		                th:disabled="${fieldDisabled}?: 'false'" name="${fieldName}">
+		            </textarea>
+	             </div>
+				<div th:case="*" th:remove="tag">
+		        	<input type="text" th:type="${fieldType} ?: 'text'" th:field="*{__${fieldName}__}" 
+		        		th:class="${fieldClass}" 
+		                th:disabled="${fieldDisabled}?: 'false'" name="${fieldName}" />
+	             </div>
+             </div>
+        </div>
+    </div>
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: error" th:with="fieldName='fieldName'" th:remove="tag"></div>
+         -->
+    </div>
+    <div th:fragment="error" th:remove="tag">
+        <span th:if="*{#fields.hasErrors('__${fieldName}__')}" th:each="err : *{#fields.errors('__${fieldName}__')}" th:remove="tag" >
+           	<small class="help-block" th:text="${'* ' + err}">
+				The	Employee Full Name name is required
+			</small>
+        </span>
+    </div>
+    
+    
+    <div th:remove="all">
+        <!-- 
+            To use this control use the following syntax as an example
+            
+            <div th:include="forms/controls :: label" th:with="fieldName='fieldName'" th:remove="tag"></div>
+         -->
+    </div>
+    <div th:fragment="label"  th:remove="tag">
+        <label class="control-label" th:if="${fieldLabel}" th:attr="for=${'__${fieldName}__'}" 
+            th:text="${#messages.msgOrNull('__${fieldLabel}__') == null ? '__${fieldLabel}__' : #messages.msg('__${fieldLabel}__')}"></label>
+    </div>
+</div>

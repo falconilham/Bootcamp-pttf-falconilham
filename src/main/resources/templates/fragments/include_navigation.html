@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="navigation">
+		<!-- #NAVIGATION -->
+		<!-- Left panel : Navigation area -->
+		<!-- Note: This width of the aside area can be adjusted through LESS/SASS variables -->
+		<aside id="left-panel" >
+
+			<!-- User info -->
+			<div class="login-info">
+				<span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
+					
+					
+				</span>
+			</div>
+			<!-- end user info -->
+
+			<!-- NAVIGATION : This navigation is also responsive
+
+			To make this navigation dynamic please make sure to link the node
+			(the reference to the nav > ul) after page load. Or the navigation
+			will not initialize.
+			-->
+			<nav>
+				<!-- 
+				NOTE: Notice the gaps after each icon usage <i></i>..
+				Please note that these links work a bit different than
+				traditional href="" links. See documentation for details.
+				-->
+
+				<ul>
+				
+					<li class="">
+						<a href="index.html" th:href="@{/}" title="blank_"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+					</li>
+					<li>
+						<a href="#" title="blank_">
+							<i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Sales</span>
+						</a>
+						<ul>
+							<li>
+								<a th:href="@{/customers}"  href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-person"></i> Customers
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" title="blank_">
+							<i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Purchasing</span>
+						</a>
+						<ul>
+							<li>
+								<a th:href="@{/vendors}"  href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-truck"></i> Vendors
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" title="blank_">
+							<i class="fa fa-lg fa-fw fa-lock"></i> <span class="menu-item-parent">Security</span>
+						</a>
+						<ul>
+							<li>
+								<a th:href="@{/users}"  href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-user"></i> Users
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/roles}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-group"></i> Roles
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" title="blank_">
+							<i class="fa fa-lg fa-fw fa-database"></i> <span class="menu-item-parent">Master Data</span>
+						</a>
+						<ul>
+							<li>
+								<a th:href="@{/jobtitles}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-sitemap"></i> Job Titles
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/departments}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-building"></i> Department
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/employmentstatus}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-gavel"></i> Employment Status
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/stations}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-location-arrow"></i> Station
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/religions}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-gavel"></i> Religion
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/educations}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-graduation-cap"></i> Education
+								</a>
+							</li>
+							
+							<li>
+								<a th:href="@{/leavetypes}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-calendar"></i> Leave Types
+								</a>
+							</li>
+							
+							<li>
+								<a th:href="@{/leavecategories}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-calendar"></i> Leave Category
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" title="blank_">
+							<i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">Settings</span>
+						</a>
+						<ul>
+							<li>
+								<a th:href="@{/holidays}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-calendar"></i> Holidays
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/settings/taxrate}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-usd"></i> Tax Rate
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/settings/taxtable}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-usd"></i> Tax Table
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/settings/loan}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-money"></i> Loan
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/settings/attendance}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-clock-o"></i> Attendance
+								</a>
+							</li>
+							
+							<li>
+								<a th:href="@{/settings/bpjs}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-medkit"></i> BPJS
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+
+			<span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+
+		</aside>
+		<!-- END NAVIGATION -->
+	</body>
+</html>

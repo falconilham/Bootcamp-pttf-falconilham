@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> Users</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Security</li>
+					<li>Roles</li>
+				</ol>
+				<!-- end breadcrumb -->
+
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="#" th:href="@{roles/new}" id="add" class="btn btn-ribbon hidden-xs">
+						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add New Role</span>
+					</a>
+				</span>
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+				<section id="widget-grid" class="">
+				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="well">
+						<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>Role Name</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="role : ${roles}">
+								<td th:text="${role.name}"></td>
+							</tr>
+						</tbody>
+						</table>
+						<div th:unless="${pager.totalPages} == 0">
+							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/roles', ${pageSizes}, ${page}, ${selectedPageSize}, ${roles})"></th:block> /*/-->
+						</div>
+						</div>
+					</div>
+				</div>
+				</section>
+				
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!-- #PLUGINS -->
+		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+		<script src="js/libs/jquery-2.1.1.min.js"></script>
+		<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
+
+		<!-- IMPORTANT: APP CONFIG -->
+		<script src="js/app.config.seed.js"></script>
+
+		<!-- BOOTSTRAP JS -->
+		<script src="js/bootstrap/bootstrap.min.js"></script>
+
+		<!--[if IE 8]>
+			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+		<![endif]-->
+
+		<!-- MAIN APP JS FILE -->
+		<script src="js/app.seed.js"></script>
+
+
+	</body>
+
+</html>
