@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>qystem-server</name>
-	<description>PT Terra Freight Forwarder Quotation System</description>
+	<description>PT Tera Freight Forwarder Quotation System</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -148,24 +148,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
-			<!-- Entity processor -->
-            <plugin>
-                <groupId>com.mysema.maven</groupId>
-                <artifactId>apt-maven-plugin</artifactId>
-                <version>${apt-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/generated-sources/java</outputDirectory>
-                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 		</plugins>
 	</build>
 
