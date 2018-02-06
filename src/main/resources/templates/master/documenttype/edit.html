@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title>Document Category</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Master</li>
+					<li><a th:href="documenttypes" href="#">Document Types</a></li>
+					<li th:text="${type.name}">-</li>
+				</ol>
+				<!-- end breadcrumb -->
+				
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
+						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
+					</a>
+				</span>
+				
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				
+				<div class="well">
+    				<!--/*/ <th:block th:include="master/documenttype/form :: form(@{/documenttypes/{id}(id=${type.id})}, PUT)"></th:block> /*/-->
+				</div>
+			</section>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+
+
+	</body>
+
+</html>

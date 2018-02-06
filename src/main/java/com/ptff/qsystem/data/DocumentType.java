@@ -18,7 +18,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="document_category")
-public class DocumentCategory {
+public class DocumentType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

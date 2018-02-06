@@ -2,6 +2,6 @@ package com.ptff.qsystem.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DocumentCategoryRepository extends JpaRepository<Document, Long> {
+public interface DocumentTypeRepository extends JpaRepository<DocumentType, Long> {
     
 }
