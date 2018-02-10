@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -105,6 +106,14 @@ public class VendorController {
 		vendor = vendorRepository.save(vendor);
 		return "redirect:/vendors/"+vendor.getId();
 	}
+
+	@RequestMapping("/vendors/{id}/edit")
+	public String editRole(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("vendor", vendorRepository.findOne(id));
+
+		
+		return "purchasing/vendor/edit";
+	}
 	
 	@RequestMapping("/vendors/update")
 	public String updateVendor(@Valid Vendor vendor, BindingResult bindingResult, Model model) {
@@ -137,14 +146,6 @@ public class VendorController {
 		return "purchasing/vendor/show";
 	}
 	
-	@RequestMapping("/vendors/{id}/edit")
-	public String editRole(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("vendor", vendorRepository.findOne(id));
-
-		
-		return "purchasing/vendor/edit";
-	}
-	
 	@RequestMapping("/vendors/{id}/contact")
 	public String newVendorContact(@PathVariable("id") Long id, Model model) {
 		
@@ -155,12 +156,12 @@ public class VendorController {
 		vendorContactPerson.setVendor(vendor);
 		
 		model.addAttribute("vendor", vendor);
-		model.addAttribute("vendorcontact", vendorContactPerson);
+		model.addAttribute("vendorContactPerson", vendorContactPerson);
 		
 		return "purchasing/vendor/new_contact";
 	}
 	
-	@RequestMapping("/vendors/{id}/contact/save")
+	@RequestMapping(value="/vendors/{id}/contact", method=RequestMethod.POST)
 	public String saveVendorContact(@PathVariable("id") Long id, @Valid VendorContactPerson vendorContactPerson, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving Vendor Contact Person " + vendorContactPerson.getFullName());
 		
@@ -168,7 +169,6 @@ public class VendorController {
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("vendor", vendor);
-			model.addAttribute("vendorcontact", vendorContactPerson);
 			
 			return "purchasing/vendor/new_contact";
 		}
@@ -187,9 +187,28 @@ public class VendorController {
 		VendorContactPerson vendorContactPerson = vendorContactPersonRepository.findOne(contactId);
 		
 		model.addAttribute("vendor", vendor);
-		model.addAttribute("vendorcontact", vendorContactPerson);
+		model.addAttribute("vendorContactPerson", vendorContactPerson);
 		
 		return "purchasing/vendor/edit_contact";
+	}
+	
+	@RequestMapping(value="/vendors/{id}/contact/{contactId}", method=RequestMethod.POST)
+	public String updateVendorContact(@PathVariable("id") Long id, @Valid VendorContactPerson vendorContactPerson, BindingResult bindingResult, Model model) {
+		LOGGER.info("Saving Vendor Contact Person " + vendorContactPerson.getFullName());
+		
+		Vendor vendor = vendorRepository.findOne(id);
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("vendor", vendor);
+			
+			return "purchasing/vendor/edit_contact";
+		}
+		
+		vendor.setStatus(VendorStatus.DRAFT);
+		vendor = vendorRepository.save(vendor);
+		vendorContactPerson = vendorContactPersonRepository.save(vendorContactPerson);
+		
+		return "redirect:/vendors/"+vendor.getId();
 	}
 	
 	

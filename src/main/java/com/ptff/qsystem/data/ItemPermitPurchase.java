@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -37,18 +40,26 @@ public class ItemPermitPurchase {
 	
 	@ManyToOne
 	@JoinColumn(name="item_permit_id")
-	private ItemPermit permitItem;
+	@NotNull
+	private ItemPermit item;
 	
 	@ManyToOne
 	@JoinColumn(name="vendor_id")
+	@NotNull
 	private Vendor vendor;
 	
 	@Column(name="price")
+	@Min(0)
+	@NotNull
 	private BigDecimal price;
 	
 	@Column(name="quote_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate quoteDate;
+	
+	@Column(name="review_date")
+	@Convert(converter = LocalDatePersistenceConverter.class)
+	private LocalDate reviewDate;
 	
 
 	@Column(name="create_date")

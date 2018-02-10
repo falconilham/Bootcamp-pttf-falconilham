@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 	<head>
-		<title> Vendors </title>
+		<title>Item :: Permits</title>
     	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
 	</head>
 
@@ -21,10 +21,10 @@
 
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
-					<li>Purchasing</li>
-					<li><a th:href="@{/vendors}" href="#">Vendors</a></li>
-					<li><a th:href="@{/vendors/{id}(id=${vendor.id})}" th:text="${vendor.id + ' - ' + vendor.name}"></a></li>
-					<li th:text="${vendorContactPerson.fullName}">New Contact</li>
+					<li>Items</li>
+					<li><a th:href="@{/item/permits}" href="#">Permit</a></li>
+					<li> <a th:href="@{/item/permits/{id}(id=${item.id})}" href="#" th:text="${item.name}"></a></li>
+					<li>Purchase Price</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -33,6 +33,7 @@
 						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
 					</a>
 				</span>
+				
 			</div>
 			<!-- END RIBBON -->
 
@@ -41,7 +42,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="purchasing/vendor/vendorcontactperson_form :: form(@{/vendors/{id}/contact/{contactId}(id=${vendor.id}, contactId=${vendorContactPerson.id})}, POST)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="/purchasing/price/_form :: form(@{/item/permits/{id}/purchase(id=${item.id})}, 'Permit')"></th:block> /*/-->
 				</div>
 			</section>
 			</div>
@@ -61,7 +62,12 @@
 
 
 		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
-
+		<script th:src="@{/js/plugin/select2/select2.min.js}" src="js/plugin/select2/select2.min.js"></script>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+			    $('#vendor').select2();
+			});
+		</script> 
 
 	</body>
 

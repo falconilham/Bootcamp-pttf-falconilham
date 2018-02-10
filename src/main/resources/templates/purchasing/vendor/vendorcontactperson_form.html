@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="form(formAction, method)">
-		<form id="vendorContactForm" method="post" novalidate="novalidate" th:object="${vendorcontact}" th:action="${formAction}" class="bv-form">
+		<form id="vendorContactForm" method="post" novalidate="novalidate" th:object="${vendorContactPerson}" th:action="${formAction}" class="bv-form">
 			
 			<fieldset>
 				<legend>Vendor PIC <span class="pull-right" th:text="${vendor.name}"></span></legend>

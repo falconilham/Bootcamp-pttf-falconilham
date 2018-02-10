@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="form(formAction, itemType)">
+		<form id="itemPermitForm" method="post" novalidate="novalidate" th:object="${quote}" th:action="${formAction}" class="bv-form">
+			
+			<!--/*/ <th:block th:include="/forms/controls :: globalError"></th:block> /*/-->
+		
+			<fieldset>
+				<legend><span th:text="${itemType}"></span> - Purchase Price</legend>
+				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{item.id}" />
+		
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+			            	<div th:include="/purchasing/vendor/_controls :: vendors" th:with="fieldLabel='Vendor', fieldName='vendor'" th:remove="tag"></div>
+			        	</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='number', fieldLabel='Price', fieldName='price'" th:remove="tag"></div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12 col-md-6 has-feedback">
+							<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Review Date', fieldName='reviewDate'" th:remove="tag"></div>
+						</div>
+					</div>
+				</div>
+				
+			</fieldset>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-default" type="submit">
+							<i class="fa fa-save"></i> Save
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

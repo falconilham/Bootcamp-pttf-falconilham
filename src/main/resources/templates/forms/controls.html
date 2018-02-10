@@ -107,7 +107,10 @@
          -->
     </div>
     <div th:fragment="error" th:remove="tag">
+    
+            <span th:text="__${fieldName}__"></span>
         <span th:if="*{#fields.hasErrors('__${fieldName}__')}" th:each="err : *{#fields.errors('__${fieldName}__')}" th:remove="tag" >
+           	
            	<small class="help-block" th:text="${'* ' + err}">
 				The	Employee Full Name name is required
 			</small>
@@ -125,5 +128,13 @@
     <div th:fragment="label"  th:remove="tag">
         <label class="control-label" th:if="${fieldLabel}" th:attr="for=${'__${fieldName}__'}" 
             th:text="${#messages.msgOrNull('__${fieldLabel}__') == null ? '__${fieldLabel}__' : #messages.msg('__${fieldLabel}__')}"></label>
+    </div>
+    
+    <div th:fragment="globalError" th:remove="tag">
+    	<div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+    		<ul>
+    			 <li th:each="err : *{#fields.globalErrors()}" th:text="${err}"></li>
+    		</ul>
+    	</div>
     </div>
 </div>

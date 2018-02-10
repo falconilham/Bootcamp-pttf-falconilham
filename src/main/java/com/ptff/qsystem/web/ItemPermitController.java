@@ -1,5 +1,6 @@
 package com.ptff.qsystem.web;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ptff.qsystem.data.Country;
 import com.ptff.qsystem.data.CountryRepository;
 import com.ptff.qsystem.data.ItemPermit;
+import com.ptff.qsystem.data.ItemPermitPurchase;
+import com.ptff.qsystem.data.ItemPermitPurchaseRepository;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.Pager;
+import com.ptff.qsystem.data.Vendor;
+import com.ptff.qsystem.data.VendorRepository;
 
 
 @Controller
@@ -35,6 +41,17 @@ public class ItemPermitController {
 	
 	@Autowired
 	private ItemPermitRepository itemPermitRepository;
+	
+	@Autowired
+	private ItemPermitPurchaseRepository itemPermitPurchaseRepository;
+	
+	@Autowired
+	private VendorRepository vendorRepository;
+	
+	@ModelAttribute("vendors")
+    public List<Vendor> messages() {
+        return vendorRepository.findAll();
+    }
 	
 	@RequestMapping("/item/permits")
 	public String list(
@@ -77,12 +94,20 @@ public class ItemPermitController {
 	}
 	
 	@RequestMapping("/item/permits/{id}")
+	public String show(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("item", itemPermitRepository.findOne(id));
+
+		
+		return "item/permit/show";
+	}
+	
+	@RequestMapping("/item/permits/{id}/edit")
 	public String edit(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("item", itemPermitRepository.findOne(id));
 
 		
 		return "item/permit/edit";
-	}	
+	}
 	
 	@RequestMapping(value="/item/permits/{id}", method=RequestMethod.POST)
 	public String updateCountry(@PathVariable Long id, @Valid ItemPermit item, BindingResult bindingResult, Model model) {
@@ -94,7 +119,40 @@ public class ItemPermitController {
 		
 		item = itemPermitRepository.save(item);
 		
-		return "redirect:/item/permits";
+		return "redirect:/item/permits/"+id;
 	}
 
+	@RequestMapping("/item/permits/{id}/purchase")
+	public String purchase(@PathVariable("id") Long id, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+		ItemPermitPurchase itemPermitPurchase = new ItemPermitPurchase();
+		itemPermitPurchase.setItem(itemPermit);
+		
+		model.addAttribute("quote", itemPermitPurchase);
+		model.addAttribute("item", itemPermit);
+
+		
+		return "item/permit/purchase";
+	}
+	
+	@RequestMapping(value="/item/permits/{id}/purchase", method=RequestMethod.POST)
+	public String savePurchaseQuote(@PathVariable("id") Long id, @Valid ItemPermitPurchase quote, BindingResult bindingResult, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("item", itemPermit);
+			model.addAttribute("quote", quote);
+			
+			return "item/permit/purchase";
+		}
+		
+		quote = itemPermitPurchaseRepository.save(quote);
+		
+		
+		
+		
+
+
+		return "redirect:/item/permits/"+id;
+	}
 }
