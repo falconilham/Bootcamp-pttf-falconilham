@@ -23,6 +23,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ptff.qsystem.data.converter.LocalDatePersistenceConverter;
 import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
@@ -55,11 +56,16 @@ public class ItemPermitPurchase {
 	
 	@Column(name="quote_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate quoteDate;
 	
 	@Column(name="review_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate reviewDate;
+	
+	@Column(name="status")
+	private ItemPurchaseStatus status;
 	
 
 	@Column(name="create_date")

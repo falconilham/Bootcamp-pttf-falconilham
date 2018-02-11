@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Items</li>
 					<li><a th:href="@{/item/permits}" href="#">Permit</a></li>
-					<li th:text="${item.name}">-</li>
+					<li th:text="${itemPermit.name}">-</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -41,7 +41,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="item/permit/form :: form(@{/item/permits/{id}(id=${item.id})}, PUT)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="item/permit/form :: form(@{/item/permits/{id}(id=${itemPermit.id})}, PUT)"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

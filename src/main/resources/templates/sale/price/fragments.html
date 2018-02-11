@@ -1,0 +1,21 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+    
+    <div th:fragment="purchasePriceTable" th:remove="tag">
+    	<h3>Purchase Prices</h3>
+    	<table class="table table-striped">
+			<thead>
+				<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
+					<th>Vendor</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="itemPurchase : ${itemPurchases}">
+					<td th:text="${itemPurchase.vendor.name}"></td>
+					<td th:text="${#numbers.formatDecimal(itemPurchase.price, 0, 'COMMA', 0, 'POINT')}"></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+    
+</div>

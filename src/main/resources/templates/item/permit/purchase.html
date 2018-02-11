@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Items</li>
 					<li><a th:href="@{/item/permits}" href="#">Permit</a></li>
-					<li> <a th:href="@{/item/permits/{id}(id=${item.id})}" href="#" th:text="${item.name}"></a></li>
+					<li> <a th:href="@{/item/permits/{id}(id=${itemPermit.id})}" href="#" th:text="${itemPermit.name}"></a></li>
 					<li>Purchase Price</li>
 				</ol>
 				<!-- end breadcrumb -->
@@ -42,7 +42,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="/purchasing/price/_form :: form(@{/item/permits/{id}/purchase(id=${item.id})}, 'Permit')"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="/purchasing/price/_form :: form(@{/item/permits/{id}/purchase(id=${itemPermit.id})}, 'Permit')"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

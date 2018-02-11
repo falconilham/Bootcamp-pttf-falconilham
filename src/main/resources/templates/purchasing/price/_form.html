@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="form(formAction, itemType)">
-		<form id="itemPermitForm" method="post" novalidate="novalidate" th:object="${quote}" th:action="${formAction}" class="bv-form">
+		<form id="itemPermitForm" method="post" novalidate="novalidate" th:object="${itemPurchase}" th:action="${formAction}" class="bv-form">
 			
 			<!--/*/ <th:block th:include="/forms/controls :: globalError"></th:block> /*/-->
 		

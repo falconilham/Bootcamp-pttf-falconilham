@@ -107,8 +107,6 @@
          -->
     </div>
     <div th:fragment="error" th:remove="tag">
-    
-            <span th:text="__${fieldName}__"></span>
         <span th:if="*{#fields.hasErrors('__${fieldName}__')}" th:each="err : *{#fields.errors('__${fieldName}__')}" th:remove="tag" >
            	
            	<small class="help-block" th:text="${'* ' + err}">
@@ -132,6 +130,7 @@
     
     <div th:fragment="globalError" th:remove="tag">
     	<div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+    	xx
     		<ul>
     			 <li th:each="err : *{#fields.globalErrors()}" th:text="${err}"></li>
     		</ul>

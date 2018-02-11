@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Items</li>
 					<li><a th:href="@{/item/permits}" href="#">Permit</a></li>
-					<li th:text="${item.name}">-</li>
+					<li th:text="${itemPermit.name}">-</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -53,12 +53,12 @@
 							<legend>Permit</legend>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<h6>Name</h6> <span class="text-right" th:text="${item.name}"></span>
+									<h6>Name</h6> <span class="text-right" th:text="${itemPermit.name}"></span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<h6>Description</h6> <span class="text-right" th:text="${item.description}"></span>
+									<h6>Description</h6> <span class="text-right" th:text="${itemPermit.description}"></span>
 								</div>
 							</div>
 						</fieldset>
@@ -71,10 +71,10 @@
 				<div class="well">
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
-							
+							<!--/*/ <th:block th:include="/purchasing/price/fragments :: purchasePriceTable"></th:block> /*/-->
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
-						
+							<!--/*/ <th:block th:include="/purchasing/price/fragments :: purchasePriceStatistics"></th:block> /*/-->
 						</div>
 					</div>
 				</div>

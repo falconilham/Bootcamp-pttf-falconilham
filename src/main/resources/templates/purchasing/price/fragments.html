@@ -1,0 +1,35 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+    
+    <div th:fragment="purchasePriceTable" th:remove="tag">
+    	<h3>Purchase Prices</h3>
+    	<table class="table table-striped">
+			<thead>
+				<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
+					<th>Vendor</th>
+					<th>Price</th>
+					<th>Valid Through</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="itemPurchase : ${itemPurchases}">
+					<td><a th:href="@{/vendors/{vendorId}(vendorId=${itemPurchase.vendor.id})}" href="#" th:text="${itemPurchase.vendor.name}"></a></td>
+					<td class="text-right" th:text="${#numbers.formatDecimal(itemPurchase.price, 0, 'COMMA', 0, 'POINT')}"></td>
+					<td class="text-right" th:text="${#temporals.format(itemPurchase.reviewDate, 'dd/MM/yyyy')}"></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
+    
+    <div th:fragment="purchasePriceStatistics" th:remove="tag">
+    	<h3>Statistics</h3>
+    	<div class="well well-sm">
+    		<span class="font-md text-left">Average Price</span><br/>
+    		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(averageSell, 0, 'COMMA', 0, 'POINT')}"></span>
+    	</div>
+    	<div class="well well-sm" th:if="${minItem != null}">
+    		<span class="font-md text-left">Minimum Sell Price</span><br/>
+    		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(minItem.price, 0, 'COMMA', 0, 'POINT')}"></span><br/>
+    		<span class="font-lg text-right"> <a th:href="@{/vendors/{vendorId}(vendorId=${minItem.vendor.id})}" th:text="${minItem.vendor.name}"></a></span><br/>
+    	</div>
+    </div>
+</div>
