@@ -24,4 +24,9 @@ public class Depot {
 	@NotNull
 	@NotEmpty
 	private String name;
+	
+	@Column(name="code")
+	@NotNull
+	@NotEmpty
+	private String code;
 }

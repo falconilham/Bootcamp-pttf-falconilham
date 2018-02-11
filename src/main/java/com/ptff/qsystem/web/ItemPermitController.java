@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ptff.qsystem.data.Country;
-import com.ptff.qsystem.data.CountryRepository;
 import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitPurchase;
 import com.ptff.qsystem.data.ItemPermitPurchaseRepository;
@@ -184,6 +182,7 @@ public class ItemPermitController {
 		}
 		
 		itemPurchase.setStatus(ItemPurchaseStatus.ACTIVE);
+		itemPurchase.setQuoteDate(LocalDate.now());
 		itemPurchase = itemPermitPurchaseRepository.save(itemPurchase);
 		
 		return "redirect:/item/permits/"+id;

@@ -14,12 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ptff.qsystem.data.converter.LocalDatePersistenceConverter;
 import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
@@ -36,19 +39,32 @@ public class ItemTruckingPurchase {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="item_permit_id")
-	private ItemPermit permitItem;
+	@JoinColumn(name="item_trucking_id")
+	@NotNull
+	private ItemTrucking item;
 	
 	@ManyToOne
 	@JoinColumn(name="vendor_id")
+	@NotNull
 	private Vendor vendor;
 	
 	@Column(name="price")
+	@Min(0)
+	@NotNull
 	private BigDecimal price;
 	
 	@Column(name="quote_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate quoteDate;
+	
+	@Column(name="review_date")
+	@Convert(converter = LocalDatePersistenceConverter.class)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate reviewDate;
+	
+	@Column(name="status")
+	private ItemPurchaseStatus status;
 	
 
 	@Column(name="create_date")

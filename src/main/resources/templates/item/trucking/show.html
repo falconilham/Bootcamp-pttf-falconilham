@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title>Item :: Trucking</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Items</li>
+					<li><a th:href="@{/item/truckings}" href="#">Trucking</a></li>
+					<li th:text="${itemTrucking.sourceDepot.code +'-'+itemTrucking.destinationDepot.code}">-</li>
+				</ol>
+				<!-- end breadcrumb -->
+				
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
+						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
+					</a>
+				</span>
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				<div class="well">
+<!-- 				<div th:if="${customerOperation}" th:each="opresult : ${customerOperation}"> -->
+<!-- 					<div th:if="${opresult.type == 0}" class="alert alert-success"> -->
+<!-- 						<span th:text="${opresult.message}"></span> -->
+<!-- 					</div> -->
+<!-- 					<div th:if="${opresult.type == 1}" class="alert alert-danger"> -->
+<!-- 						<span th:text="${opresult.message}"></span> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+					<div class="row">
+					<div class="col-sm-12 col-md-8 has-feedback">
+						<fieldset>
+							<legend>Trucking</legend>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>From</h6> <span class="text-right" th:text="${itemTrucking.sourceDepot.name}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>To</h6> <span class="text-right" th:text="${itemTrucking.destinationDepot.name}"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Description</h6> <span class="text-right" th:text="${itemTrucking.description}"></span>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12 col-md-4 has-feedback">
+					<!--/*/ <th:block th:include="/item/trucking/action :: action"></th:block> /*/-->
+					</div>
+					</div>
+				</div>
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
+							<!--/*/ <th:block th:include="/purchasing/price/fragments :: purchasePriceTable"></th:block> /*/-->
+						</div>
+						<div class="col-sm-12 col-md-12 col-lg-6 has-feedback">
+							<!--/*/ <th:block th:include="/purchasing/price/fragments :: purchasePriceStatistics"></th:block> /*/-->
+						</div>
+					</div>
+				</div>
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
+							
+						</div>
+					</div>
+				</div>
+			</section>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+
+
+	</body>
+
+</html>
