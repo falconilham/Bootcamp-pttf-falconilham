@@ -61,7 +61,7 @@
 						</tbody>
 						</table>
 						
-						<div>
+						<div th:unless="${countries.totalPages} == 0">
 							<!--/*/ <th:block th:include="/forms/table :: paginate ('/countries', ${countries})"></th:block> /*/-->
 						</div>
 						</div>

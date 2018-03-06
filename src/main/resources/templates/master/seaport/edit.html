@@ -61,7 +61,12 @@
 
 
 		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
-
+		<script th:src="@{/js/plugin/select2/select2.min.js}" src="js/plugin/select2/select2.min.js"></script>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+			    $('#country').select2();
+			});
+		</script> 
 
 	</body>
 

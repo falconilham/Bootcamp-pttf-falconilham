@@ -47,20 +47,22 @@
 						<table class="table table-striped">
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th>Code</th>
-								<th>Name</th>
+								<th th:include="/forms/table :: sortable ('Code', 'code', ${seaports})"> </th>
+								<th th:include="/forms/table :: sortable ('Name', 'name', ${seaports})"> </th>
+								<th th:include="/forms/table :: sortable ('Country', 'country.name', ${seaports})"> </th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="seaport : ${seaports}">
 								<td><a th:href="@{|seaports/${seaport.id}|}" th:text="${seaport.code}"></a></td>
 								<td th:text="${seaport.name}"></td>
+								<td th:text="${seaport.country.name}"></td>
 							</tr>
 						</tbody>
 						</table>
 						
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/seaports', ${pageSizes}, ${page}, ${selectedPageSize}, ${seaports})"></th:block> /*/-->
+						<div th:unless="${seaports.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/seaports', ${seaports})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>
