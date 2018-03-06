@@ -1,0 +1,15 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+    
+    <div th:fragment="countries" th:remove="tag">
+        <div class="form-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'has-error' : ''">
+            <div th:substituteby="/forms/controls :: label"></div>
+            <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">
+                <select th:field="*{__${fieldName}__}" th:disabled="${fieldDisabled}?: 'false'" style="width: 100%;">
+                	<option th:each="option : ${countries}" th:value="${option.id}" th:text="${option.name}" ></option>
+            	</select>
+            	<div th:substituteby="/forms/controls :: error"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>

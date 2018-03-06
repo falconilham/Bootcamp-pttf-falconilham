@@ -44,21 +44,25 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="well">
+					<div th:text="${sortkey}"></div>
 						<table class="table table-striped">
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th><a th:href="@{${currentURL}(sortDirection=${newSortDirection}, sortKey='name')}">Name</a></th>
+								
+								<th th:include="/forms/table :: sortable ('Code', 'code', ${countries})"> </th>
+								<th th:include="/forms/table :: sortable ('Name', 'name', ${countries})"> </th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="country : ${countries}">
-								<td><a th:href="@{|countries/${country.id}|}" th:text="${country.name}"></a></td>
+								<td><a th:href="@{|countries/${country.id}|}" th:text="${country.code}"></a></td>
+								<td th:text="${country.name}"></td>
 							</tr>
 						</tbody>
 						</table>
 						
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/countries', ${pageSizes}, ${page}, ${selectedPageSize}, ${countries})"></th:block> /*/-->
+						<div>
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/countries', ${countries})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.Data;
@@ -19,6 +20,12 @@ public class Country {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	
+	@Column(name="code")
+	@NotNull
+	@NotEmpty
+	@Length(max=2, min=2)
+	private String code;
 	
 	@Column(name="name")
 	@NotNull

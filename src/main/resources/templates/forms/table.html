@@ -1,26 +1,143 @@
 <div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
-    <div th:remove="all">
-        <!-- 
-            Instructions on how to use this file:
-            <div th:include="forms/controls :: CONTROLNAME" th:with="attrName=${attrValue}" />
-         -->
-    </div>
+
+	<div th:fragment="paginate (baseUrl, page)" th:remove="tag">
+	 	<div class="row">
+	 		<div class="col-xs-12 col-md-12">
+				<div class="text-center pull-left">
+					<ul class="pagination">
+						<li th:class="${page.size == pageSize} ? 'active pointer-disabled'"
+							th:each="pageSize : ${ { 5, 10, 20, 100 } }">
+							<a class="pageLink" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('size', pageSize).replaceQueryParam('page', 0).toUriString()}"  th:text="${pageSize}"></a>
+						</li>
+					</ul>
+				</div>
+				<div th:if="${page.totalPages != 1}" class="text-center pull-right">
+					<ul class="pagination">
+						<li th:class="${page.number == 0} ? disabled">
+							<a class="pageLink"
+								th:if="${not page.isFirst()}"
+								th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page','0').toUriString()}" >&laquo;</a>
+							<span class="pageLink"
+								th:if="${page.isFirst()}">&laquo;</span>
+						</li>
+						<li th:class="${page.number == 0} ? disabled">
+							<a class="pageLink"
+								th:if="${not page.isFirst()}"
+								th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('size', page.size).replaceQueryParam('page', page.number-1).toUriString()}" >&larr;</a>
+							<span class="pageLink"
+								th:if="${page.isFirst()}">&larr;</span>
+						</li>
+						
+						
+						<div th:switch="true" th:remove="tag">
+							<div th:case="${page.totalPages &lt; 5}" th:remove="tag">
+								<li 
+									th:class="${page.number == (pageNo - 1)} ? 'active pointer-disabled'"
+									
+									th:each="pageNo : ${#numbers.sequence(1, page.totalPages)}">
+									<a class="pageLink" 
+										th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+										th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',pageNo-1).toUriString()}" 
+										th:text="${pageNo}"></a>
+								</li>
+							</div>
+							<div th:case="${page.number-2 &lt; 0}" th:remove="tag">
+							<li 
+								th:class="${page.number == (pageNo - 1)} ? 'active pointer-disabled'"
+								th:each="pageNo : ${#numbers.sequence(1, 5)}">
+								<a class="pageLink" 
+									th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+									th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',pageNo-1).toUriString()}" 
+									th:text="${pageNo}"></a>
+							</li>
+							</div>
+							<div th:case="${page.number+2 == page.totalPages}" th:remove="tag">
+							<li 
+								th:class="${page.number == (pageNo - 1)} ? 'active pointer-disabled'"
+								th:each="pageNo : ${#numbers.sequence(page.number-2,  page.totalPages)}">
+								<a class="pageLink" 
+									th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+									th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',pageNo-1).toUriString()}" 
+									th:text="${pageNo}"></a>
+							</li>
+							</div>
+							<div th:case="${page.number+2 > page.totalPages}" th:remove="tag">
+							<li 
+								th:class="${page.number == (pageNo - 1)} ? 'active pointer-disabled'"
+								th:each="pageNo : ${#numbers.sequence(page.totalPages-5+1, page.totalPages)}">
+								<a class="pageLink" 
+									th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+									th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',pageNo-1).toUriString()}" 
+									th:text="${pageNo}"></a>
+							</li>
+							</div>
+							<div th:case="*" th:remove="tag">
+							<li 
+								th:class="${page.number == (pageNo - 1)} ? 'active pointer-disabled'"
+								th:each="pageNo : ${#numbers.sequence(page.number-1, page.number+3)}">
+								<a class="pageLink" 
+									th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+									th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',pageNo-1).toUriString()}" 
+									th:text="${pageNo}"></a>
+							</li>
+							</div>
+						</div>
+						
+						
+						
+						<li th:class="${page.number + 1 == page.totalPages} ? disabled">
+							<a class="pageLink"
+								th:if="${not page.isLast()}"
+								th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('size',page.size).replaceQueryParam('page',page.number+1).toUriString()}" >&rarr;</a>
+							<span class="pageLink"
+								th:if="${page.isLast()}">&rarr;</span>
+						</li>
+						<li th:class="${page.number + 1 == page.totalPages} ? disabled">
+							<a class="pageLink" 
+								th:if="${not page.isLast()}"
+								th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+								th:href="${urlBuilder.replaceQueryParam('size', page.size).replaceQueryParam('page', page.totalPages-1).toUriString()}" >&raquo;</a>
+							<span class="pageLink"
+								th:if="${page.isLast()}">&raquo;</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
     
-    <div th:remove="all">
-        <!-- 
-            To use this control use the following syntax as an example
-            
-            <div th:include="forms/controls :: input" th:with="fieldName='fieldName',fieldLabel='Label Name',fieldType='text',fieldPlaceholder='placeholder',fieldClass='class',fieldDisabled='false'" th:remove="tag"></div>
-         -->
-    </div>
-    
-    <div th:fragment="sortableHeader(sortKey, currentSortDirection)"  th:remove="tag">
+    <div 
+    	th:fragment="sortable(label, code, page)"  th:remove="tag"
+    	 th:with="currentURL=(${#httpServletRequest.requestURI})">
+    	 
+ 		<span
+ 			th:if="${#strings.substringBefore(page.sort, ':') == code}"
+ 			th:remove="tag">
+ 			<span 
+ 				th:if="${#strings.substringAfter(page.sort, ':') eq ' ASC'}">
+ 				<a 
+	 				th:href="@{${currentURL}(size=${page.size}, page=${page.number}, sort=${code+',desc'})}"
+	      			th:text="${label}"></a> <i class="fa fa-fw fa-sort-down"></i>
+ 			</span>
+ 			<span 
+ 				th:if="${#strings.substringAfter(page.sort, ':') eq ' DESC'}">
+ 				<a 
+	 				th:href="@{${currentURL}(size=${page.size}, page=${page.number}, sort=${code+',asc'})}"
+	      			th:text="${label}"></a> <i class="fa fa-fw fa-sort-up"></i>
+ 			</span>
+ 		</span>
  		
- 		<th>
- 			<a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-      			th:href="${urlBuilder.replaceQueryParam('sortKey', 'name').replaceQueryParam('sortDirection', sortDirection).toUriString()}">
-      								Full Name
-								</a>
- 		</th>
+ 		<span
+ 			th:unless="${#strings.substringBefore(page.sort, ':') == code}">
+ 			<a 
+	 			th:href="@{${currentURL}(size=${page.size}, page=${page.number}, sort=${code+',asc'})}"
+	      		th:text="${label}">
+			</a> <i class="fa fa-fw fa-sort"></i>
+ 		</span>
     </div>
 </div>
