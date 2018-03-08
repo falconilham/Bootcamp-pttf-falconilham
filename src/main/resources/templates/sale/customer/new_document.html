@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Sale</li>
 					<li><a th:href="@{/customers}" href="#">Customers</a></li>
-					<li th:text="${customer.id + ' - ' + customer.name}"></li>
+					<li><a th:href="@{/customers/{id}(id=${customer.id})}" th:text="${customer.name}"></a></li>
 					<li>New Document</li>
 				</ol>
 				<!-- end breadcrumb -->
@@ -61,7 +61,12 @@
 
 
 		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
-
+		<script th:src="@{/js/plugin/select2/select2.min.js}" src="js/plugin/select2/select2.min.js"></script>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+			    $('#documentType').select2();
+			});
+		</script> 
 
 	</body>
 

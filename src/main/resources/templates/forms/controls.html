@@ -6,7 +6,7 @@
          -->
     </div>
     
-        <div th:fragment="textarea" th:remove="tag">
+    <div th:fragment="textarea" th:remove="tag">
         <div class="control-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'has-error' : ''">
             <div th:substituteby="forms/controls :: label"></div>
             <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">

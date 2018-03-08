@@ -16,6 +16,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ptff.qsystem.service.StorageProperties;
 import com.ptff.qsystem.service.StorageService;
 
 @Service
@@ -27,10 +28,10 @@ public class FileSystemStorageService implements StorageService {
 //    public FileSystemStorageService(StorageProperties properties) {
 //        this.rootLocation = Paths.get(properties.getLocation());
 //    }
-    
+   
     public FileSystemStorageService() {
       this.rootLocation = Paths.get("./");
-  }
+    }
 
     @Override
     public void store(MultipartFile file) {

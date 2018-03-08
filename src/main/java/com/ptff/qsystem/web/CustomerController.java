@@ -127,8 +127,8 @@ public class CustomerController {
 		
 		model.addAttribute("customer", customerRepository.findOne(id));
 		model.addAttribute("operationPics", contactPersons.stream()
-												.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.OPERATION))
-												.collect(Collectors.toSet()));
+				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.OPERATION))
+				.collect(Collectors.toSet()));
 		model.addAttribute("financePics", contactPersons.stream()
 				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.FINANCE))
 				.collect(Collectors.toSet()));
@@ -192,58 +192,7 @@ public class CustomerController {
 		return "sale/customer/edit_contact";
 	}
 	
-	
-	/////////////////////////////
-	
-	@RequestMapping("/customers/{id}/document")
-	public String newCustomerDocument(@PathVariable("id") Long id, Model model) {
-		Customer customer = customerRepository.findOne(id);
-		Document document = new Document();
 		
-		CustomerDocument customerDocument = new CustomerDocument();
-		customerDocument.setCustomer(customer);
-		customerDocument.setDocument(document);
-		
-		model.addAttribute("customer", customer);
-		model.addAttribute("customerdocument", customerDocument);
-		
-		return "sale/customer/new_document";
-	}
-	
-	@RequestMapping("/customers/{id}/document/save")
-	@Transactional
-	public String saveCustomerDocument(@PathVariable("id") Long id, @Valid CustomerDocument customerDocument, BindingResult bindingResult, @RequestParam("file") MultipartFile file, Model model) throws IllegalStateException, IOException {
-		LOGGER.info("Saving Customer Document " + customerDocument.getDocument().getName());
-		
-		Customer customer = customerRepository.findOne(id);
-		
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("customer", customer);
-			model.addAttribute("customerdocument", customerDocument);
-			
-			return "sale/customer/new_document";
-		}
-		
-		
-		// Save the File
-		Document document = customerDocument.getDocument();
-		
-		File convFile = new File("C:/Projects/TerraForwarding/documents/"+customer.getId()+"-"+document.getName()+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.')));
-	    file.transferTo(convFile);
-	    document.setFilePath(convFile.getPath());
-		
-		customer.setStatus(CustomerStatus.DRAFT);
-		customer = customerRepository.save(customer);
-		
-		document = documentRepository.save(document);
-		customerDocument.setDocument(document);
-		
-		customerDocument = customerDocumentRepository.save(customerDocument);
-		
-		return "redirect:/customers/"+customer.getId();
-	}
-	
-	
 	@RequestMapping("/customers/{id}/submit")
 	public String submitCustomerForApproval(@PathVariable("id") Long id, Model model) {
 		Customer customer = customerRepository.findOne(id);

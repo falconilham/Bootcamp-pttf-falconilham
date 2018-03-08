@@ -46,6 +46,9 @@ public class Document {
 	@NotEmpty
 	private String filePath;
 
+	@Column(name="content_type", length=255)
+	private String contentType;
+	
 	@CreatedDate
 	@Convert(converter = LocalDateTimePersistenceConverter.class)
 	private LocalDateTime createTime;

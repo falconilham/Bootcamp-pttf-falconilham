@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -41,6 +42,7 @@ public class Customer {
 	
 	@Column(name="npwp")
 	@NotEmpty
+	@Length(min=15, max=15, message="NPWP must be 15 characters Long")
 	private String npwp;
 	
 	@Column(name="npwp_address", length=255)
