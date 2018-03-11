@@ -1,6 +1,5 @@
 package com.ptff.qsystem.data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -14,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -29,44 +27,37 @@ import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
 
 import lombok.Data;
 
-@Data
 @Entity
-@Table(name="item_permit_purchase")
+@Table(name="quotation")
+@Data
 @EntityListeners(AuditingEntityListener.class)
-public class ItemPermitPurchase {
+public class Quotation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@Column(name="reference")
+	@NotNull
+	private String reference;
+	
 	@ManyToOne
-	@JoinColumn(name="item_permit_id")
-	@NotNull
-	private ItemPermit item;
-	
-	@ManyToOne
-	@JoinColumn(name="vendor_id")
-	@NotNull
-	private Vendor vendor;
-	
-	@Column(name="price")
-	@Min(0)
-	@NotNull
-	private BigDecimal price;
-	
-	@Column(name="quote_date")
-	@Convert(converter = LocalDatePersistenceConverter.class)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate quoteDate;
-	
-	@Column(name="review_date")
-	@Convert(converter = LocalDatePersistenceConverter.class)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate reviewDate;
+	@JoinColumn(name="customer_id", referencedColumnName="id")
+	private Customer customer;
 	
 	@Column(name="status")
-	private ItemPurchaseStatus status;
+	private QuotationStatus status;
 	
-
+	@Column(name="quote_date")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Convert(converter = LocalDatePersistenceConverter.class)
+	private LocalDate quoteDate;
+	
+	@Column(name="expiry_date")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Convert(converter = LocalDatePersistenceConverter.class)
+	private LocalDate expiryDate;
+	
+	
 	@Column(name="create_date")
 	@CreatedDate
 	@Convert(converter = LocalDateTimePersistenceConverter.class)
@@ -84,5 +75,4 @@ public class ItemPermitPurchase {
 	@Column(name="lastupdate_user")
 	@LastModifiedBy
 	private String lastUpdateUser;
-	
 }

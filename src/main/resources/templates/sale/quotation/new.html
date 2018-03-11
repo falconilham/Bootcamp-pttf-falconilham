@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title> Quotation </title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Sale</li>
+					<li><a th:href="@{/quotations}" href="#">Quotation</a></li>
+					<li>New Quotation</li>
+				</ol>
+				<!-- end breadcrumb -->
+				
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
+						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
+					</a>
+				</span>
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				
+				<div class="well">
+    				<form id="quotationForm" method="post" novalidate="novalidate" th:object="${quotation}" th:action="@{/quotations}" class="bv-form">
+			
+						<fieldset>
+							<legend>New Quotation</legend>
+							<input type="hidden" th:field="*{id}" />
+			
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12 col-md-6 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldType='text', fieldLabel='Reference', fieldName='reference'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6 selectContainer has-feedback">
+										<div class="row">
+											<div class="col-sm-12 col-md-6 has-feedback">
+								            	<div th:include="/sale/customer/_controls :: customers" th:with="fieldLabel='Customer', fieldName='customer'" th:remove="tag"></div>
+								        	</div>
+										</div>
+									</div>
+								</div>
+							</div>
+				
+							
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12 col-md-6 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Quote Date', fieldName='quoteDate'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12 col-md-6 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Expiry Date', fieldName='expiryDate'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-actions">
+								<div class="row">
+									<div class="col-md-12">
+										<button class="btn btn-default" type="submit">
+											<i class="fa fa-save"></i> Save
+										</button>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</section>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+		<script th:src="@{/js/plugin/select2/select2.min.js}" src="js/plugin/select2/select2.min.js"></script>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+			    $('#customer').select2();
+			});
+		</script>
+
+	</body>
+
+</html>

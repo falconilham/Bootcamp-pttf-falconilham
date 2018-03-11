@@ -20,14 +20,11 @@ public class ItemPermit {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	
 	@Column(name="name")
 	@NotNull
 	@NotEmpty
 	private String name;
 	
 	@Column(name="description")
-	@NotNull
-	@NotEmpty
 	private String description;
 }

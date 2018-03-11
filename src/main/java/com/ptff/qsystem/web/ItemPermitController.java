@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -34,13 +37,8 @@ import com.ptff.qsystem.data.VendorRepository;
 
 
 @Controller
-public class ItemPermitController {
+public class ItemPermitController implements DefaultController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ItemPermitController.class);
-	
-	private static final int BUTTONS_TO_SHOW = 5;
-	private static final int INITIAL_PAGE = 0;
-	private static final int INITIAL_PAGE_SIZE = 20;
-	private static final int[] PAGE_SIZES = { 5, 10, 20, 100 };
 	
 	@Autowired
 	private ItemPermitRepository itemPermitRepository;
@@ -57,21 +55,12 @@ public class ItemPermitController {
     }
 	
 	@RequestMapping("/item/permits")
-	public String list(
-			@RequestParam("pageSize") Optional<Integer> pageSize,
-			@RequestParam("page") Optional<Integer> page,
-			Model model) {
+	public String list(Model model, 
+			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable) {
 		
-		int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
-		int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-		
-		Page<ItemPermit> itemPermits = itemPermitRepository.findAll(new PageRequest(evalPage, evalPageSize));
-		Pager pager = new Pager(itemPermits.getTotalPages(), itemPermits.getNumber(), BUTTONS_TO_SHOW);
+		Page<ItemPermit> itemPermits = itemPermitRepository.findAll(pageable);
 		
 		model.addAttribute("items", itemPermits);
-		model.addAttribute("selectedPageSize", evalPageSize);
-		model.addAttribute("pageSizes", PAGE_SIZES);
-		model.addAttribute("pager", pager);
 		
 		return "item/permit/index";
 	}

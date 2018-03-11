@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 	<head>
-		<title>Item :: Permits</title>
+		<title> Quotations </title>
     	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
 	</head>
 
@@ -21,14 +21,14 @@
 
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
-					<li>Items</li>
-					<li>Permit</li>
+					<li>Sale</li>
+					<li>Quotation</li>
 				</ol>
 				<!-- end breadcrumb -->
 
 				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="#" th:href="@{/item/permits/new}" id="add" class="btn btn-ribbon hidden-xs">
-						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Permit</span>
+					<a href="#" th:href="@{quotations/new}" id="add" class="btn btn-ribbon hidden-xs">
+						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Quotation</span>
 					</a>
 <!-- 					<a href="#" th:href="@{settings/customer}" id="settings" class="btn btn-ribbon hidden-xs"> -->
 <!-- 						<span id="settings" class="btn btn-ribbon hidden-xs" data-title="settings"><i class="fa fa-gear"></i> Settings</span> -->
@@ -46,21 +46,28 @@
 					<div class="well">
 						<table class="table table-striped">
 						<thead>
+						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th th:include="/forms/table :: sortable ('Name', 'name', ${items})"> </th>
-								<th th:include="/forms/table :: sortable ('Description', 'description', ${items})"> </th>
+								<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th>
+								<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th>
+								<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th>
+								<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th>
 							</tr>
+						</tr>
 						</thead>
 						<tbody>
-							<tr th:each="item : ${items}">
-								<td><a th:href="@{|/item/permits/${item.id}|}" th:text="${item.name}"></a></td>
-								<td th:text="${item.description}"></td>
+							<tr th:each="quotation : ${quotations}">
+								<td><a th:href="@{|quotations/${quotation.id}|}" th:text="${quotation.reference}"></a></td>
+								<td th:text="${quotation.customer.name}"></td>
+								<td th:text="${quotation.quoteDate}"></td>
+								<td th:text="${quotation.expiryDate}"></td>
+								
 							</tr>
 						</tbody>
 						</table>
 						
-						<div th:unless="${items.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/item/permits', ${items})"></th:block> /*/-->
+						<div th:unless="${quotations.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/quotations', ${quotations})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>
