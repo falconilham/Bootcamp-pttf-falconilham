@@ -21,10 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ptff.qsystem.data.Customer;
 import com.ptff.qsystem.data.CustomerRepository;
+import com.ptff.qsystem.data.ItemPermit;
+import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.Quotation;
+import com.ptff.qsystem.data.QuotationLineItem;
+import com.ptff.qsystem.data.QuotationProductType;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
 import com.ptff.qsystem.data.Seaport;
+import com.ptff.qsystem.form.ItemSearchForm;
 
 @Controller
 public class QuoteController implements DefaultController {
@@ -35,6 +40,11 @@ public class QuoteController implements DefaultController {
 	
 	@Autowired
 	private QuotationRepository quotationRepository;
+	
+	@Autowired
+	private ItemPermitRepository itemPermitRepository;
+	
+	
 	
 	@ModelAttribute("customers")
     public List<Customer> messages() {
@@ -84,23 +94,53 @@ public class QuoteController implements DefaultController {
 		return "sale/quotation/show";
 	}
 	
-	@RequestMapping(value="/quotations/{id}/permit", method=RequestMethod.POST)
-	public String searchQuotation(@PathVariable("id") Long id, Model model) {
+	@RequestMapping(value="/quotations/{id}/permit", method=RequestMethod.GET)
+	public String searchQuotation(@PathVariable("id") Long id,  Model model, Pageable pageable) {
 		LOGGER.info("Showing Permit Search Form: {}", id);
 		
 		Quotation quotation = quotationRepository.findOne(id);
 		model.addAttribute("quotation", quotation);
+		
+		ItemSearchForm itemSearchForm = (ItemSearchForm) model.asMap().get("searchForm");
+		if (itemSearchForm == null)
+			itemSearchForm = new ItemSearchForm();
+		
+		model.addAttribute("searchForm", new ItemSearchForm());
+		
 		
 		return "sale/quotation/search_permit";
 	}
 	
-	@RequestMapping("/quotations/{id}/permit")
-	public String addPermitToQuotation(@PathVariable("id") Long id, Model model) {
+	@RequestMapping(value="/quotations/{id}/permit", method=RequestMethod.POST)
+	public String searchQuotation(@PathVariable("id") Long id, @ModelAttribute("searchForm")ItemSearchForm itemSearchForm, Model model, Pageable pageable) {
 		LOGGER.info("Showing Permit Search Form: {}", id);
 		
 		Quotation quotation = quotationRepository.findOne(id);
 		model.addAttribute("quotation", quotation);
 		
+		Page<ItemPermit> items = itemPermitRepository.findByNameLike("%"+itemSearchForm.getName()+"%", pageable);
+		model.addAttribute("items", items);
+		
+		LOGGER.info("Found {} pages with {} items matching the criteria {}", items.getTotalPages(), items.getTotalElements(), itemSearchForm);
+		
 		return "sale/quotation/search_permit";
+	}
+	
+	@RequestMapping("/quotations/{id}/permit/{permitId}/add")
+	public String addPermitToQuotation(@PathVariable("id") Long id, @PathVariable("permitId") Long permitId, Model model) {
+		LOGGER.info("Showing Permit Search Form: {}", id);
+		
+		Quotation quotation = quotationRepository.findOne(id);
+		ItemPermit itemPermit = itemPermitRepository.findOne(permitId);
+		
+		QuotationLineItem lineItem = new QuotationLineItem();
+		lineItem.setType(QuotationProductType.PERMIT);
+		lineItem.setPermit(itemPermit);
+		lineItem.setQuotation(quotation);
+		
+		quotation.getQuotationLineItems().add(lineItem);
+		quotationRepository.save(quotation);
+		
+		return "redirect:/quotations/{id}";
 	}
 }

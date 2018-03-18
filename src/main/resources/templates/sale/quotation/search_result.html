@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+	<body>
+		<div th:fragment="searchResult(formAction)">
+		<table class="table table-striped">
+		<thead>
+		<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
+<!-- 			<tr th:with="currentURL=(${#httpServletRequest.requestURI})"> -->
+<!-- 				<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th> -->
+<!-- 				<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th> -->
+<!-- 				<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th> -->
+<!-- 				<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th> -->
+<!-- 			</tr> -->
+		</tr>
+		</thead>
+		<tbody>
+			<tr th:each="item : ${items}">
+				<td th:text="${item.name}"></td>
+				<td><a th:href="@{/quotations/{id}/permit/{permitId}/add(id=${quotation.id}, permitId=${item.id})}"><span class="label label-default">Add</span></a></td>
+			</tr>
+		</tbody>
+		</table>
+		
+		<div th:unless="${items.totalPages} == 0">
+			<!--/*/ <th:block th:include="/forms/table :: paginate (${formAction}, ${items})"></th:block> /*/-->
+		</div>
+	</div>
+
+	</body>
+
+</html>

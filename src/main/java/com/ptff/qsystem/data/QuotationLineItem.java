@@ -27,7 +27,7 @@ public class QuotationLineItem {
 	
 	@ManyToOne
 	@JoinColumn(name="quotation_id", referencedColumnName="id")
-	private QuotationLineItem quotation;
+	private Quotation quotation;
 	
 	@Column(name="type")
 	private QuotationProductType type;

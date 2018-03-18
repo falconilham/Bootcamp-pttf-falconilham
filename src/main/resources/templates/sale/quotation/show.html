@@ -75,6 +75,31 @@
 						<div th:include="/sale/quotation/_controls :: actions" th:remove="tag"></div>
 					</div>
 					</div>
+					<div class="row">
+					<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
+					<table class="table table-striped">
+						<thead>
+						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
+				<!-- 			<tr th:with="currentURL=(${#httpServletRequest.requestURI})"> -->
+				<!-- 				<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th> -->
+				<!-- 				<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th> -->
+				<!-- 				<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th> -->
+				<!-- 				<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th> -->
+				<!-- 			</tr> -->
+						</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item : ${quotation.quotationLineItems}">
+								<div th:if="${(item.type ==  T(com.ptff.qsystem.data.QuotationProductType).PERMIT)}" th:remove="tag">
+									<td th:text="${item.permit.name}"></td>	
+								</div>
+								
+							</tr>
+						</tbody>
+						</table>
+					
+					</div>
+					</div>
 				</div>
 			</section>
 			</div>
