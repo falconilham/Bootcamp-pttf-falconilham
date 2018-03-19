@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -65,6 +66,7 @@ public class CustomerController implements DefaultController {
 	private CustomerHistoryRepository customerHistoryRepository;
 	
 	@RequestMapping("/customers")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
 	public String listCustomers(
 			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
 			Model model) {
@@ -77,6 +79,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/new")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String newRole(Model model) {
 		Customer customer = new Customer();
 		customer.setStatus(CustomerStatus.DRAFT);
@@ -88,6 +91,7 @@ public class CustomerController implements DefaultController {
 	
 	@RequestMapping("/customers/save")
 	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String saveCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving Customer " + customer.getName());
 		
@@ -107,6 +111,8 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/update")
+	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String updateCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
 		LOGGER.info("Updating customer: " + customer.getName());
 
@@ -128,6 +134,7 @@ public class CustomerController implements DefaultController {
 	}
 
 	@RequestMapping("/customers/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
 	public String showCustomer(@PathVariable("id") Long id, Model model) {
 		Set<CustomerContactPerson> contactPersons = customerContactPersonRepository.findAllByCustomerId(id);
 		
@@ -147,6 +154,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/{id}/edit")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String editRole(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("customer", customerRepository.findOne(id));
 
@@ -155,6 +163,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/{id}/contact")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String newCustomerContact(@PathVariable("id") Long id, Model model) {
 		
 		
@@ -171,6 +180,7 @@ public class CustomerController implements DefaultController {
 	
 	@RequestMapping("/customers/{id}/contact/save")
 	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String saveCustomerContact(@PathVariable("id") Long id, @Valid @ModelAttribute("customercontact") CustomerContactPerson customerContactPerson, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving Customer Contact Person " + customerContactPerson.getFullName());
 		
@@ -203,6 +213,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/{id}/contact/{contactId}")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String editCustomerContact(@PathVariable("id") Long id, @PathVariable("contactId") Long contactId, Model model) {
 		
 		Customer customer = customerRepository.findOne(id);		
@@ -216,6 +227,7 @@ public class CustomerController implements DefaultController {
 	
 		
 	@RequestMapping("/customers/{id}/submit")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String submitCustomerForApproval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		// Validate Customers
 		Customer customer = customerRepository.findOne(id);
@@ -247,6 +259,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/{id}/approve")
+	@PreAuthorize("hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String approveCustomer(@PathVariable("id") Long id, Model model) {
 		Customer customer = customerRepository.findOne(id);
 		customer.setStatus(CustomerStatus.ACTIVE);
@@ -266,6 +279,7 @@ public class CustomerController implements DefaultController {
 	}
 	
 	@RequestMapping(value="/customers/{id}/reject", method=RequestMethod.POST)
+	@PreAuthorize("hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String rejectCustomer(@PathVariable("id") Long id, @ModelAttribute("rejectReason")String rejectReason, Model model) {
 		LOGGER.info("Rejecting Customer {} due to {}", id, rejectReason);
 		

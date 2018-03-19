@@ -27,7 +27,7 @@
 				<!-- end breadcrumb -->
 
 				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="#" th:href="@{customers/new}" id="add" class="btn btn-ribbon hidden-xs">
+					<a sec:authorize="hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')" href="#" th:href="@{customers/new}" id="add" class="btn btn-ribbon hidden-xs">
 						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Customer</span>
 					</a>
 <!-- 					<a href="#" th:href="@{settings/customer}" id="settings" class="btn btn-ribbon hidden-xs"> -->

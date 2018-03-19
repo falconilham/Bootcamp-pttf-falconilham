@@ -93,7 +93,7 @@
 						</a>
 						<ul>
 							<li>
-								<a th:href="@{/customers}"  href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR','ROLE_FINANCE', 'ROLE_SU')" th:href="@{/customers}"  href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-child"></i> Customers
 								</a>
 							</li>

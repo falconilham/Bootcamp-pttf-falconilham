@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -18,10 +14,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,25 +24,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ptff.qsystem.data.Document;
-import com.ptff.qsystem.data.DocumentRepository;
-import com.ptff.qsystem.data.DocumentType;
-import com.ptff.qsystem.data.DocumentTypeRepository;
-import com.ptff.qsystem.data.Pager;
-import com.ptff.qsystem.data.Settings;
-import com.ptff.qsystem.data.SettingsRepository;
-import com.ptff.qsystem.data.Country;
 import com.ptff.qsystem.data.Customer;
-import com.ptff.qsystem.data.CustomerContactPerson;
-import com.ptff.qsystem.data.CustomerContactPersonRepository;
-import com.ptff.qsystem.data.CustomerContactType;
 import com.ptff.qsystem.data.CustomerDocument;
 import com.ptff.qsystem.data.CustomerDocumentRepository;
 import com.ptff.qsystem.data.CustomerHistory;
 import com.ptff.qsystem.data.CustomerHistoryRepository;
 import com.ptff.qsystem.data.CustomerRepository;
 import com.ptff.qsystem.data.CustomerStatus;
-import com.ptff.qsystem.service.StorageService;
+import com.ptff.qsystem.data.Document;
+import com.ptff.qsystem.data.DocumentRepository;
+import com.ptff.qsystem.data.DocumentType;
+import com.ptff.qsystem.data.DocumentTypeRepository;
+import com.ptff.qsystem.data.SettingsRepository;
 
 
 
@@ -81,6 +67,7 @@ public class CustomerDocumentController implements DefaultController {
     }
 	
 	@RequestMapping("/customers/{id}/document")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String newCustomerDocument(@PathVariable("id") Long id, Model model) {
 		Customer customer = customerRepository.findOne(id);
 		Document document = new Document();
@@ -96,6 +83,7 @@ public class CustomerDocumentController implements DefaultController {
 	}
 	
 	@RequestMapping("/customers/{customerId}/document/{documentId}")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_FINANCE', 'ROLE_DIRECTOR', 'ROLE_SU')")
 	public void newCustomerDocument(@PathVariable("customerId") Long customerId, @PathVariable("documentId") Long documentId, HttpServletResponse response) {
 		CustomerDocument customerDocument = customerDocumentRepository.findOne(documentId);
 		
@@ -111,6 +99,7 @@ public class CustomerDocumentController implements DefaultController {
 	
 	@RequestMapping("/customers/{id}/document/save")
 	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String saveCustomerDocument(@PathVariable("id") Long id, 
 											@Valid @ModelAttribute("customerdocument") CustomerDocument customerDocument, BindingResult bindingResult, @RequestParam(value="file", required=true) MultipartFile file, Model model) throws IllegalStateException, IOException {
 		
