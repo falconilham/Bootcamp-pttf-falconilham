@@ -26,11 +26,11 @@
 				</ol>
 				<!-- end breadcrumb -->
 
-				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+				<!--<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
 					<a href="#" th:href="@{roles/new}" id="add" class="btn btn-ribbon hidden-xs">
 						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add New Role</span>
 					</a>
-				</span>
+				</span>-->
 
 			</div>
 			<!-- END RIBBON -->
@@ -45,7 +45,7 @@
 						<table class="table table-striped">
 						<thead>
 						<tr>
-							<th>Role Name</th>
+							<th th:include="/forms/table :: sortable ('Role Name', 'name', ${roles})"> </th>
 						</tr>
 						</thead>
 						<tbody>
@@ -54,8 +54,8 @@
 							</tr>
 						</tbody>
 						</table>
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/roles', ${pageSizes}, ${page}, ${selectedPageSize}, ${roles})"></th:block> /*/-->
+						<div th:unless="${roles.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/roles', ${roles})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

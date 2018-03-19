@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,20 +37,13 @@ public class RoleController {
 
 	@RequestMapping("/roles")
 	public String listRoles(
-			@RequestParam("pageSize") Optional<Integer> pageSize,
-			@RequestParam("page") Optional<Integer> page,
+			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
 			Model model) {
 		
-		int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
-		int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 		
-		Page<UserGroup> roles = userGroupRepository.findAll(new PageRequest(evalPage, evalPageSize));
-		Pager pager = new Pager(roles.getTotalPages(), roles.getNumber(), BUTTONS_TO_SHOW);
+		Page<UserGroup> roles = userGroupRepository.findAll(pageable);
 		
 		model.addAttribute("roles", roles);
-		model.addAttribute("selectedPageSize", evalPageSize);
-		model.addAttribute("pageSizes", PAGE_SIZES);
-		model.addAttribute("pager", pager);
 		
 		return "security/role/index";
 	}
