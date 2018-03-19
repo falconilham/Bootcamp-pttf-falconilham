@@ -3,6 +3,7 @@ package com.ptff.qsystem.data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,7 +63,7 @@ public class Quotation {
 	private LocalDate expiryDate;
 	
 	@OneToMany(mappedBy="quotation", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<QuotationLineItem> quotationLineItems;
+	private Set<QuotationLineItem> quotationLineItems;
 	
 	@Column(name="create_date")
 	@CreatedDate

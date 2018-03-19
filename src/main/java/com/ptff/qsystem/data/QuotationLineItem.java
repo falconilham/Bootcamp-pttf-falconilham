@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,14 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name="quotation_line_item")
-@EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public class QuotationLineItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

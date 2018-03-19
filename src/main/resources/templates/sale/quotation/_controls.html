@@ -16,5 +16,13 @@
         <div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).DRAFT)}" class="well well-sm bg-color-grey txt-color-black text-center">
 			<h5 th:text="${quotation.status}"></h5>
 		</div>
+		<h1 class="text-center txt-color-blueDark">Actions</h1>
+		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).DRAFT)}">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-book"></i> Add Permit</a>
+				</div>
+			</div>
+		</div>
     </div>
 </div>

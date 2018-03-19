@@ -25,6 +25,7 @@ import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.Quotation;
 import com.ptff.qsystem.data.QuotationLineItem;
+import com.ptff.qsystem.data.QuotationLineItemRepository;
 import com.ptff.qsystem.data.QuotationProductType;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
@@ -40,6 +41,9 @@ public class QuoteController implements DefaultController {
 	
 	@Autowired
 	private QuotationRepository quotationRepository;
+	
+	@Autowired
+	private QuotationLineItemRepository quotationLineItemRepository;
 	
 	@Autowired
 	private ItemPermitRepository itemPermitRepository;
@@ -141,6 +145,20 @@ public class QuoteController implements DefaultController {
 		quotation.getQuotationLineItems().add(lineItem);
 		quotationRepository.save(quotation);
 		
+		return "redirect:/quotations/{id}";
+	}
+	
+	@RequestMapping("/quotations/{id}/line/{lineItemId}/remove")
+	public String removeLineItemFromQuotation(@PathVariable("id") Long id, @PathVariable("lineItemId") Long lineItemId, Model model) {
+		LOGGER.info("Removing Line Item {} from Quotation: {}",  lineItemId, id);
+		
+		Quotation quotation = quotationRepository.findOne(id);
+		LOGGER.info("Quotation has {} Line Items", quotation.getQuotationLineItems().size());
+		
+		QuotationLineItem lineItem = quotationLineItemRepository.findOne(lineItemId);
+		quotation.getQuotationLineItems().remove(lineItem);
+		quotationLineItemRepository.delete(lineItem);
+
 		return "redirect:/quotations/{id}";
 	}
 }

@@ -75,25 +75,32 @@
 						<div th:include="/sale/quotation/_controls :: actions" th:remove="tag"></div>
 					</div>
 					</div>
+					</div>
+					<div class="well">
 					<div class="row">
 					<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
-					<table class="table table-striped">
+					<table class="table table-hover">
 						<thead>
-						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-				<!-- 			<tr th:with="currentURL=(${#httpServletRequest.requestURI})"> -->
-				<!-- 				<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th> -->
-				<!-- 				<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th> -->
-				<!-- 				<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th> -->
-				<!-- 				<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th> -->
-				<!-- 			</tr> -->
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Average Price</th>
+							<th>Minimum Price</th>
+							<th>Quoted Price</th>
+							<th></th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr th:each="item : ${quotation.quotationLineItems}">
 								<div th:if="${(item.type ==  T(com.ptff.qsystem.data.QuotationProductType).PERMIT)}" th:remove="tag">
-									<td th:text="${item.permit.name}"></td>	
+									<td th:text="${item.permit.name}"></td>
+									<td th:text="${item.permit.description}"></td>
+									<td></td>
+									<td></td>
+									<td><input type="text" placeholder="Quoted Price"/></td>
+									<td><a th:href="@{/quotations/{id}/line/{lineId}/remove(id=${quotation.id}, lineId=${item.id})}">
+										<span class="txt-color-red"><i class="fa fa-fw fa-times"></i></span></a></td>
 								</div>
-								
 							</tr>
 						</tbody>
 						</table>
