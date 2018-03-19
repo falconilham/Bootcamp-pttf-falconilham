@@ -45,29 +45,33 @@
 						<table class="table table-striped">
 						<thead>
 						<tr>
-							<th>Username</th>
-							<th>Role</th>
-							<th>Enabled</th>
+							<th th:include="/forms/table :: sortable ('Username', 'username', ${users})"> </th>
+							<th th:include="/forms/table :: sortable ('Role', 'userGroup.name', ${users})"> </th>
+							<th th:include="/forms/table :: sortable ('Full Name', 'fullName', ${users})"> </th>
+							<th th:include="/forms/table :: sortable ('Enabled', 'enabled', ${users})"> </th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr th:each="user : ${users}">
 								<td><a th:href="@{|users/${user.username}|}" th:text="${user.username}"></a></td>
 								<td th:text="${user.userGroup.name}"></td>
+								<td th:text="${user.fullName}"></td>
 								<td>
 									<span  th:classappend="${user.enabled == true? 'label-success' : 'label-danger'}"  th:text="${user.enabled == true? 'Active' : 'Inactive'}" class="label">Danger</span>
 								</td>
 							</tr>
 						</tbody>
 						</table>
+									
+						<div th:unless="${users.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/roles', ${users})"></th:block> /*/-->
 						</div>
+						</div>
+						
 					</div>
 				</div>
 			</section>
-			
-			<div th:unless="${pager.totalPages} == 0">
-				<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/users', ${pageSizes}, ${page}, ${selectedPageSize}, ${users})"></th:block> /*/-->
-			</div>
+
 			</div>
 			<!-- END #MAIN CONTENT -->
 

@@ -58,7 +58,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<h6>Correspondence Address</h6> <span class="text-right" th:text="${customer.correspondenceAddress}"></span>
+									<h6>Correspondence Address</h6> <span class="text-right" style="white-space: pre-wrap;" th:text="${customer.correspondenceAddress}"></span>
 								</div>
 							</div>
 							<div class="row">
@@ -73,7 +73,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<h6>NPWP Address</h6> <span class="text-right" th:text="${customer.npwpAddress}"></span>
+									<h6>NPWP Address</h6> <span class="text-right"  style="white-space: pre-wrap;" th:text="${customer.npwpAddress}"></span>
 								</div>
 							</div>
 							<div class="row">
@@ -229,37 +229,53 @@
 					</div>
 				</div>
 				<div class="well">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab-document" data-toggle="tab" aria-expanded="false">Documents</a>
+						</li>
+						<li class="">
+							<a href="#tab-history" data-toggle="tab" aria-expanded="true">History</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-document">
+							<h6>Documents</h6>
+							<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Document Type</th>
+								<th>Document Number</th>
+								<th>Start Date</th>
+								<th>Expiry Date</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr th:each="document : ${customerdocuments}">
+									<td><a th:href="@{/customers/{customerId}/document/{id}(customerId=${customer.id}, id=${document.id})}" href="#" th:text="${document.documentType.name}"></a></td>
+									<td th:text="${document.number}"></td>
+									<td th:text="${document.startDate}"></td>
+									<td th:text="${document.expiryDate}"></td>
+									<td>
+										<span th:if="${document.status == 'Active'}" class="label label-success">Active</span>
+										<span th:if="${document.status == 'Expired'}" class="label label-danger">Expired</span>
+										<span th:if="${document.status == 'Expiring'}" class="label label-warning">Expiring</span>
+									</td>
+									<td>
+										
+									</td>
+								</tr>
+							</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="tab-history">
+						
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
-							<h6>Documents</h6>
-								<table class="table table-striped">
-								<thead>
-								<tr>
-									<th>Document Type</th>
-									<th>Document Number</th>
-									<th>Start Date</th>
-									<th>Expiry Date</th>
-									<th>Status</th>
-									<th></th>
-								</tr>
-								</thead>
-								<tbody>
-									<tr th:each="document : ${customerdocuments}">
-										<td><a th:href="@{/customers/{customerId}/document/{id}(customerId=${customer.id}, id=${document.id})}" href="#" th:text="${document.documentType.name}"></a></td>
-										<td th:text="${document.number}"></td>
-										<td th:text="${document.startDate}"></td>
-										<td th:text="${document.expiryDate}"></td>
-										<td>
-											<span th:if="${document.status == 'Active'}" class="label label-success">Active</span>
-											<span th:if="${document.status == 'Expired'}" class="label label-danger">Expired</span>
-											<span th:if="${document.status == 'Expiring'}" class="label label-warning">Expiring</span>
-										</td>
-										<td>
-											
-										</td>
-									</tr>
-								</tbody>
-								</table>
+							
 						</div>
 					</div>
 				</div>

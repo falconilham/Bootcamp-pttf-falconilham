@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class RoleController {
 	private UserGroupRepository userGroupRepository;
 
 	@RequestMapping("/roles")
+	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_SU', 'ROLE_DIRECTOR')")
 	public String listRoles(
 			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
 			Model model) {
@@ -48,6 +50,8 @@ public class RoleController {
 		return "security/role/index";
 	}
 	
+
+	@PreAuthorize("hasAnyRole('ROLE_SU')")
 	@RequestMapping("/roles/new")
 	public String newRole(Model model) {
 		
@@ -57,6 +61,7 @@ public class RoleController {
 	}
 	
 	@RequestMapping("/roles/save")
+	@PreAuthorize("hasAnyRole('ROLE_SU')")
 	public String saveRole(UserGroup role, BindingResult bindingResult) {
 		LOGGER.info("Saving Role " + role.getName());
 		
@@ -65,6 +70,7 @@ public class RoleController {
 	}
 	
 	@RequestMapping("/roles/update")
+	@PreAuthorize("hasAnyRole('ROLE_SU')")
 	public String updateRole(UserGroup userGroup, BindingResult bindingResult) {
 		LOGGER.info("Updating role: " + userGroup.getName());
 		
@@ -73,6 +79,7 @@ public class RoleController {
 	}
 	
 	@RequestMapping("/roles/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_SU')")
 	public String editRole(@PathVariable("id") Long id, Model model) {
 		
 		model.addAttribute("role", userGroupRepository.findOne(id));
