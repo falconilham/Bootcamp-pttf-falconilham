@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-us">
 	<head>
-		<title> Customers </title>
+		<title>Dashboard</title>
     	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+    	
 	</head>
 
 	
@@ -21,27 +22,38 @@
 
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
-					<li>Sale</li>
-					<li><a th:href="@{/customers}" href="#">Customers</a></li>
-					<li><a th:href="@{/customers/{id}(id=${customer.id})}" th:text="${customer.name}"></a></li>
-					<li th:text="${customercontact.fullName}">New Contact</li>
+					<li>Dashboard</li>
 				</ol>
 				<!-- end breadcrumb -->
-				
+
 				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="javascript:history.back()" id="backbtn" class="btn btn-ribbon hidden-xs">
-						<span id="back" class="btn btn-ribbon hidden-xs"><i class="fa fa-arrow-left"></i> Back</span>
-					</a>
+<!-- 					<a href="#" th:href="@{customers/new}" id="add" class="btn btn-ribbon hidden-xs"> -->
+<!-- 						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Customer</span> -->
+<!-- 					</a> -->
+<!-- 					<a href="#" th:href="@{settings/customer}" id="settings" class="btn btn-ribbon hidden-xs"> -->
+<!-- 						<span id="settings" class="btn btn-ribbon hidden-xs" data-title="settings"><i class="fa fa-gear"></i> Settings</span> -->
+<!-- 					</a> -->
 				</span>
+
 			</div>
 			<!-- END RIBBON -->
 
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 			<section id="widget-grid" class="">
-				
-				<div class="well">
-    				<!--/*/ <th:block th:include="sale/customer/customercontactperson_form :: form(@{/customers/{id}/contact/save(id=${customer.id})}, POST)"></th:block> /*/-->
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+					<div class="well">
+					<h6>Customers Awaiting Acceptance</h6>
+						<table class="table table-hover">
+							<tbody>
+								<tr th:each="customer : ${awatingApprovalCustomers}">
+									<td><a th:text="${customer.name}" th:href="@{/customers/{id}(id=${customer.id})}"></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</div>
 				</div>
 			</section>
 			</div>
@@ -60,6 +72,7 @@
 		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
 
 
+		
 		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
 
 

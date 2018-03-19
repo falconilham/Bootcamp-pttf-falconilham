@@ -45,6 +45,8 @@ import com.ptff.qsystem.data.CustomerContactPersonRepository;
 import com.ptff.qsystem.data.CustomerContactType;
 import com.ptff.qsystem.data.CustomerDocument;
 import com.ptff.qsystem.data.CustomerDocumentRepository;
+import com.ptff.qsystem.data.CustomerHistory;
+import com.ptff.qsystem.data.CustomerHistoryRepository;
 import com.ptff.qsystem.data.CustomerRepository;
 import com.ptff.qsystem.data.CustomerStatus;
 import com.ptff.qsystem.service.StorageService;
@@ -66,6 +68,9 @@ public class CustomerDocumentController implements DefaultController {
 	
 	@Autowired
 	private CustomerDocumentRepository customerDocumentRepository;
+	
+	@Autowired
+	private CustomerHistoryRepository customerHistoryRepository;
 	
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
@@ -145,6 +150,11 @@ public class CustomerDocumentController implements DefaultController {
 
 		customerDocument.setDocument(document);
 		customerDocument = customerDocumentRepository.save(customerDocument);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("Adding %s document with the number %s", customerDocument.getDocumentType().getName(), customerDocument.getNumber()));
+		customerHistoryRepository.save(customerHistory);
 		
 		return "redirect:/customers/"+customer.getId();
 	}

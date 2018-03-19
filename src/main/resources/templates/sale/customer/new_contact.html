@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Sale</li>
 					<li><a th:href="@{/customers}" href="#">Customers</a></li>
-					<li th:text="${customer.id + ' - ' + customer.name}"></li>
+					<li><a th:href="@{/customers/{id}(id=${customer.id})}" th:text="${customer.name}"></a></li>
 					<li>New Contact</li>
 				</ol>
 				<!-- end breadcrumb -->

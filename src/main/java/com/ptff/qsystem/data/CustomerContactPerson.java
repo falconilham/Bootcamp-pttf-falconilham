@@ -60,6 +60,7 @@ public class CustomerContactPerson {
 	
 	@Column(name="email")
 	@Email
+	@NotEmpty
 	private String email;
 	
 	@Column(name="status")

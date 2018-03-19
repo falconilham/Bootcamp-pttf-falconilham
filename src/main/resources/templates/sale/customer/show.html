@@ -39,18 +39,23 @@
 			<div id="content">
 			<section id="widget-grid" class="">
 				<div class="well">
-<!-- 				<div th:if="${customerOperation}" th:each="opresult : ${customerOperation}"> -->
-<!-- 					<div th:if="${opresult.type == 0}" class="alert alert-success"> -->
-<!-- 						<span th:text="${opresult.message}"></span> -->
-<!-- 					</div> -->
-<!-- 					<div th:if="${opresult.type == 1}" class="alert alert-danger"> -->
-<!-- 						<span th:text="${opresult.message}"></span> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
+					<div th:if="${errors}" >
+						<div class="alert alert-danger">
+						<ul>
+							<li th:each="error : ${errors}" th:text="${error}"></li>
+						</ul>
+						</div>
+					</div>
 					<div class="row">
 					<div class="col-sm-12 col-md-8 has-feedback">
+						<div th:if="${not #strings.isEmpty(customer.rejectReason)}" >
+							<div class="alert alert-danger">
+							<h6>Rejected:</h6>
+							<span th:text="${customer.rejectReason}"></span>
+							</div>
+						</div>
 						<fieldset>
-							<legend>Customer</legend>
+							<legend>Customer<span class="pull-right txt-color-green" th:text="${customer.salesperson.fullName}"></span></legend>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<h6>Name</h6> <span class="text-right" th:text="${customer.name}"></span>
@@ -78,10 +83,16 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-6 has-feedback">
-									<h6>Operation Notes</h6> <span class="text-right" th:text="${customer.operationNotes}"></span>
+									<h6>Operation Notes</h6> <span class="text-right" style="white-space: pre-wrap;" th:text="${customer.operationNotes}"></span>
 								</div>
 								<div class="col-sm-12 col-md-6 has-feedback">
-									<h6>Finance Notes</h6> <span class="text-right" th:text="${customer.financeNotes}"></span>
+									<h6>Finance Notes</h6> <span class="text-right" style="white-space: pre-wrap;" th:text="${customer.financeNotes}"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Credit Limit</h6> <span class="text-right" th:text="${#numbers.formatDecimal(customer.creditLimit, 3,'COMMA', 0, 'POINT')}"></span>
 								</div>
 							</div>
 						</fieldset>
@@ -126,29 +137,30 @@
 							</div>
 						</div>
 						<div th:if="${(customer.status == T(com.ptff.qsystem.data.CustomerStatus).AWAITING_APPROVAL)}" class="row">
-							<div class="row">
+							<div class="row" sec:authorize="hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/edit'}"><i class="fa fa-edit"></i> Edit</a>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" sec:authorize="hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/contact'}"><i class="fa fa-plus"></i> Add PIC</a>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" sec:authorize="hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/customers/}+${customer.id +'/document'}"><i class="fa fa-paperclip"></i> Add Document</a>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" sec:authorize="hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/customers/}+${customer.id +'/approve'}"><i class="fa fa-check"></i> Approve</a>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" sec:authorize="hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<a class="btn btn-lg btn-block btn-danger text-left" th:href="@{/customers/}+${customer.id +'/reject'}"><i class="fa fa-times"></i> Reject</a>
+<!-- 								<a class="btn btn-lg btn-block btn-danger text-left"da th:href="@{/customers/}+${customer.id +'/reject'}"><i class="fa fa-times"></i> Reject</a> -->
+									<a class="btn btn-lg btn-block btn-danger text-left" data-toggle="modal" data-target="#rejectModal"><i class="fa fa-times"></i> Reject</a>
 								</div>
 							</div>
 						</div>
@@ -195,7 +207,7 @@
 											<span th:text="${'M: ' +pic.mobile}"></span>
 											
 										</td>
-										<td th:text="${pic.email}"></td>
+										<td> <a th:href="'mailto:' + ${pic.email}" th:text="${pic.email}"></a></td>
 									</tr>
 								</tbody>
 								</table>
@@ -221,7 +233,7 @@
 										<span th:text="${'M: ' +pic.mobile}"></span>
 										
 									</td>
-									<td th:text="${pic.email}"></td>
+									<td> <a th:href="'mailto:' + ${pic.email}" th:text="${pic.email}"></a></td>
 								</tr>
 							</tbody>
 							</table>
@@ -270,7 +282,23 @@
 							</table>
 						</div>
 						<div class="tab-pane" id="tab-history">
-						
+							<h6>History</h6>
+							<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Time</th>
+								<th>Description</th>
+								<th>Username</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr th:each="history : ${customerhistories}">
+									<td th:text="${#temporals.format(history.createTime, 'dd/MMM/yyyy HH:mm:ss')}"></td>
+									<td th:text="${history.message}"></td>
+									<td th:text="${history.createUser}"></td>
+								</tr>
+							</tbody>
+							</table>
 						</div>
 					</div>
 					<div class="row">
@@ -282,6 +310,38 @@
 			</section>
 			</div>
 			<!-- END #MAIN CONTENT -->
+
+			<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<form id="rejectForm" method="post" th:action="@{/customers/{id}/reject(id=${customer.id})}" class="bv-form">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="rejectModalLabel">Reject Reason</h4>
+						</div>
+						<div class="modal-body">
+			
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<textarea name="rejectReason" class="form-control" placeholder="Reject Reason" rows="5" required="required"> </textarea>
+									</div>
+								</div>
+							</div>
+							
+			
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								Cancel
+							</button>
+							<button type="submit" class="btn btn-danger">
+								Reject
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+					</form>
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
 		</div>
 		<!-- END #MAIN PANEL -->

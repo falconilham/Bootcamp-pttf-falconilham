@@ -47,8 +47,8 @@
 						<table class="table table-striped">
 						<thead>
 						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-							<th><a th:href="@{${currentURL}(sortDirection=${newSortDirection}, sortKey='name')}">Customer Name</a></th>
-							<th>Status</th>
+							<th th:include="/forms/table :: sortable ('Name', 'name', ${customers})"> </th>
+							<th th:include="/forms/table :: sortable ('Status', 'status', ${customers})"> </th>
 						</tr>
 						</thead>
 						<tbody>
@@ -73,8 +73,8 @@
 						</tbody>
 						</table>
 						
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/customers', ${pageSizes}, ${page}, ${selectedPageSize}, ${customers})"></th:block> /*/-->
+						<div th:unless="${customers.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/customers', ${customers})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

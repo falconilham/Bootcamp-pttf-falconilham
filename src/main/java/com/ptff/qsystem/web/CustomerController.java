@@ -1,53 +1,50 @@
 package com.ptff.qsystem.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ptff.qsystem.data.Document;
-import com.ptff.qsystem.data.DocumentRepository;
-import com.ptff.qsystem.data.Pager;
 import com.ptff.qsystem.data.Customer;
 import com.ptff.qsystem.data.CustomerContactPerson;
 import com.ptff.qsystem.data.CustomerContactPersonRepository;
+import com.ptff.qsystem.data.CustomerContactPersonStatus;
 import com.ptff.qsystem.data.CustomerContactType;
-import com.ptff.qsystem.data.CustomerDocument;
 import com.ptff.qsystem.data.CustomerDocumentRepository;
+import com.ptff.qsystem.data.CustomerHistory;
+import com.ptff.qsystem.data.CustomerHistoryRepository;
 import com.ptff.qsystem.data.CustomerRepository;
 import com.ptff.qsystem.data.CustomerStatus;
+import com.ptff.qsystem.data.DocumentRepository;
 import com.ptff.qsystem.service.StorageService;
 
 
 
 @Controller
-public class CustomerController {
+public class CustomerController implements DefaultController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
-	
-	private static final int BUTTONS_TO_SHOW = 5;
-	private static final int INITIAL_PAGE = 0;
-	private static final int INITIAL_PAGE_SIZE = 20;
-	private static final int[] PAGE_SIZES = { 5, 10, 20 };
 	
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -64,22 +61,17 @@ public class CustomerController {
 	@Autowired
 	private CustomerContactPersonRepository customerContactPersonRepository;
 
+	@Autowired
+	private CustomerHistoryRepository customerHistoryRepository;
+	
 	@RequestMapping("/customers")
 	public String listCustomers(
-			@RequestParam("pageSize") Optional<Integer> pageSize,
-			@RequestParam("page") Optional<Integer> page,
+			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
 			Model model) {
 		
-		int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
-		int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-		
-		Page<Customer> customers = customerRepository.findAll(new PageRequest(evalPage, evalPageSize));
-		Pager pager = new Pager(customers.getTotalPages(), customers.getNumber(), BUTTONS_TO_SHOW);
+		Page<Customer> customers = customerRepository.findAll(pageable);
 		
 		model.addAttribute("customers", customers);
-		model.addAttribute("selectedPageSize", evalPageSize);
-		model.addAttribute("pageSizes", PAGE_SIZES);
-		model.addAttribute("pager", pager);
 		
 		return "sale/customer/index";
 	}
@@ -95,6 +87,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("/customers/save")
+	@Transactional
 	public String saveCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving Customer " + customer.getName());
 		
@@ -102,7 +95,14 @@ public class CustomerController {
 			return "sale/customer/new";
 		}
 		
-		customer = customerRepository.save(customer);
+		customer.setRejectReason("");
+		customer = customerRepository.save(customer);		
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("Add New Customer: %s", customer.getName()));
+		customerHistoryRepository.save(customerHistory);
+		
 		return "redirect:/customers/"+customer.getId();
 	}
 	
@@ -116,7 +116,13 @@ public class CustomerController {
 		
 		// Updated Customer always goes to draft status
 		customer.setStatus(CustomerStatus.DRAFT);
+		customer.setRejectReason("");
 		customer = customerRepository.save(customer);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("Customer %s is edited", customer.getName()));
+		customerHistoryRepository.save(customerHistory);
 		
 		return "redirect:/customers/"+customer.getId();
 	}
@@ -125,14 +131,17 @@ public class CustomerController {
 	public String showCustomer(@PathVariable("id") Long id, Model model) {
 		Set<CustomerContactPerson> contactPersons = customerContactPersonRepository.findAllByCustomerId(id);
 		
-		model.addAttribute("customer", customerRepository.findOne(id));
+		Customer customer = customerRepository.findOne(id);
+		
+		model.addAttribute("customer", customer);
 		model.addAttribute("operationPics", contactPersons.stream()
 				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.OPERATION))
 				.collect(Collectors.toSet()));
 		model.addAttribute("financePics", contactPersons.stream()
 				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.FINANCE))
 				.collect(Collectors.toSet()));
-		model.addAttribute("customerdocuments", customerDocumentRepository.findByCustomer(customerRepository.findOne(id)));
+		model.addAttribute("customerdocuments", customerDocumentRepository.findByCustomer(customer));
+		model.addAttribute("customerhistories", customerHistoryRepository.findByCustomerOrderByCreateTimeDesc(customer));
 		
 		return "sale/customer/show";
 	}
@@ -161,7 +170,8 @@ public class CustomerController {
 	}
 	
 	@RequestMapping("/customers/{id}/contact/save")
-	public String saveCustomerContact(@PathVariable("id") Long id, @Valid CustomerContactPerson customerContactPerson, BindingResult bindingResult, Model model) {
+	@Transactional
+	public String saveCustomerContact(@PathVariable("id") Long id, @Valid @ModelAttribute("customercontact") CustomerContactPerson customerContactPerson, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving Customer Contact Person " + customerContactPerson.getFullName());
 		
 		Customer customer = customerRepository.findOne(id);
@@ -173,9 +183,21 @@ public class CustomerController {
 			return "sale/customer/new_contact";
 		}
 		
+		String message = "";
+		if (customerContactPerson.getId() == null)
+			message = String.format("Add %s as %s contact person", customerContactPerson.getFullName(), customerContactPerson.getType());
+		else
+			message = String.format("%s Contact person %s is edited", customerContactPerson.getType(), customerContactPerson.getFullName());
+		
 		customer.setStatus(CustomerStatus.DRAFT);
+		customer.setRejectReason("");
 		customer = customerRepository.save(customer);
 		customerContactPerson = customerContactPersonRepository.save(customerContactPerson);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(message);
+		customerHistoryRepository.save(customerHistory);
 		
 		return "redirect:/customers/"+customer.getId();
 	}
@@ -194,10 +216,23 @@ public class CustomerController {
 	
 		
 	@RequestMapping("/customers/{id}/submit")
-	public String submitCustomerForApproval(@PathVariable("id") Long id, Model model) {
+	public String submitCustomerForApproval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		// Validate Customers
 		Customer customer = customerRepository.findOne(id);
+		List<String> errors = validateCustomerForSubmission(customer);
+		
+		if (!errors.isEmpty()) {
+			redirectAttributes.addFlashAttribute("errors", errors);
+			return "redirect:/customers/"+customer.getId();
+		}
+		
 		customer.setStatus(CustomerStatus.AWAITING_APPROVAL);
 		customer = customerRepository.save(customer);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("%s Submitted for Approval", customer.getName()));
+		customerHistoryRepository.save(customerHistory);
 		
 		return "redirect:/customers/"+customer.getId();
 	}
@@ -219,18 +254,56 @@ public class CustomerController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		customer.setApprovalBy(auth.getName());
 		customer.setApprovalDate(LocalDate.now());
-		
+		customer.setRejectReason("");
 		customer = customerRepository.save(customer);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("%s is Approved and Ready to Transact", customer.getName()));
+		customerHistoryRepository.save(customerHistory);
 		
 		return "redirect:/customers/"+customer.getId();
 	}
 	
-	@RequestMapping("/customers/{id}/reject")
-	public String rejectCustomer(@PathVariable("id") Long id, Model model) {
+	@RequestMapping(value="/customers/{id}/reject", method=RequestMethod.POST)
+	public String rejectCustomer(@PathVariable("id") Long id, @ModelAttribute("rejectReason")String rejectReason, Model model) {
+		LOGGER.info("Rejecting Customer {} due to {}", id, rejectReason);
+		
 		Customer customer = customerRepository.findOne(id);
 		customer.setStatus(CustomerStatus.DRAFT);
+		customer.setRejectReason(rejectReason);
 		customer = customerRepository.save(customer);
 		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage(String.format("%s is rejected due to: %s", customer.getName(), customer.getRejectReason()));
+		customerHistoryRepository.save(customerHistory);
+		
 		return "redirect:/customers/"+customer.getId();
+	}
+	
+	private List<String> validateCustomerForSubmission(Customer customer) {
+		List<String> errors = new ArrayList<String>();
+		// Validate Customer Credit Limit
+		if (customer.getCreditLimit() == null) {
+			errors.add("Customer Credit Limit must be set");
+		}
+		
+		// 1 Contact Person for each
+		Set<CustomerContactPerson> contactPersons = customerContactPersonRepository.findAllByCustomerId(customer.getId());
+		if (contactPersons.stream()
+				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.OPERATION 
+											&& contactPerson.getStatus() == CustomerContactPersonStatus.ACTIVE))
+				.count()  == 0) {
+			errors.add("Customer need to have at least 1 Active Operation contact person");
+		}
+		if (contactPersons.stream()
+				.filter(contactPerson -> (contactPerson.getType() == CustomerContactType.FINANCE 
+											&& contactPerson.getStatus() == CustomerContactPersonStatus.ACTIVE))
+				.count()  == 0) {
+			errors.add("Customer need to have at least 1 Active Finance contact person");
+		}
+		
+		return errors;
 	}
 }

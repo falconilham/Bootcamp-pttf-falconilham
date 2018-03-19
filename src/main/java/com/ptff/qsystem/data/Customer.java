@@ -11,6 +11,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -70,12 +72,18 @@ public class Customer {
 	@NotNull
 	private CustomerStatus status;
 	
+	@Column(name="reject_reason")
+	private String rejectReason;
+	
 	@Column(name="approval_date")
 	private LocalDate approvalDate;
 	
 	@Column(name="approval_by")
 	private String approvalBy;
 	
+	@ManyToOne
+	@JoinColumn(name="salesperson_id")
+	private User salesperson;
 	
 	@Column(name="create_date")
 	@CreatedDate

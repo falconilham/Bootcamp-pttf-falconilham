@@ -94,7 +94,7 @@
 						<ul>
 							<li>
 								<a th:href="@{/customers}"  href="index.html" title="blank_">
-									<i class="fa fa-lg fa-fw fa-person"></i> Customers
+									<i class="fa fa-lg fa-fw fa-child"></i> Customers
 								</a>
 							</li>
 						</ul>
@@ -128,18 +128,10 @@
 							</li>
 						</ul>
 					</li>
-					<li>
-						<a href="#" title="blank_">
-							<i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">Settings</span>
+					<li sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_DIRECTOR', 'ROLE_SU')">
+						<a th:href="@{/holidays}" href="index.html" title="blank_">
+							<i class="fa fa-lg fa-fw fa-calendar"></i> Test
 						</a>
-						<ul>
-							<li>
-								<a th:href="@{/holidays}" href="index.html" title="blank_">
-									<i class="fa fa-lg fa-fw fa-calendar"></i> Test
-								</a>
-							</li>
-							
-						</ul>
 					</li>
 				</ul>
 			</nav>

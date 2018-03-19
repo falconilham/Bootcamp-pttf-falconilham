@@ -57,7 +57,7 @@ public class PTFFUserDetailsService implements UserDetailsService {
     		user.setPassword(new BCryptPasswordEncoder().encode("su"));
     		
     		UserGroup userGroup = new UserGroup();
-    		userGroup.setName("ROLE_ADMINISTRATOR");
+    		userGroup.setName("ROLE_SU");
     		
     		user.setUserGroup(userGroup);
     		return user;
