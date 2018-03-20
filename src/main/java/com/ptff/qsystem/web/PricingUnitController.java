@@ -74,7 +74,7 @@ public class PricingUnitController implements DefaultController {
 		LOGGER.info("Updating DocumentType: " + pricingUnit.getName());
 
 		if (bindingResult.hasErrors()) {
-			return "master/documenttype/edit";
+			return "master/pricingunit/edit";
 		}
 		
 		pricingUnit = pricingUnitRepository.save(pricingUnit);
