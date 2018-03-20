@@ -63,6 +63,11 @@
 									<i class="fa fa-lg fa-fw fa-book"></i> Document Types
 								</a>
 							</li>
+							<li>
+								<a th:href="@{/pricingunits}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-cubes"></i> Pricing Unit
+								</a>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -129,8 +134,8 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_DIRECTOR', 'ROLE_SU')">
-						<a th:href="@{/holidays}" href="index.html" title="blank_">
-							<i class="fa fa-lg fa-fw fa-calendar"></i> Test
+						<a th:href="@{/settings}" href="index.html" title="Settings">
+							<i class="fa fa-lg fa-fw fa-gear"></i> Settings
 						</a>
 					</li>
 				</ul>
