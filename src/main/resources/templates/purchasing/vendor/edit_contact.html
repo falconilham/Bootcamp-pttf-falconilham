@@ -24,7 +24,7 @@
 					<li>Purchasing</li>
 					<li><a th:href="@{/vendors}" href="#">Vendors</a></li>
 					<li><a th:href="@{/vendors/{id}(id=${vendor.id})}" th:text="${vendor.id + ' - ' + vendor.name}"></a></li>
-					<li th:text="${vendorContactPerson.fullName}">New Contact</li>
+					<li th:text="${vendorcontact.fullName}">New Contact</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -41,7 +41,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="purchasing/vendor/vendorcontactperson_form :: form(@{/vendors/{id}/contact/{contactId}(id=${vendor.id}, contactId=${vendorContactPerson.id})}, POST)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="purchasing/vendor/vendorcontactperson_form :: form(@{/vendors/{id}/contact(id=${vendor.id})}, POST)"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

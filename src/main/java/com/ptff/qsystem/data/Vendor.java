@@ -89,4 +89,7 @@ public class Vendor {
 	@LastModifiedBy
 	private String lastUpdateUser;
 	
+	@Column(name="reject_reason")
+	private String rejectReason;
+	
 }

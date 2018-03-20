@@ -27,7 +27,7 @@
 				<!-- end breadcrumb -->
 
 				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="#" th:href="@{vendors/new}" id="add" class="btn btn-ribbon hidden-xs">
+					<a sec:authorize="hasAnyRole('ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SU')" href="#" th:href="@{vendors/new}" id="add" class="btn btn-ribbon hidden-xs">
 						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Vendor</span>
 					</a>
 <!-- 					<a href="#" th:href="@{settings/vendor}" id="settings" class="btn btn-ribbon hidden-xs"> -->
@@ -46,9 +46,9 @@
 					<div class="well">
 						<table class="table table-striped">
 						<thead>
-						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-							<th><a th:href="@{${currentURL}(sortDirection=${newSortDirection}, sortKey='name')}">Vendor Name</a></th>
-							<th>Status</th>
+						<tr>
+							<th th:include="/forms/table :: sortable ('Name', 'name', ${vendors})"></th>
+							<th th:include="/forms/table :: sortable ('Status', 'status', ${vendors})">Status</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -73,9 +73,10 @@
 						</tbody>
 						</table>
 						
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/vendors', ${pageSizes}, ${page}, ${selectedPageSize}, ${vendors})"></th:block> /*/-->
+						<div th:unless="${vendors.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/vendors', ${vendors})"></th:block> /*/-->
 						</div>
+
 						</div>
 					</div>
 				</div>
