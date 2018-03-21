@@ -12,4 +12,14 @@
         </div>
     </div>
     
+    <div th:fragment="legalNotesNoObject" th:remove="tag">
+        <div class="form-group">
+            <div th:substituteby="/forms/controls :: label"></div>
+            <div class="controls">
+                <select th:id="${fieldName}" th:name="${fieldName}" th:disabled="${fieldDisabled}?: 'false'" style="width: 100%;">
+                	<option th:each="option : ${legalNotes}" th:value="${option.id}" th:text="${option.name}" ></option>
+            	</select>
+            </div>
+        </div>
+    </div>
 </div>

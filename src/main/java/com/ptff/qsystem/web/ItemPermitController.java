@@ -31,6 +31,8 @@ import com.ptff.qsystem.data.ItemPermitPurchase;
 import com.ptff.qsystem.data.ItemPermitPurchaseRepository;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.LegalNote;
+import com.ptff.qsystem.data.LegalNoteRepository;
 import com.ptff.qsystem.data.Pager;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
@@ -49,9 +51,18 @@ public class ItemPermitController implements DefaultController {
 	@Autowired
 	private VendorRepository vendorRepository;
 	
+	@Autowired
+	private LegalNoteRepository legalNoteRepository;
+	
+	
 	@ModelAttribute("vendors")
-    public List<Vendor> messages() {
+    public List<Vendor> vendors() {
         return vendorRepository.findAll();
+    }
+	
+	@ModelAttribute("legalNotes")
+    public List<LegalNote> legalNotes() {
+        return legalNoteRepository.findAll();
     }
 	
 	@RequestMapping("/item/permits")
@@ -114,6 +125,30 @@ public class ItemPermitController implements DefaultController {
 		model.addAttribute("minItem", minItem);
 			    
 		return "item/permit/show";
+	}
+	
+	@RequestMapping(value="/item/permits/{id}/legalnotes", method=RequestMethod.POST)
+	public String addLegalNote(@PathVariable("id") Long id, @ModelAttribute("legalNote")Long legalNoteId, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+		LegalNote legalNote = legalNoteRepository.findOne(legalNoteId);
+		
+		itemPermit.getLegalNotes().add(legalNote);
+		
+		itemPermitRepository.save(itemPermit);
+			    
+		return "redirect:/item/permits/"+id;
+	}
+	
+	@RequestMapping(value="/item/permits/{id}/legalnotes/{legalNoteId}/remove")
+	public String removeLegalNote(@PathVariable("id") Long id, @PathVariable("legalNoteId")Long legalNoteId, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+		LegalNote legalNote = legalNoteRepository.findOne(legalNoteId);
+		
+		itemPermit.getLegalNotes().remove(legalNote);
+		
+		itemPermitRepository.save(itemPermit);
+			    
+		return "redirect:/item/permits/"+id;
 	}
 	
 	@RequestMapping("/item/permits/{id}/edit")
