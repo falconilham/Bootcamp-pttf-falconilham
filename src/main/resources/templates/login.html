@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en-us" id="extr-page">
 	<head>
 		<meta charset="utf-8" />
-		<title>Login Payroll</title>
+		<title>QSystem</title>
     	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
 	</head>
 	
@@ -11,7 +11,7 @@
 		<header id="header">
 
 			<div id="logo-group">
-				<span id="logo">  </span>
+				<span id="logo"><img src="img/logo.png" th:attr="src=@{/img/logo.png},title=#{logo},alt=#{logo}" /></span>
 			</div>
 
 		</header>
@@ -23,7 +23,7 @@
 
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-						<h1 class="txt-color-red login-header-big">PT Terra Freight Forwarding</h1>
+						<h1 class="txt-color-red login-header-big">PT Tera Freight Forwarding</h1>
 						<div class="hero">
 
 							<div class="pull-left login-desc-box-l">
@@ -48,7 +48,7 @@
 										<label class="label">Username</label>
 										<label class="input"> <i class="icon-append fa fa-user"></i>
 											<input type="text" id="username" name="username" autofocus="autofocus" />
-											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter email address/username</b></label>
+											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter username</b></label>
 									</section>
 
 									<section>

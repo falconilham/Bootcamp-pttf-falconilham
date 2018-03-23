@@ -34,6 +34,7 @@ import com.ptff.qsystem.data.ItemPurchaseStatus;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
 import com.ptff.qsystem.data.Pager;
+import com.ptff.qsystem.data.PricingTier;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
 
@@ -179,6 +180,8 @@ public class ItemPermitController implements DefaultController {
 		itemPermitPurchase.setItem(itemPermit);
 		itemPermitPurchase.setReviewDate(LocalDate.now().plusDays(60));
 		
+		itemPermitPurchase.getPricingTiers().add(new PricingTier());
+		
 		model.addAttribute("itemPurchase", itemPermitPurchase);
 		model.addAttribute("itemPermit", itemPermit);
 
@@ -210,5 +213,18 @@ public class ItemPermitController implements DefaultController {
 		itemPurchase = itemPermitPurchaseRepository.save(itemPurchase);
 		
 		return "redirect:/item/permits/"+id;
+	}
+	
+	@RequestMapping(value="/item/permits/{id}/purchase", method=RequestMethod.POST, params="addNewTier")
+	public String addPurchaseTier(@PathVariable("id") Long id, @Valid @ModelAttribute("itemPurchase") ItemPermitPurchase itemPurchase, BindingResult bindingResult, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+				
+		itemPurchase.getPricingTiers().add(new PricingTier());
+
+		//model.addAttribute("itemPurchase", itemPurchase);
+		model.addAttribute("itemPermit", itemPermit);
+		LOGGER.info("Adding a new Pricing Tier - Pricing Tiers are now {}", itemPurchase.getPricingTiers().size());
+		
+		return "item/permit/purchase";
 	}
 }

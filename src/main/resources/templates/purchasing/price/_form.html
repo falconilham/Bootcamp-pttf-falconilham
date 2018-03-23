@@ -11,25 +11,53 @@
 				<input type="hidden" th:field="*{id}" />
 				<input type="hidden" th:field="*{item.id}" />
 		
-				<div class="form-group">
-					<div class="row">
-						<div class="col-sm-12 col-md-6 has-feedback">
+				<div class="row">
+					<div class="col-sm-12 col-md-6 has-feedback">
+						<div class="form-group">
 			            	<div th:include="/purchasing/vendor/_controls :: vendors" th:with="fieldLabel='Vendor', fieldName='vendor'" th:remove="tag"></div>
 			        	</div>
 					</div>
-					<div class="row">
-						<div class="col-sm-12 col-md-6 has-feedback">
-							<div th:include="forms/controls :: input" th:with="fieldType='number', fieldLabel='Price', fieldName='price'" th:remove="tag"></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 col-md-6 has-feedback">
+						<div class="form-group">
+							<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Start Date', fieldName='startDate'" th:remove="tag"></div>
 						</div>
 					</div>
-					
-					<div class="row">
-						<div class="col-sm-12 col-md-6 has-feedback">
+				</div>
+				<div class="row">
+					<div class="col-sm-12 col-md-6 has-feedback">
+						<div class="form-group">
 							<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Review Date', fieldName='reviewDate'" th:remove="tag"></div>
 						</div>
 					</div>
 				</div>
 				
+				<div class="row">
+					<div class="col-sm-12 col-md-12 has-feedback">
+						<h6>Pricing Tiers <button  name="addNewTier" th:value="addNewTier" class="pull-right btn btn-primary"><i class="fa fa-fw fa-plus"></i> Add Tier</button></h6>
+					</div>
+				</div>
+				<div class="row" th:each="pricingTier, stat : *{pricingTiers}">
+					<div class="col-sm-3 col-md-3 has-feedback">
+						<div class="form-group">
+							<input class="form-control" placeholder="Lower Limit" th:field="*{pricingTiers[__${stat.index}__].lowerLimit}"/>
+						</div>
+					</div>
+					<div class="col-sm-3 col-md-3 has-feedback">
+						<div class="form-group">
+							<input class="form-control" placeholder="Upper Limit" th:field="*{pricingTiers[__${stat.index}__].upperLimit}"/>
+						</div>
+					</div>	
+					<div class="col-sm-3 col-md-4 has-feedback">
+						<div class="form-group">
+							<input class="form-control" placeholder="Price" th:field="*{pricingTiers[__${stat.index}__].price}"/>
+						</div>
+					</div>
+					<div class="col-sm-1 col-md-1 has-feedback">
+						<button type="submit" class="btn btn-default" th:name="${stat.index}"><i class="fa fa-fw fa-times"></i></button>
+					</div>		
+				</div>			
 			</fieldset>
 			<div class="form-actions">
 				<div class="row">

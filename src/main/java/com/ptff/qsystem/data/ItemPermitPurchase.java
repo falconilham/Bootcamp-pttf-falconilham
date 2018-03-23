@@ -3,6 +3,8 @@ package com.ptff.qsystem.data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -52,6 +55,15 @@ public class ItemPermitPurchase {
 	@Min(0)
 	@NotNull
 	private BigDecimal price;
+	
+	//@Column(name="start_date")
+	//@Convert(converter = LocalDatePersistenceConverter.class)
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startDate = LocalDate.now();
+	
+	@Transient
+	private List<PricingTier> pricingTiers = new ArrayList<PricingTier>();
 	
 	@Column(name="quote_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)

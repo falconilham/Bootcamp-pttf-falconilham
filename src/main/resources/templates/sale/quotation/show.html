@@ -95,8 +95,8 @@
 								<div th:if="${(item.type ==  T(com.ptff.qsystem.data.QuotationProductType).PERMIT)}" th:remove="tag">
 									<td th:text="${item.permit.name}"></td>
 									<td th:text="${item.permit.description}"></td>
-									<td></td>
-									<td></td>
+									<td>10000</td>
+									<td>10000</td>
 									<td><input type="text" placeholder="Quoted Price"/></td>
 									<td><a th:href="@{/quotations/{id}/line/{lineId}/remove(id=${quotation.id}, lineId=${item.id})}">
 										<span class="txt-color-red"><i class="fa fa-fw fa-times"></i></span></a></td>
