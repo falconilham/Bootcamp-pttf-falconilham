@@ -4,18 +4,38 @@
     	<h3>Purchase Prices</h3>
     	<table class="table table-striped">
 			<thead>
-				<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
+				<tr>
 					<th>Vendor</th>
-					<th>Price</th>
+					<th colspan="3">Price(s)</th>
 					<th>Valid Through</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="itemPurchase : ${itemPurchases}">
-					<td><a th:href="@{/vendors/{vendorId}(vendorId=${itemPurchase.vendor.id})}" href="#" th:text="${itemPurchase.vendor.name}"></a></td>
-					<td class="text-right" th:text="${#numbers.formatDecimal(itemPurchase.price, 0, 'COMMA', 0, 'POINT')}"></td>
-					<td class="text-right" th:text="${#temporals.format(itemPurchase.reviewDate, 'dd/MM/yyyy')}"></td>
+				<th:block th:each="itemPurchase, itemPurchaseStat : ${itemPurchases}">
+					<tr th:each="pricingTier, pricingTierStat : ${itemPurchase.pricingTiers}">
+						<td class="text-left">
+							<a th:if="${pricingTierStat.first}" th:href="@{/vendors/{vendorId}(vendorId=${itemPurchase.vendor.id})}" href="#" th:text="${itemPurchase.vendor.name}"></a>
+						</td>
+						<td class="text-center" th:if="${(pricingTier.lowerLimit == null and pricingTier.upperLimit == null)}" colspan="2">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.lowerLimit != null)}" th:text="${pricingTier.lowerLimit}">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.upperLimit != null)}" th:text="${pricingTier.upperLimit}">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.upperLimit == null and pricingTier.lowerLimit  != null)}">
+							ALL
+						</td>
+						<td class="text-right" th:text="${'Rp. ' + #numbers.formatDecimal(pricingTier.price, 0, 'COMMA', 0, 'POINT')}">
+						
+						</td>
+						<td class="text-right" > 
+							<span th:if="${pricingTierStat.first}" th:text="${#temporals.format(itemPurchase.reviewDate, 'dd/MM/yyyy')}"> </span>
+						</td>
 				</tr>
+				</th:block>
 			</tbody>
 		</table>
     </div>
@@ -24,11 +44,11 @@
     	<h3>Statistics</h3>
     	<div class="well well-sm">
     		<span class="font-md text-left">Average Price</span><br/>
-    		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(averageSell, 0, 'COMMA', 0, 'POINT')}"></span>
+<!--     		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(averageSell, 0, 'COMMA', 0, 'POINT')}"></span> -->
     	</div>
     	<div class="well well-sm" th:if="${minItem != null}">
     		<span class="font-md text-left">Minimum Sell Price</span><br/>
-    		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(minItem.price, 0, 'COMMA', 0, 'POINT')}"></span><br/>
+<!--     		<span class="font-lg text-right" th:text="${#numbers.formatDecimal(minItem.price, 0, 'COMMA', 0, 'POINT')}"></span><br/> -->
     		<span class="font-lg text-right"> <a th:href="@{/vendors/{vendorId}(vendorId=${minItem.vendor.id})}" th:text="${minItem.vendor.name}"></a></span><br/>
     	</div>
     </div>

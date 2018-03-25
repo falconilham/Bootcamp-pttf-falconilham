@@ -21,7 +21,7 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-6 has-feedback">
 						<div class="form-group">
-							<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Start Date', fieldName='startDate'" th:remove="tag"></div>
+							<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Start Date', fieldName='quoteDate'" th:remove="tag"></div>
 						</div>
 					</div>
 				</div>
@@ -39,23 +39,30 @@
 					</div>
 				</div>
 				<div class="row" th:each="pricingTier, stat : *{pricingTiers}">
-					<div class="col-sm-3 col-md-3 has-feedback">
+					<input type="hidden" th:field="*{pricingTiers[__${stat.index}__].id}" />
+					<input type="hidden" th:field="*{pricingTiers[__${stat.index}__].itemPermitPurchase.id}" />
+					<div class="col-sm-3 col-md-3 has-feedback" >
 						<div class="form-group">
-							<input class="form-control" placeholder="Lower Limit" th:field="*{pricingTiers[__${stat.index}__].lowerLimit}"/>
+							<input th:if="${stat.size !=1}" type="number" class="form-control" placeholder="Lower Limit" th:field="*{pricingTiers[__${stat.index}__].lowerLimit}"/>
+							<span th:if="${stat.size ==1}" class="text-center">ALL</span>
 						</div>
 					</div>
 					<div class="col-sm-3 col-md-3 has-feedback">
 						<div class="form-group">
-							<input class="form-control" placeholder="Upper Limit" th:field="*{pricingTiers[__${stat.index}__].upperLimit}"/>
+							<input th:unless="${stat.size ==1 || stat.last}" type="number"  class="form-control" placeholder="Upper Limit" th:field="*{pricingTiers[__${stat.index}__].upperLimit}"/>
+							<span th:if="${stat.size ==1 || stat.last}" class="text-center">ALL</span>
 						</div>
 					</div>	
 					<div class="col-sm-3 col-md-4 has-feedback">
-						<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon">
+								Rp.
+							</span>
 							<input class="form-control" placeholder="Price" th:field="*{pricingTiers[__${stat.index}__].price}"/>
 						</div>
 					</div>
 					<div class="col-sm-1 col-md-1 has-feedback">
-						<button type="submit" class="btn btn-default" th:name="${stat.index}"><i class="fa fa-fw fa-times"></i></button>
+						<button type="submit"  th:unless="${stat.size ==1}" class="btn btn-default" th:name="removeTier" th:value="${stat.index}"><i class="fa fa-fw fa-times"></i></button>
 					</div>		
 				</div>			
 			</fieldset>

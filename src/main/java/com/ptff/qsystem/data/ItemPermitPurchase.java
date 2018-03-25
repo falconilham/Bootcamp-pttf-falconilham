@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
@@ -51,18 +53,8 @@ public class ItemPermitPurchase {
 	@NotNull
 	private Vendor vendor;
 	
-	@Column(name="price")
-	@Min(0)
-	@NotNull
-	private BigDecimal price;
-	
-	//@Column(name="start_date")
-	//@Convert(converter = LocalDatePersistenceConverter.class)
-	@Transient
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate startDate = LocalDate.now();
-	
-	@Transient
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="item_permit_purchase_id")
 	private List<PricingTier> pricingTiers = new ArrayList<PricingTier>();
 	
 	@Column(name="quote_date")
@@ -97,4 +89,14 @@ public class ItemPermitPurchase {
 	@LastModifiedBy
 	private String lastUpdateUser;
 	
+	
+   public void addPriceTier(PricingTier pricingTier) {
+	   pricingTiers.add(pricingTier);
+	   pricingTier.setItemPermitPurchase(this);
+    }
+ 
+    public void removePriceTier(PricingTier pricingTier) {
+    	pricingTiers.remove(pricingTier);
+    	pricingTier.setItemPermitPurchase(null);
+    }
 }

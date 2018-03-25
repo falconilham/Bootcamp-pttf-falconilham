@@ -106,7 +106,7 @@ public class ItemPermitController implements DefaultController {
 		model.addAttribute("itemPurchases", itemPurchases);
 		
 		// Calculate Statistics
-		BigDecimal averageSell = itemPurchases.size()!=0?
+		/*BigDecimal averageSell = itemPurchases.size()!=0?
 				itemPurchases.stream()
 				.map(ItemPermitPurchase::getPrice)
 			    .reduce(BigDecimal.ZERO, BigDecimal::add)
@@ -124,7 +124,7 @@ public class ItemPermitController implements DefaultController {
 		}
 		model.addAttribute("averageSell", averageSell);
 		model.addAttribute("minItem", minItem);
-			    
+		*/	    
 		return "item/permit/show";
 	}
 	
@@ -189,10 +189,10 @@ public class ItemPermitController implements DefaultController {
 		return "item/permit/purchase";
 	}
 	
-	@RequestMapping(value="/item/permits/{id}/purchase", method=RequestMethod.POST)
+	@RequestMapping(value="/item/permits/{itemId}/purchase", method=RequestMethod.POST)
 	@Transactional
-	public String savePurchaseQuote(@PathVariable("id") Long id, @Valid @ModelAttribute("itemPurchase") ItemPermitPurchase itemPurchase, BindingResult bindingResult, Model model) {
-		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+	public String savePurchaseQuote(@PathVariable("itemId") Long itemId, @Valid @ModelAttribute("itemPurchase") ItemPermitPurchase itemPurchase, BindingResult bindingResult, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(itemId);
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("itemPermit", itemPermit);
@@ -200,6 +200,10 @@ public class ItemPermitController implements DefaultController {
 			return "item/permit/purchase";
 		}
 		
+		// Pricing tier is set to 
+		for (PricingTier pricingTier : itemPurchase.getPricingTiers()) {
+			pricingTier.setItemPermitPurchase(itemPurchase);
+		}
 		
 		// Deactivate  all other vendor pricing for this item
 		List<ItemPermitPurchase> itemPurchases = itemPermitPurchaseRepository.findAllByVendorAndItem(itemPurchase.getVendor(), itemPermit);
@@ -209,21 +213,32 @@ public class ItemPermitController implements DefaultController {
 		}
 		
 		itemPurchase.setStatus(ItemPurchaseStatus.ACTIVE);
-		itemPurchase.setQuoteDate(LocalDate.now());
+		//itemPurchase.setQuoteDate(LocalDate.now());
 		itemPurchase = itemPermitPurchaseRepository.save(itemPurchase);
 		
-		return "redirect:/item/permits/"+id;
+		return "redirect:/item/permits/"+itemId;
 	}
 	
 	@RequestMapping(value="/item/permits/{id}/purchase", method=RequestMethod.POST, params="addNewTier")
 	public String addPurchaseTier(@PathVariable("id") Long id, @Valid @ModelAttribute("itemPurchase") ItemPermitPurchase itemPurchase, BindingResult bindingResult, Model model) {
 		ItemPermit itemPermit = itemPermitRepository.findOne(id);
 				
-		itemPurchase.getPricingTiers().add(new PricingTier());
+		itemPurchase.addPriceTier(new PricingTier());
 
-		//model.addAttribute("itemPurchase", itemPurchase);
 		model.addAttribute("itemPermit", itemPermit);
 		LOGGER.info("Adding a new Pricing Tier - Pricing Tiers are now {}", itemPurchase.getPricingTiers().size());
+		
+		return "item/permit/purchase";
+	}
+	
+	@RequestMapping(value="/item/permits/{id}/purchase", method=RequestMethod.POST, params="removeTier")
+	public String removePurchaseTier(@PathVariable("id") Long id, @RequestParam("removeTier") int index, @Valid @ModelAttribute("itemPurchase") ItemPermitPurchase itemPurchase, BindingResult bindingResult, Model model) {
+		ItemPermit itemPermit = itemPermitRepository.findOne(id);
+				
+		itemPurchase.getPricingTiers().remove(index);
+
+		model.addAttribute("itemPermit", itemPermit);
+		LOGGER.info("Removig Pricing Tier - Pricing Tiers are now {}", itemPurchase.getPricingTiers().size());
 		
 		return "item/permit/purchase";
 	}
