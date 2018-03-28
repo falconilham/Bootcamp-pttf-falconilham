@@ -1,6 +1,6 @@
 <div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
     
-    <div th:fragment="purchasePriceTable" th:remove="tag">
+    <div th:fragment="purchasePriceTable(item)" th:remove="tag">
     	<h3>Purchase Prices</h3>
     	<table class="table table-striped">
 			<thead>
@@ -11,7 +11,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:each="itemPurchase, itemPurchaseStat : ${itemPurchases}">
+				<th:block th:each="itemPurchase, itemPurchaseStat : ${item.activePurchasePrices}">
 					<tr th:each="pricingTier, pricingTierStat : ${itemPurchase.pricingTiers}">
 						<td class="text-left">
 							<a th:if="${pricingTierStat.first}" th:href="@{/vendors/{vendorId}(vendorId=${itemPurchase.vendor.id})}" href="#" th:text="${itemPurchase.vendor.name}"></a>

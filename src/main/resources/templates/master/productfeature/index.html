@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title>Product Feature</title>
+    	<!--/*/ <th:block th:include="fragments/include_header :: head"></th:block> /*/-->
+	</head>
+
+	
+	<body class="">
+
+
+		<!--/*/ <th:block th:include="fragments/include_heading :: heading"></th:block> /*/-->
+
+    	<!--/*/ <th:block th:include="fragments/include_navigation :: navigation"></th:block> /*/-->
+		
+		<!-- #MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>Master Data</li>
+					<li>Product Feature</li>
+				</ol>
+				<!-- end breadcrumb -->
+
+				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
+					<a href="#" th:href="@{productfeatures/new}" id="add" class="btn btn-ribbon hidden-xs">
+						<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> New Product Feature</span>
+					</a>
+<!-- 					<a href="#" th:href="@{settings/customer}" id="settings" class="btn btn-ribbon hidden-xs"> -->
+<!-- 						<span id="settings" class="btn btn-ribbon hidden-xs" data-title="settings"><i class="fa fa-gear"></i> Settings</span> -->
+<!-- 					</a> -->
+				</span>
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- #MAIN CONTENT -->
+			<div id="content">
+			<section id="widget-grid" class="">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="well">
+						<table class="table table-striped">
+						<thead>
+							<tr>
+								<th th:include="/forms/table :: sortable ('Name', 'name', ${features})"></th>
+								<th th:include="/forms/table :: sortable ('Description', 'description', ${features})"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="feature : ${features}">
+								<td><a th:href="@{|productfeatures/${feature.id}|}" th:text="${feature.name}"></a></td>
+								<td th:text="${feature.description}"></td>
+							</tr>
+						</tbody>
+						</table>
+						
+						<div th:unless="${features.totalPages} == 0">
+							<!--/*/ <th:block th:include="/forms/table :: paginate ('/productfeatures', ${features})"></th:block> /*/-->
+						</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			</div>
+			<!-- END #MAIN CONTENT -->
+
+		</div>
+		<!-- END #MAIN PANEL -->
+
+    	<!--/*/ <th:block th:include="fragments/include_footer :: footer"></th:block> /*/-->
+		
+
+
+		<!--================================================== -->
+
+		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
+
+
+		
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+
+
+	</body>
+
+</html>

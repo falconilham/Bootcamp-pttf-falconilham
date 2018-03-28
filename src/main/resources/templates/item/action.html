@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="action(itemTypeId)">
+		<div>
+			<h1 class="text-center txt-color-blueDark">Actions</h1>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/item/{itemTypeId}/}+${item.id +'/edit'}"><i class="fa fa-edit"></i> Edit</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" data-toggle="modal" data-target="#legalNoteModal"><i class="fa fa-plus"></i> Add Legal Note</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" data-toggle="modal" data-target="#productFeatureModal"><i class="fa fa-plus"></i> Add Product Feature</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/item/{itemTypeId}/}+${item.id +'/scheme'}"><i class="fa fa-dollar"></i> Pricing Scheme</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/item/{itemTypeId}/{itemId}/purchase(itemTypeId=${itemTypeId},itemId=${item.id})}"><i class="fa fa-shopping-cart"></i> Purchase Price</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/item/{itemTypeId}/}+${item.id +'/sale'}"><i class="fa fa-dollar"></i> Minimum Sale Price</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

@@ -34,6 +34,7 @@ import com.ptff.qsystem.data.ItemAirFreightPurchase;
 import com.ptff.qsystem.data.ItemAirFreightPurchaseRepository;
 import com.ptff.qsystem.data.ItemAirFreightRepository;
 import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.Pager;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
@@ -98,16 +99,17 @@ public class ItemAirFreightController {
 		return "item/airfreight/new";
 	}
 	
-	@RequestMapping(value="/item/airfreights", method=RequestMethod.POST)
-	public String save(@Valid ItemAirFreight itemAirFreight, BindingResult bindingResult, Model model) {
+	@RequestMapping(value="/item/0", method=RequestMethod.POST)
+	public String save(@ModelAttribute("item") @Valid ItemAirFreight itemAirFreight, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving ItemAirFreight " + itemAirFreight.getDescription());
 		
 		if (bindingResult.hasErrors()) {
-			return "item/airfreight/new";
+			model.addAttribute("itemType", ItemType.AIR_FREIGHT);
+			return "/item/new";
 		}
 		
-		itemAirFreight = itemAirFreightRepository.save(itemAirFreight);
-		return "redirect:/item/airfreights";
+		itemAirFreightRepository.save(itemAirFreight);
+		return "redirect:/item/0";
 	}
 	
 	@RequestMapping("/item/airfreights/{id}")

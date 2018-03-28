@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<div th:fragment="form(formAction, itemType)">
+	<div th:fragment="form(formAction)">
 		<form id="itemPermitForm" method="post" novalidate="novalidate" th:object="${itemPurchase}" th:action="${formAction}" class="bv-form">
 			
 			<!--/*/ <th:block th:include="/forms/controls :: globalError"></th:block> /*/-->
@@ -40,7 +40,7 @@
 				</div>
 				<div class="row" th:each="pricingTier, stat : *{pricingTiers}">
 					<input type="hidden" th:field="*{pricingTiers[__${stat.index}__].id}" />
-					<input type="hidden" th:field="*{pricingTiers[__${stat.index}__].itemPermitPurchase.id}" />
+					<input type="hidden" th:field="*{pricingTiers[__${stat.index}__].itemPurchase.id}" />
 					<div class="col-sm-3 col-md-3 has-feedback" >
 						<div class="form-group">
 							<input th:if="${stat.size !=1}" type="number" class="form-control" placeholder="Lower Limit" th:field="*{pricingTiers[__${stat.index}__].lowerLimit}"/>

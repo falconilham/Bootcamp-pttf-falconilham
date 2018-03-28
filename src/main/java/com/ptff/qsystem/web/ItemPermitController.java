@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ptff.qsystem.data.ItemAirFreight;
 import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitPurchase;
 import com.ptff.qsystem.data.ItemPermitPurchaseRepository;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
 import com.ptff.qsystem.data.Pager;
@@ -83,18 +85,6 @@ public class ItemPermitController implements DefaultController {
 		model.addAttribute("itemPermit", itemPermit);
 		
 		return "item/permit/new";
-	}
-	
-	@RequestMapping(value="/item/permits", method=RequestMethod.POST)
-	public String save(@Valid ItemPermit itemPermit, BindingResult bindingResult, Model model) {
-		LOGGER.info("Saving ItemPermit " + itemPermit.getName());
-		
-		if (bindingResult.hasErrors()) {
-			return "item/permit/new";
-		}
-		
-		itemPermit = itemPermitRepository.save(itemPermit);
-		return "redirect:/item/permits";
 	}
 	
 	@RequestMapping("/item/permits/{id}")
@@ -241,5 +231,19 @@ public class ItemPermitController implements DefaultController {
 		LOGGER.info("Removig Pricing Tier - Pricing Tiers are now {}", itemPurchase.getPricingTiers().size());
 		
 		return "item/permit/purchase";
+	}
+	
+	
+	@RequestMapping(value="/item/3", method=RequestMethod.POST)
+	public String save(@ModelAttribute("item") @Valid ItemPermit itemPermit, BindingResult bindingResult, Model model) {
+		LOGGER.info("Saving Item Permit " + itemPermit.getDescription());
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("itemType", ItemType.AIR_FREIGHT);
+			return "/item/new";
+		}
+		
+		itemPermitRepository.save(itemPermit);
+		return "redirect:/item/3";
 	}
 }
