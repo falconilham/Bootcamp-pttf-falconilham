@@ -31,7 +31,7 @@ import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitPurchase;
 import com.ptff.qsystem.data.ItemPermitPurchaseRepository;
 import com.ptff.qsystem.data.ItemPermitRepository;
-import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.ItemPriceStatus;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
@@ -90,7 +90,7 @@ public class ItemPermitController implements DefaultController {
 	@RequestMapping("/item/permits/{id}")
 	public String show(@PathVariable("id") Long id, Model model) {
 		ItemPermit itemPermit = itemPermitRepository.findOne(id);
-		List<ItemPermitPurchase> itemPurchases = itemPermitPurchaseRepository.findAllByItemAndStatus(itemPermit, ItemPurchaseStatus.ACTIVE);
+		List<ItemPermitPurchase> itemPurchases = itemPermitPurchaseRepository.findAllByItemAndStatus(itemPermit, ItemPriceStatus.ACTIVE);
 		
 		model.addAttribute("itemPermit", itemPermit);
 		model.addAttribute("itemPurchases", itemPurchases);
@@ -198,11 +198,11 @@ public class ItemPermitController implements DefaultController {
 		// Deactivate  all other vendor pricing for this item
 		List<ItemPermitPurchase> itemPurchases = itemPermitPurchaseRepository.findAllByVendorAndItem(itemPurchase.getVendor(), itemPermit);
 		for (ItemPermitPurchase oldItemPurchase : itemPurchases) {
-			oldItemPurchase.setStatus(ItemPurchaseStatus.INACTIVE);
+			oldItemPurchase.setStatus(ItemPriceStatus.INACTIVE);
 			itemPermitPurchaseRepository.save(oldItemPurchase);
 		}
 		
-		itemPurchase.setStatus(ItemPurchaseStatus.ACTIVE);
+		itemPurchase.setStatus(ItemPriceStatus.ACTIVE);
 		//itemPurchase.setQuoteDate(LocalDate.now());
 		itemPurchase = itemPermitPurchaseRepository.save(itemPurchase);
 		

@@ -36,9 +36,9 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="item_purchase")
+@Table(name="item_minimum")
 @EntityListeners(AuditingEntityListener.class)
-public class ItemPurchase {
+public class ItemMinimum {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -47,15 +47,10 @@ public class ItemPurchase {
 	@JoinColumn(name="item_id")
 	@NotNull
 	private Item item;
-	
-	@ManyToOne
-	@JoinColumn(name="vendor_id")
-	@NotNull
-	private Vendor vendor;
-	
+		
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name="item_purchase_id")
-	private List<ItemPurchasePricingTier> pricingTiers = new ArrayList<ItemPurchasePricingTier>();
+	@JoinColumn(name="item_minimum_id")
+	private List<ItemMinimumPricingTier> pricingTiers = new ArrayList<ItemMinimumPricingTier>();
 	
 	@Column(name="quote_date")
 	@Convert(converter = LocalDatePersistenceConverter.class)
@@ -90,18 +85,18 @@ public class ItemPurchase {
 	private String lastUpdateUser;
 	
 	
-    public void addPriceTier(ItemPurchasePricingTier pricingTier) {
+    public void addPriceTier(ItemMinimumPricingTier pricingTier) {
 	   pricingTiers.add(pricingTier);
-	   pricingTier.setItemPurchase(this);
+	   pricingTier.setItemMinimum(this);
     }
  
-    public void removePriceTier(ItemPurchasePricingTier pricingTier) {
+    public void removePriceTier(ItemMinimumPricingTier pricingTier) {
     	pricingTiers.remove(pricingTier);
-    	pricingTier.setItemPurchase(null);
+    	pricingTier.setItemMinimum(null);
     }
     
     public void removePriceTier(int pricingTierOrderIndex) {
-    	ItemPurchasePricingTier pricingTier = pricingTiers.remove(pricingTierOrderIndex);
-    	pricingTier.setItemPurchase(null);
+    	ItemMinimumPricingTier pricingTier = pricingTiers.remove(pricingTierOrderIndex);
+    	pricingTier.setItemMinimum(null);
     }
 }

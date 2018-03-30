@@ -68,7 +68,7 @@ public class ItemPermitPurchase {
 	private LocalDate reviewDate;
 	
 	@Column(name="status")
-	private ItemPurchaseStatus status;
+	private ItemPriceStatus status;
 	
 
 	@Column(name="create_date")

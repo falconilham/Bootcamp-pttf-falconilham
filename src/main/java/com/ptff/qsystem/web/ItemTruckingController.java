@@ -31,7 +31,7 @@ import com.ptff.qsystem.data.ItemTrucking;
 import com.ptff.qsystem.data.ItemTruckingPurchase;
 import com.ptff.qsystem.data.ItemTruckingPurchaseRepository;
 import com.ptff.qsystem.data.ItemTruckingRepository;
-import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.ItemPriceStatus;
 import com.ptff.qsystem.data.Pager;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
@@ -111,7 +111,7 @@ public class ItemTruckingController {
 	@RequestMapping("/item/truckings/{id}")
 	public String show(@PathVariable("id") Long id, Model model) {
 		ItemTrucking itemTrucking = itemTruckingRepository.findOne(id);
-		List<ItemTruckingPurchase> itemPurchases = itemTruckingPurchaseRepository.findAllByItemAndStatus(itemTrucking, ItemPurchaseStatus.ACTIVE);
+		List<ItemTruckingPurchase> itemPurchases = itemTruckingPurchaseRepository.findAllByItemAndStatus(itemTrucking, ItemPriceStatus.ACTIVE);
 		
 		model.addAttribute("itemTrucking", itemTrucking);
 		model.addAttribute("itemPurchases", itemPurchases);
@@ -189,11 +189,11 @@ public class ItemTruckingController {
 		// Deactivate  all other vendor pricing for this item
 		List<ItemTruckingPurchase> itemPurchases = itemTruckingPurchaseRepository.findAllByVendorAndItem(itemPurchase.getVendor(), itemTrucking);
 		for (ItemTruckingPurchase oldItemPurchase : itemPurchases) {
-			oldItemPurchase.setStatus(ItemPurchaseStatus.INACTIVE);
+			oldItemPurchase.setStatus(ItemPriceStatus.INACTIVE);
 			itemTruckingPurchaseRepository.save(oldItemPurchase);
 		}
 		
-		itemPurchase.setStatus(ItemPurchaseStatus.ACTIVE);
+		itemPurchase.setStatus(ItemPriceStatus.ACTIVE);
 		itemPurchase = itemTruckingPurchaseRepository.save(itemPurchase);
 		
 		return "redirect:/item/truckings/"+id;

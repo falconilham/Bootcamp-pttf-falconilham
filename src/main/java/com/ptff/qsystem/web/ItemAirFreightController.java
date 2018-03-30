@@ -33,7 +33,7 @@ import com.ptff.qsystem.data.ItemAirFreight;
 import com.ptff.qsystem.data.ItemAirFreightPurchase;
 import com.ptff.qsystem.data.ItemAirFreightPurchaseRepository;
 import com.ptff.qsystem.data.ItemAirFreightRepository;
-import com.ptff.qsystem.data.ItemPurchaseStatus;
+import com.ptff.qsystem.data.ItemPriceStatus;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.Pager;
 import com.ptff.qsystem.data.Vendor;
@@ -115,7 +115,7 @@ public class ItemAirFreightController {
 	@RequestMapping("/item/airfreights/{id}")
 	public String show(@PathVariable("id") Long id, Model model) {
 		ItemAirFreight itemAirFreight = itemAirFreightRepository.findOne(id);
-		List<ItemAirFreightPurchase> itemPurchases = itemAirFreightPurchaseRepository.findAllByItemAndStatus(itemAirFreight, ItemPurchaseStatus.ACTIVE);
+		List<ItemAirFreightPurchase> itemPurchases = itemAirFreightPurchaseRepository.findAllByItemAndStatus(itemAirFreight, ItemPriceStatus.ACTIVE);
 		
 		model.addAttribute("itemAirFreight", itemAirFreight);
 		model.addAttribute("itemPurchases", itemPurchases);
@@ -193,11 +193,11 @@ public class ItemAirFreightController {
 		// Deactivate  all other vendor pricing for this item
 		List<ItemAirFreightPurchase> itemPurchases = itemAirFreightPurchaseRepository.findAllByVendorAndItem(itemPurchase.getVendor(), itemAirFreight);
 		for (ItemAirFreightPurchase oldItemPurchase : itemPurchases) {
-			oldItemPurchase.setStatus(ItemPurchaseStatus.INACTIVE);
+			oldItemPurchase.setStatus(ItemPriceStatus.INACTIVE);
 			itemAirFreightPurchaseRepository.save(oldItemPurchase);
 		}
 		
-		itemPurchase.setStatus(ItemPurchaseStatus.ACTIVE);
+		itemPurchase.setStatus(ItemPriceStatus.ACTIVE);
 		itemPurchase = itemAirFreightPurchaseRepository.save(itemPurchase);
 		
 		return "redirect:/item/airfreights/"+id;

@@ -65,10 +65,21 @@ public class Item {
 	@JoinColumn(name="item_id")
 	private Set<ItemPurchase> purchasePrices = new HashSet<ItemPurchase>();
 	
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="item_id")
+	private Set<ItemMinimum> minimumPrices = new HashSet<ItemMinimum>();
+	
 	public List<ItemPurchase> getActivePurchasePrices() {
 		return purchasePrices.stream()
-				.filter(x -> x.getStatus() == ItemPurchaseStatus.ACTIVE)
+				.filter(x -> x.getStatus() == ItemPriceStatus.ACTIVE)
 				.collect(Collectors.toList());
+	}
+	
+	public ItemMinimum getActiveMinimumPrice() {
+		return minimumPrices.stream()
+				.filter(x -> x.getStatus() == ItemPriceStatus.ACTIVE)
+				.findFirst()
+				.orElse(null);
 	}
 	
 	
