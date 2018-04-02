@@ -16,26 +16,63 @@
         <div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).DRAFT)}" class="well well-sm bg-color-grey txt-color-black text-center">
 			<h5 th:text="${quotation.status}"></h5>
 		</div>
+		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).ACTIVE)}" class="well well-sm bg-color-blue txt-color-white text-center">
+			<h5 th:text="${quotation.status}"></h5>
+		</div>
 		<h1 class="text-center txt-color-blueDark">Actions</h1>
 		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).DRAFT)}">
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-book"></i> Add Permit</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}(quotationId=${quotation.id})}"><i class="fa fa-fw fa-edit"></i> Edit</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-plane"></i> Add Air Freight</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-fw fa-book"></i> Add Permit</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-life-vest"></i> Add Sea Freight</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-fw fa-plane"></i> Add Air Freight</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-truck"></i> Add Trucking</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-fw  fa-life-saver"></i> Add Sea Freight</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/}+${quotation.id +'/permit'}"><i class="fa fa-fw fa-truck"></i> Add Trucking</a>
+				</div>
+			</div>
+		</div>
+		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).ACTIVE)}">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/download(quotationId=${quotation.id})}"><i class="fa fa-fw fa-download"></i> Download</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/download(quotationId=${quotation.id})}"><i class="fa fa-fw fa-envelope"></i> Send Email</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-danger text-left" th:href="@{/quotations/{quotationId}/deactivate(quotationId=${quotation.id})}"><i class="fa fa-fw fa-times"></i> Deactivate</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/quotations/{quotationId}/requote(quotationId=${quotation.id})}"><i class="fa fa-fw fa-forward"></i> Requote</a>
+				</div>
+			</div>
+		</div>
+		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).EXPIRED)}">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 has-feedback">
+					<a class="btn btn-lg btn-block btn-success text-left" th:href="@{/quotations/{quotationId}/requote(quotationId=${quotation.id})}"><i class="fa fa-fw fa-forward"></i> Requote</a>
 				</div>
 			</div>
 		</div>

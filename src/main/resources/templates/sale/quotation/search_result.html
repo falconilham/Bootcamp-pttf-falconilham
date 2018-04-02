@@ -16,8 +16,13 @@
 		</thead>
 		<tbody>
 			<tr th:each="item : ${items}">
-				<td th:text="${item.name}"></td>
-				<td><a th:href="@{/quotations/{id}/permit/{permitId}/add(id=${quotation.id}, permitId=${item.id})}"><span class="label label-default">Add</span></a></td>
+				<td>
+				</td>
+				
+				<td><span class="font-md" th:text="${item.name}"></span><br/>
+					<span class="font-sm" th:text="${item.description}"></span>
+				</td>
+				<td><a th:href="@{/quotations/{id}/{itemId}/add(id=${quotation.id}, itemId=${item.id})}"><span class="pull-right label label-default"><i class="fa fa-fw fa-plus"></i> Add</span></a></td>
 			</tr>
 		</tbody>
 		</table>

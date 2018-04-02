@@ -1,5 +1,6 @@
 package com.ptff.qsystem.web;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,11 +22,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ptff.qsystem.data.Customer;
 import com.ptff.qsystem.data.CustomerRepository;
+import com.ptff.qsystem.data.Item;
+import com.ptff.qsystem.data.ItemMinimum;
+import com.ptff.qsystem.data.ItemMinimumPricingTier;
 import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitRepository;
+import com.ptff.qsystem.data.ItemRepository;
 import com.ptff.qsystem.data.Quotation;
 import com.ptff.qsystem.data.QuotationLineItem;
 import com.ptff.qsystem.data.QuotationLineItemRepository;
+import com.ptff.qsystem.data.QuotationPricingTier;
 import com.ptff.qsystem.data.QuotationProductType;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
@@ -46,7 +52,7 @@ public class QuoteController implements DefaultController {
 	private QuotationLineItemRepository quotationLineItemRepository;
 	
 	@Autowired
-	private ItemPermitRepository itemPermitRepository;
+	private ItemRepository itemRepository;
 	
 	
 	
@@ -88,7 +94,7 @@ public class QuoteController implements DefaultController {
 		return "redirect:/quotations/"+quotation.getId();
 	}
 	
-	@RequestMapping("/quotations/{id}")
+	@RequestMapping(value="/quotations/{id}", method=RequestMethod.GET)
 	public String newQuotation(@PathVariable("id") Long id, Model model) {
 		LOGGER.info("Showing Quotation with Id: {}", id);
 		
@@ -122,7 +128,7 @@ public class QuoteController implements DefaultController {
 		Quotation quotation = quotationRepository.findOne(id);
 		model.addAttribute("quotation", quotation);
 		
-		Page<ItemPermit> items = itemPermitRepository.findByNameLike("%"+itemSearchForm.getName()+"%", pageable);
+		Page<Item> items = itemRepository.findAll(pageable);
 		model.addAttribute("items", items);
 		
 		LOGGER.info("Found {} pages with {} items matching the criteria {}", items.getTotalPages(), items.getTotalElements(), itemSearchForm);
@@ -130,17 +136,28 @@ public class QuoteController implements DefaultController {
 		return "sale/quotation/search_permit";
 	}
 	
-	@RequestMapping("/quotations/{id}/permit/{permitId}/add")
-	public String addPermitToQuotation(@PathVariable("id") Long id, @PathVariable("permitId") Long permitId, Model model) {
-		LOGGER.info("Showing Permit Search Form: {}", id);
-		
+	@RequestMapping("/quotations/{id}/{itemId}/add")
+	public String addItemToQuotation(@PathVariable("id") Long id, @PathVariable("itemId") Long itemId, Model model) {
 		Quotation quotation = quotationRepository.findOne(id);
-		ItemPermit itemPermit = itemPermitRepository.findOne(permitId);
+		Item item = itemRepository.findOne(itemId);
+		
+		LOGGER.info("Adding {} to quotation {}", item.getName(), quotation.getReference());
 		
 		QuotationLineItem lineItem = new QuotationLineItem();
-		lineItem.setType(QuotationProductType.PERMIT);
-		lineItem.setPermit(itemPermit);
+		lineItem.setItem(item);
 		lineItem.setQuotation(quotation);
+		
+		// Add the Pricing Tier
+		ItemMinimum minimumPrice = item.getActiveMinimumPrice();
+		for (ItemMinimumPricingTier minimumPriceTier : minimumPrice.getPricingTiers()) {
+			QuotationPricingTier quotationPricingTier = new QuotationPricingTier();
+			quotationPricingTier.setIsSinglePrice(minimumPriceTier.getIsSinglePrice());
+			quotationPricingTier.setLowerLimit(minimumPriceTier.getLowerLimit());
+			quotationPricingTier.setUpperLimit(minimumPriceTier.getUpperLimit());
+			quotationPricingTier.setQuotationLineItem(lineItem);
+			quotationPricingTier.setPrice(BigDecimal.ZERO);
+			lineItem.addPriceTier(quotationPricingTier);
+		}
 		
 		quotation.getQuotationLineItems().add(lineItem);
 		quotationRepository.save(quotation);
@@ -155,10 +172,49 @@ public class QuoteController implements DefaultController {
 		Quotation quotation = quotationRepository.findOne(id);
 		LOGGER.info("Quotation has {} Line Items", quotation.getQuotationLineItems().size());
 		
-		QuotationLineItem lineItem = quotationLineItemRepository.findOne(lineItemId);
-		quotation.getQuotationLineItems().remove(lineItem);
-		quotationLineItemRepository.delete(lineItem);
+		QuotationLineItem lineItem = quotation.getLineItem(lineItemId);
+		quotation.removeLineItem(lineItem);
+		LOGGER.info("Quotation has {} Line Items", quotation.getQuotationLineItems().size());
+		
+		quotationRepository.save(quotation);
 
 		return "redirect:/quotations/{id}";
 	}
+	
+	@RequestMapping(value="/quotations/{quotationId}", method=RequestMethod.POST, params="finalise")
+	public String finaliseQuotation(
+			@PathVariable("quotationId") Long id, 
+			@ModelAttribute("quotation") @Valid Quotation quotation,
+			BindingResult bindingResult,
+			Model model) {
+		
+		Quotation toSave = quotationRepository.findOne(id);
+		for (int i=0; i<toSave.getQuotationLineItems().size(); i++) {
+			QuotationLineItem qliToSave = toSave.getQuotationLineItems().get(i);
+			QuotationLineItem qli = quotation.getLineItem(qliToSave.getId());
+			
+			// set the price tiers
+			for (int j=0; j<qliToSave.getPricingTiers().size(); j++) {
+				LOGGER.info("Getting {}", j);
+				QuotationPricingTier qpt = qli.getPricingTiers().get(j);
+				QuotationPricingTier qptToSave = qliToSave.getPriceTier(qpt.getId());
+				qptToSave.setPrice(qpt.getPrice());
+			}
+		}
+		
+		
+		toSave.setStatus(QuotationStatus.ACTIVE);
+		quotationRepository.save(toSave);
+		
+		return "redirect:/quotations/{quotationId}";
+	}
+	
+	//@RequestMapping(value="/quotations/{id}", method=RequestMethod.POST, params="save")
+	//public String finaliseQuotation(@PathVariable("id") Long id, Model model) {
+		// Make sure all items are in active 
+		
+		// Make sure all items are more expensive than minimum price
+		
+		// Make sure customers are active.
+	//}
 }

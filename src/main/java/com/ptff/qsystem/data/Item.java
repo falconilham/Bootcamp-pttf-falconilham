@@ -92,4 +92,8 @@ public class Item {
     	purchasePrices.remove(purchasePrice);
     	purchasePrice.setItem(null);
     }
+    
+    public String getName() {
+    	return "<Name need to be Overriden>";
+    }
 }

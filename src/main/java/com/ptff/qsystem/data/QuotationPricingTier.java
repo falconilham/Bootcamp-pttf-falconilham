@@ -4,14 +4,11 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -20,15 +17,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="item_minimum_pricing_tiers")
-public class ItemMinimumPricingTier {
+@Table(name="item_quote_pricing_tiers")
+public class QuotationPricingTier {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_minimum_id")
-    private ItemMinimum itemMinimum;
+    @ManyToOne
+    private QuotationLineItem quotationLineItem;
     
 	@Column(name="lower_limit", nullable=true)
 	private Long lowerLimit;
@@ -42,22 +38,4 @@ public class ItemMinimumPricingTier {
 	
 	@Column(name="is_single_price", columnDefinition="TINYINT(1)")
 	private Boolean isSinglePrice;
-	
-	public String getTier() {
-		String tier = "ALL";
-		if (lowerLimit != null && upperLimit != null) {	
-			if (lowerLimit != null) {
-				tier = lowerLimit.toString();
-			}
-			
-			if (upperLimit == null) {
-				tier += " - ALL";
-			} else {
-				tier += " - "+ upperLimit.toString();
-			}
-		}
-			
-		
-		return tier;
-	}
 }

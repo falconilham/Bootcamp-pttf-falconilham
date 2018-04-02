@@ -55,7 +55,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<span class="text-right" th:text="${quotation.customer.correspondenceAddress}"></span>
+									<span class="text-right font-xs" style="white-space: pre-wrap;"  th:text="${quotation.customer.correspondenceAddress}"></span>
 								</div>
 							</div>
 							<div class="row">
@@ -79,32 +79,67 @@
 					<div class="well">
 					<div class="row">
 					<div class="col-sm-12 col-md-12 col-lg-12 has-feedback">
+					
+					<form id="quotePrice" method="post" novalidate="novalidate" th:object="${quotation}" th:action="@{/quotations/{quotationId}(quotationId=${quotation.id})}" class="bv-form">
+					<input type="hidden" th:field="*{id}"/>
 					<table class="table table-hover">
 						<thead>
 						<tr>
 							<th>Name</th>
-							<th>Description</th>
-							<th>Average Price</th>
-							<th>Minimum Price</th>
+							<th>Tier</th>
+							<th class="hidden-xs">Minimum Price</th>
 							<th>Quoted Price</th>
 							<th></th>
 						</tr>
+						<tr>
+							<th>Name</th>
+						</tr>
 						</thead>
 						<tbody>
-							<tr th:each="item : ${quotation.quotationLineItems}">
-								<div th:if="${(item.type ==  T(com.ptff.qsystem.data.QuotationProductType).PERMIT)}" th:remove="tag">
-									<td th:text="${item.permit.name}"></td>
-									<td th:text="${item.permit.description}"></td>
-									<td>10000</td>
-									<td>10000</td>
-									<td><input type="text" placeholder="Quoted Price"/></td>
-									<td><a th:href="@{/quotations/{id}/line/{lineId}/remove(id=${quotation.id}, lineId=${item.id})}">
-										<span class="txt-color-red"><i class="fa fa-fw fa-times"></i></span></a></td>
-								</div>
+							<th:block th:each="lineItem, stat : ${quotation.quotationLineItems}">
+							<tr>
+								<td>
+									<input type="hidden" th:field="*{quotationLineItems[__${stat.index}__].item.id}"/>
+									<input type="hidden" th:field="*{quotationLineItems[__${stat.index}__].quotation.id}"/>
+									<input type="hidden" th:field="*{quotationLineItems[__${stat.index}__].id}"/>
+									<span th:text="${lineItem.item.name}"></span><br/>
+									<span class="font-xs" th:text="${lineItem.item.description}"></span>
+								</td>
 							</tr>
+							<tr>
+								<td>
+									<ul class="list-unstyled">
+										<li th:each="pricingTier: ${lineItem.item.activeMinimumPrice.pricingTiers}">
+											<span class="font-lg" th:text="${pricingTier.tier}"></span>
+										</li>
+									</ul>
+								</td>
+								<td class="hidden-xs">
+									<ul class="list-unstyled">
+										<li th:each="pricingTier: ${lineItem.item.activeMinimumPrice.pricingTiers}">
+											<span class="font-lg" th:text="${pricingTier.price}"></span>
+										</li>
+									</ul>
+								</td>
+								<td>
+									<ul class="list-unstyled">
+										<li  th:each="pricingTier, pricingTierStat: ${lineItem.item.activeMinimumPrice.pricingTiers}">
+											<input type="hidden" th:field="*{quotationLineItems[__${stat.index}__].pricingTiers[__${pricingTierStat.index}__].id}"/>
+											<div class="input-group">
+												<span class="input-group-addon">Rp.	</span>
+												<input class="form-control" placeholder="Price" th:field="*{quotationLineItems[__${stat.index}__].pricingTiers[__${pricingTierStat.index}__].price}"/>
+											</div>
+										</li>
+									</ul>
+								</td>
+								<td><a th:href="@{/quotations/{id}/line/{lineId}/remove(id=${quotation.id}, lineId=${lineItem.id})}">
+									<span class="txt-color-red"><i class="fa fa-fw fa-times"></i></span></a></td>
+							</tr>
+							</th:block>
 						</tbody>
-						</table>
-					
+					</table>
+					<button type="submit" name="finalise" th:value="finalise" class="pull-right btn btn-success"><i class="fa fa-fw fa-save"></i> Finalise</button>
+					</form>
 					</div>
 					</div>
 				</div>

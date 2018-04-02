@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -62,8 +63,9 @@ public class Quotation {
 	@Convert(converter = LocalDatePersistenceConverter.class)
 	private LocalDate expiryDate;
 	
-	@OneToMany(mappedBy="quotation", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<QuotationLineItem> quotationLineItems;
+	@OneToMany(mappedBy="quotation", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OrderBy("id")
+	private List<QuotationLineItem> quotationLineItems;
 	
 	@Column(name="create_date")
 	@CreatedDate
@@ -82,4 +84,23 @@ public class Quotation {
 	@Column(name="lastupdate_user")
 	@LastModifiedBy
 	private String lastUpdateUser;
+
+	public QuotationLineItem getLineItem(Long lineItemId) {
+    	for (QuotationLineItem lineItem : quotationLineItems) {
+    		if (lineItemId.equals(lineItem.getId()))
+    			return lineItem;
+    	}
+    	
+    	return null;
+    }
+	
+	public void addLineItem(QuotationLineItem lineItem) {
+    	quotationLineItems.add(lineItem);
+    	lineItem.setQuotation(this);
+    }
+ 
+    public void removeLineItem(QuotationLineItem lineItem) {
+    	quotationLineItems.remove(lineItem);
+    	lineItem.setQuotation(null);
+    }
 }
