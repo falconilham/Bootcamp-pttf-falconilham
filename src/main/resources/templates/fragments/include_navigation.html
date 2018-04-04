@@ -39,37 +39,37 @@
 						</a>
 						<ul>
 							<li>
-								<a th:href="@{/countries}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/countries}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-flag"></i> Countries
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/seaports}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/seaports}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-anchor"></i> Seaports
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/airports}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/airports}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-plane"></i> Airports
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/depots}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/depots}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-truck"></i> Depots
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/documenttypes}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/documenttypes}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-book"></i> Document Types
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/pricingunits}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/pricingunits}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-cubes"></i> Pricing Unit
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/legalnotes}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/legalnotes}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-legal"></i> Legal Note
 								</a>
 							</li>
@@ -81,22 +81,22 @@
 						</a>
 						<ul>
 							<li>
-								<a th:href="@{/item/permits}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/item/3}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-book"></i> Permits
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/item/truckings}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/item/2}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-truck"></i> Haulage
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/item/airfreights}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/item/0}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-plane"></i> Air Freight
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/item/airfreights}" href="index.html" title="blank_">
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/item/1}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-life-saver"></i> Sea Freight
 								</a>
 							</li>
