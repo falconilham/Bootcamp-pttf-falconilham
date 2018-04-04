@@ -48,7 +48,7 @@
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 								<th th:include="/forms/table :: sortable ('Name', 'name', ${units})"></th>
-								<th th:include="/forms/table :: sortable ('Name', 'description', ${units})"></th>
+								<th th:include="/forms/table :: sortable ('Description', 'description', ${units})"></th>
 							</tr>
 						</thead>
 						<tbody>

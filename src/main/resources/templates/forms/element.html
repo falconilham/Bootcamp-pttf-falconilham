@@ -1,0 +1,25 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+
+	<div th:fragment="error (validationMessage)" th:remove="tag">
+	<div th:if="${validationMessage.hasErrors()}" class="alert alert-danger fade in">
+		<i class="fa-fw fa fa-times"></i> <strong>Error</strong>
+		<ol th:each="error: ${validationMessage.errors}">
+			<li th:text="${error}">s</li>
+		</ol>
+	</div>
+    </div>
+    
+    <div th:fragment="warning (validationMessage)" th:remove="tag">
+	<div th:if="${validationMessage.hasWarnings()}" class="alert alert-warning fade in">
+		<i class="fa-fw fa fa-warning"></i> <strong>Warning</strong>
+		<ol th:each="warning: ${validationMessage.warnings}">
+			<li th:text="${warning}">s</li>
+		</ol>
+	</div>
+    </div>
+    
+    <div th:fragment="message (validationMessage)" th:remove="tag">
+		<!--/*/ <th:block th:include="forms/element :: error(${validationMessage})"></th:block> /*/-->
+		<!--/*/ <th:block th:include="forms/element :: warning(${validationMessage})"></th:block> /*/-->
+    </div>
+</div>

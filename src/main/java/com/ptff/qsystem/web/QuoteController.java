@@ -1,6 +1,7 @@
 package com.ptff.qsystem.web;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +25,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ptff.qsystem.data.Customer;
 import com.ptff.qsystem.data.CustomerRepository;
+import com.ptff.qsystem.data.CustomerStatus;
 import com.ptff.qsystem.data.Item;
 import com.ptff.qsystem.data.ItemMinimum;
 import com.ptff.qsystem.data.ItemMinimumPricingTier;
 import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemRepository;
+import com.ptff.qsystem.data.ItemStatus;
 import com.ptff.qsystem.data.Quotation;
 import com.ptff.qsystem.data.QuotationLineItem;
 import com.ptff.qsystem.data.QuotationLineItemRepository;
@@ -36,6 +41,8 @@ import com.ptff.qsystem.data.QuotationProductType;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
 import com.ptff.qsystem.data.Seaport;
+import com.ptff.qsystem.data.validator.QuotationValidator;
+import com.ptff.qsystem.data.validator.ValidationMessage;
 import com.ptff.qsystem.form.ItemSearchForm;
 
 @Controller
@@ -49,11 +56,18 @@ public class QuoteController implements DefaultController {
 	private QuotationRepository quotationRepository;
 	
 	@Autowired
+	private QuotationValidator quotationValidator;
+	
+	@Autowired
 	private QuotationLineItemRepository quotationLineItemRepository;
 	
 	@Autowired
 	private ItemRepository itemRepository;
 	
+	@InitBinder("quotation")
+	public void setupBinder(WebDataBinder binder) {
+	    binder.addValidators(quotationValidator);
+	}
 	
 	
 	@ModelAttribute("customers")
@@ -94,12 +108,39 @@ public class QuoteController implements DefaultController {
 		return "redirect:/quotations/"+quotation.getId();
 	}
 	
+	@RequestMapping("/quotations/{id}/edit")
+	public String editQuotation(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("quotation", quotationRepository.findOne(id));
+		
+		return "sale/quotation/edit";
+	}
+	
+	@RequestMapping(value="/quotations/{quotationId}", method=RequestMethod.POST)
+	public String saveQuotationDetail(
+			@PathVariable("quotationId") Long id, 
+			@ModelAttribute("quotation") @Valid Quotation quotation,
+			BindingResult bindingResult,
+			Model model) {
+		LOGGER.info("Saving Quotation " + quotation.getReference());
+		
+		if (bindingResult.hasErrors()) {
+			return "sale/quotation/edit";
+		}
+				
+		quotation = quotationRepository.save(quotation);
+		return "redirect:/quotations/{quotationId}";
+	}
+	
 	@RequestMapping(value="/quotations/{id}", method=RequestMethod.GET)
 	public String newQuotation(@PathVariable("id") Long id, Model model) {
 		LOGGER.info("Showing Quotation with Id: {}", id);
 		
 		Quotation quotation = quotationRepository.findOne(id);
+		ValidationMessage validationMessage = new ValidationMessage();
+		quotationValidator.validate(quotation, validationMessage);
+		
 		model.addAttribute("quotation", quotation);
+		model.addAttribute("message", validationMessage);
 		
 		return "sale/quotation/show";
 	}
@@ -149,14 +190,16 @@ public class QuoteController implements DefaultController {
 		
 		// Add the Pricing Tier
 		ItemMinimum minimumPrice = item.getActiveMinimumPrice();
-		for (ItemMinimumPricingTier minimumPriceTier : minimumPrice.getPricingTiers()) {
-			QuotationPricingTier quotationPricingTier = new QuotationPricingTier();
-			quotationPricingTier.setIsSinglePrice(minimumPriceTier.getIsSinglePrice());
-			quotationPricingTier.setLowerLimit(minimumPriceTier.getLowerLimit());
-			quotationPricingTier.setUpperLimit(minimumPriceTier.getUpperLimit());
-			quotationPricingTier.setQuotationLineItem(lineItem);
-			quotationPricingTier.setPrice(BigDecimal.ZERO);
-			lineItem.addPriceTier(quotationPricingTier);
+		if (minimumPrice != null) {
+			for (ItemMinimumPricingTier minimumPriceTier : minimumPrice.getPricingTiers()) {
+				QuotationPricingTier quotationPricingTier = new QuotationPricingTier();
+				quotationPricingTier.setIsSinglePrice(minimumPriceTier.getIsSinglePrice());
+				quotationPricingTier.setLowerLimit(minimumPriceTier.getLowerLimit());
+				quotationPricingTier.setUpperLimit(minimumPriceTier.getUpperLimit());
+				quotationPricingTier.setQuotationLineItem(lineItem);
+				quotationPricingTier.setPrice(BigDecimal.ZERO);
+				lineItem.addPriceTier(quotationPricingTier);
+			}
 		}
 		
 		quotation.getQuotationLineItems().add(lineItem);
@@ -170,11 +213,9 @@ public class QuoteController implements DefaultController {
 		LOGGER.info("Removing Line Item {} from Quotation: {}",  lineItemId, id);
 		
 		Quotation quotation = quotationRepository.findOne(id);
-		LOGGER.info("Quotation has {} Line Items", quotation.getQuotationLineItems().size());
 		
 		QuotationLineItem lineItem = quotation.getLineItem(lineItemId);
 		quotation.removeLineItem(lineItem);
-		LOGGER.info("Quotation has {} Line Items", quotation.getQuotationLineItems().size());
 		
 		quotationRepository.save(quotation);
 
@@ -189,32 +230,108 @@ public class QuoteController implements DefaultController {
 			Model model) {
 		
 		Quotation toSave = quotationRepository.findOne(id);
+
 		for (int i=0; i<toSave.getQuotationLineItems().size(); i++) {
 			QuotationLineItem qliToSave = toSave.getQuotationLineItems().get(i);
 			QuotationLineItem qli = quotation.getLineItem(qliToSave.getId());
 			
 			// set the price tiers
 			for (int j=0; j<qliToSave.getPricingTiers().size(); j++) {
-				LOGGER.info("Getting {}", j);
 				QuotationPricingTier qpt = qli.getPricingTiers().get(j);
 				QuotationPricingTier qptToSave = qliToSave.getPriceTier(qpt.getId());
 				qptToSave.setPrice(qpt.getPrice());
 			}
 		}
 		
+		// Only Progress the status when business object validation pass
+		ValidationMessage validationMessage = new ValidationMessage();
+		quotationValidator.validate(toSave, validationMessage);
+		if (!validationMessage.hasErrors())
+			toSave.setStatus(QuotationStatus.ACTIVE);
 		
-		toSave.setStatus(QuotationStatus.ACTIVE);
 		quotationRepository.save(toSave);
 		
 		return "redirect:/quotations/{quotationId}";
 	}
 	
-	//@RequestMapping(value="/quotations/{id}", method=RequestMethod.POST, params="save")
-	//public String finaliseQuotation(@PathVariable("id") Long id, Model model) {
-		// Make sure all items are in active 
+	@RequestMapping(value="/quotations/{quotationId}", method=RequestMethod.POST, params="save")
+	public String saveQuotation(
+			@PathVariable("quotationId") Long id, 
+			@ModelAttribute("quotation") @Valid Quotation quotation,
+			BindingResult bindingResult,
+			Model model) {
 		
-		// Make sure all items are more expensive than minimum price
+		Quotation toSave = quotationRepository.findOne(id);
+
+		for (int i=0; i<toSave.getQuotationLineItems().size(); i++) {
+			QuotationLineItem qliToSave = toSave.getQuotationLineItems().get(i);
+			QuotationLineItem qli = quotation.getLineItem(qliToSave.getId());
+			
+			// set the price tiers
+			for (int j=0; j<qliToSave.getPricingTiers().size(); j++) {
+				QuotationPricingTier qpt = qli.getPricingTiers().get(j);
+				QuotationPricingTier qptToSave = qliToSave.getPriceTier(qpt.getId());
+				qptToSave.setPrice(qpt.getPrice());
+			}
+		}
 		
-		// Make sure customers are active.
-	//}
+		quotationRepository.save(toSave);
+		
+		return "redirect:/quotations/{quotationId}";
+	}
+	
+	
+	@RequestMapping(value="/quotations/{quotationId}/requote")
+	public String requoteQuotation(
+			@PathVariable("quotationId") Long id,
+			Model model) {
+		
+		// Deactivate the original
+		Quotation original = quotationRepository.findOne(id);
+		original.setStatus(QuotationStatus.EXPIRED);
+		original.setExpiryDate(LocalDate.now());
+		quotationRepository.save(original);
+		
+		Quotation newQuotation = new Quotation();
+		newQuotation.setReference(original.getReference() + " (Copy)");
+		newQuotation.setQuoteDate(LocalDate.now());
+		newQuotation.setExpiryDate(LocalDate.now().plusDays(30));
+		newQuotation.setCustomer(original.getCustomer());
+		newQuotation.setStatus(QuotationStatus.DRAFT);
+		for (QuotationLineItem qli: original.getQuotationLineItems()) {
+			QuotationLineItem newQli = new QuotationLineItem();
+			newQli.setItem(qli.getItem());
+			
+			// set the price tiers
+			for (QuotationPricingTier qpt : qli.getPricingTiers()) {
+				QuotationPricingTier newQpt = new QuotationPricingTier();
+				newQpt.setIsSinglePrice(qpt.getIsSinglePrice());
+				newQpt.setLowerLimit(qpt.getLowerLimit());
+				newQpt.setUpperLimit(qpt.getUpperLimit());
+				newQpt.setPrice(qpt.getPrice());
+				newQli.addPriceTier(newQpt);
+			}
+			newQuotation.addLineItem(newQli);
+		}
+		
+		
+		newQuotation = quotationRepository.save(newQuotation);
+		
+		return "redirect:/quotations/"+newQuotation.getId();
+	}
+	
+	@RequestMapping(value="/quotations/{quotationId}/deactivate")
+	public String deactivateQuotation(
+			@PathVariable("quotationId") Long id,
+			Model model) {
+		
+		// Deactivate the original
+		Quotation original = quotationRepository.findOne(id);
+		original.setStatus(QuotationStatus.EXPIRED);
+		original.setExpiryDate(LocalDate.now());
+		quotationRepository.save(original);
+		
+		return "redirect:/quotations/{quotationId}";
+	}
+	
 }

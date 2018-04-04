@@ -2,6 +2,7 @@ package com.ptff.qsystem.data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -44,6 +46,7 @@ public class Quotation {
 	
 	@Column(name="reference")
 	@NotNull
+	@NotEmpty
 	private String reference;
 	
 	@ManyToOne
@@ -56,16 +59,18 @@ public class Quotation {
 	@Column(name="quote_date")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Convert(converter = LocalDatePersistenceConverter.class)
+	@NotNull
 	private LocalDate quoteDate;
 	
 	@Column(name="expiry_date")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Convert(converter = LocalDatePersistenceConverter.class)
+	@NotNull
 	private LocalDate expiryDate;
 	
 	@OneToMany(mappedBy="quotation", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@OrderBy("id")
-	private List<QuotationLineItem> quotationLineItems;
+	private List<QuotationLineItem> quotationLineItems = new ArrayList<QuotationLineItem>();
 	
 	@Column(name="create_date")
 	@CreatedDate

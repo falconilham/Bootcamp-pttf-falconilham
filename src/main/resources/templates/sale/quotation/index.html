@@ -52,6 +52,7 @@
 								<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th>
 								<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th>
 								<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th>
+								<th th:include="/forms/table :: sortable ('Status', 'status', ${quotations})"> </th>
 							</tr>
 						</tr>
 						</thead>
@@ -61,7 +62,7 @@
 								<td th:text="${quotation.customer.name}"></td>
 								<td th:text="${quotation.quoteDate}"></td>
 								<td th:text="${quotation.expiryDate}"></td>
-								
+								<td th:text="${quotation.status}"></td>
 							</tr>
 						</tbody>
 						</table>

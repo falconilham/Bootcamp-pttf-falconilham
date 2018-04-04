@@ -41,6 +41,7 @@
 				<div class="well">
 					<div class="row">
 					<div class="col-sm-12 col-md-8 has-feedback">
+						<div th:include="forms/element :: message(${message})" th:remove="tag"></div>
 						<fieldset>
 							<legend>Quotation</legend>
 							<div class="row">
@@ -82,6 +83,7 @@
 					
 					<form id="quotePrice" method="post" novalidate="novalidate" th:object="${quotation}" th:action="@{/quotations/{quotationId}(quotationId=${quotation.id})}" class="bv-form">
 					<input type="hidden" th:field="*{id}"/>
+					<input type="hidden" th:field="*{customer.id}"/>
 					<table class="table table-hover">
 						<thead>
 						<tr>
@@ -108,21 +110,21 @@
 							</tr>
 							<tr>
 								<td>
-									<ul class="list-unstyled">
+									<ul class="list-unstyled" th:if="${lineItem.item.activeMinimumPrice != null}">
 										<li th:each="pricingTier: ${lineItem.item.activeMinimumPrice.pricingTiers}">
 											<span class="font-lg" th:text="${pricingTier.tier}"></span>
 										</li>
 									</ul>
 								</td>
 								<td class="hidden-xs">
-									<ul class="list-unstyled">
+									<ul th:if="${lineItem.item.activeMinimumPrice != null}" class="list-unstyled">
 										<li th:each="pricingTier: ${lineItem.item.activeMinimumPrice.pricingTiers}">
 											<span class="font-lg" th:text="${pricingTier.price}"></span>
 										</li>
 									</ul>
 								</td>
 								<td>
-									<ul class="list-unstyled">
+									<ul class="list-unstyled" th:if="${lineItem.item.activeMinimumPrice != null}">
 										<li  th:each="pricingTier, pricingTierStat: ${lineItem.item.activeMinimumPrice.pricingTiers}">
 											<input type="hidden" th:field="*{quotationLineItems[__${stat.index}__].pricingTiers[__${pricingTierStat.index}__].id}"/>
 											<div class="input-group">
@@ -138,7 +140,10 @@
 							</th:block>
 						</tbody>
 					</table>
-					<button type="submit" name="finalise" th:value="finalise" class="pull-right btn btn-success"><i class="fa fa-fw fa-save"></i> Finalise</button>
+					<div class="btn-group pull-right">
+					<button th:if="${!message.hasErrors() and quotation.status==T(com.ptff.qsystem.data.QuotationStatus).DRAFT}" type="submit" name="finalise" th:value="finalise" class="pull-right btn btn-success"><i class="fa fa-fw fa-check"></i> Finalise</button>
+					<button th:if="${quotation.status==T(com.ptff.qsystem.data.QuotationStatus).DRAFT}" type="submit" name="save" th:value="save" class="pull-right btn btn-default"><i class="fa fa-fw fa-save"></i> Save</button>
+					</div>
 					</form>
 					</div>
 					</div>

@@ -19,11 +19,14 @@
 		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).ACTIVE)}" class="well well-sm bg-color-blue txt-color-white text-center">
 			<h5 th:text="${quotation.status}"></h5>
 		</div>
+		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).EXPIRED)}" class="well well-sm bg-color-red txt-color-white text-center">
+			<h5 th:text="${quotation.status}"></h5>
+		</div>
 		<h1 class="text-center txt-color-blueDark">Actions</h1>
 		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).DRAFT)}">
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}(quotationId=${quotation.id})}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/edit(quotationId=${quotation.id})}"><i class="fa fa-fw fa-edit"></i> Edit</a>
 				</div>
 			</div>
 			<div class="row">

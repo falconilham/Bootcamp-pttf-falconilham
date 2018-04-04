@@ -20,4 +20,8 @@ public class ItemPermit extends Item{
 	@NotEmpty
 	private String name;
 
+	
+	public String getName() {
+		return name;
+	}
 }
