@@ -1,5 +1,6 @@
 package com.ptff.qsystem.data;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -23,7 +25,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -54,12 +62,29 @@ public class Item {
 	@Column(name="status")
 	private ItemStatus status = ItemStatus.REQUESTED;
 	
+	@Column(name="create_date")
+	@CreatedDate
+	@Convert(converter = LocalDateTimePersistenceConverter.class)
+	private LocalDateTime createTime;
+	
+	@Column(name="create_user")
+	@CreatedBy
+	private String createUser;
+	
+	@Column(name="lastupdate_date")
+	@LastModifiedDate
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
+	private LocalDateTime lastUpdateTime;
+	
+	@Column(name="lastupdate_user")
+	@LastModifiedBy
+	private String lastUpdateUser;
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
-	private Set<LegalNote> legalNotes;
+	private Set<LegalNote> legalNotes = new HashSet<LegalNote>();
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
-	private Set<ProductFeature> productFeatures;
+	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="item_id")

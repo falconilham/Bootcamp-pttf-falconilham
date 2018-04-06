@@ -22,7 +22,7 @@ public class DashboardController {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	@RequestMapping("/")
+	@RequestMapping("")
 	public String showDashoard(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		

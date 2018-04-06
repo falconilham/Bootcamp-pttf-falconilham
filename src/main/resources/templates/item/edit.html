@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Items</li>
 					<li><a th:href="@{/item/{itemType}(itemType=${itemType.ordinal()})}" th:text="${itemType.description}" href="#">Permit</a></li>
-					<li>New</li>
+					<li th:text="${item.name}">-</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -42,13 +42,13 @@
 				<div class="well">
 				<th:block th:switch="${itemType.name()}">
 					  <div th:case="'PERMIT'">
-					     <!--/*/ <th:block th:include="/item/permit/form :: form(@{/item/{itemTypeId}(itemTypeId=${itemType.ordinal()})}, POST)"></th:block> /*/-->
+					     <!--/*/ <th:block th:include="/item/permit/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
 					  </div>
 					  <div th:case="'AIR_FREIGHT'">
-					     <!--/*/ <th:block th:include="/item/airfreight/form :: form(@{/item/{itemTypeId}(itemTypeId=${itemType.ordinal()})}, POST)"></th:block> /*/-->
+					     <!--/*/ <th:block th:include="/item/airfreight/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
 					  </div>
 					  <div th:case="'SEA_FREIGHT'">
-					     <!--/*/ <th:block th:include="/item/seafreight/form :: form(@{/item/{itemTypeId}(itemTypeId=${itemType.ordinal()})}, POST)"></th:block> /*/-->
+					     <!--/*/ <th:block th:include="/item/seafreight/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
 					  </div>
 				</th:block>	
 				</div>

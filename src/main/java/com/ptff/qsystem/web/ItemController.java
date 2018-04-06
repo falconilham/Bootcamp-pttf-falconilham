@@ -23,6 +23,8 @@ import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
 import com.ptff.qsystem.data.ProductFeature;
 import com.ptff.qsystem.data.ProductFeatureRepository;
+import com.ptff.qsystem.data.Seaport;
+import com.ptff.qsystem.data.SeaportRepository;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
 import com.ptff.qsystem.service.ItemService;
@@ -45,9 +47,18 @@ public class ItemController implements DefaultController{
 	@Autowired
 	private AirportRepository airportRepository;
 	
+	@Autowired
+	private SeaportRepository seaportRepository;
+	
+	
 	@ModelAttribute("airports")
     public List<Airport> airports() {
         return airportRepository.findAll();
+    }
+	
+	@ModelAttribute("seaports")
+    public List<Seaport> seaports() {
+        return seaportRepository.findAll();
     }
 	
 	@ModelAttribute("vendors")
@@ -100,6 +111,18 @@ public class ItemController implements DefaultController{
 		model.addAttribute("item", itemService.getItem( ItemType.values()[itemTypeId], itemId));
 		
 		return "item/show";
+	}
+	
+	@RequestMapping("/{itemId}/edit")
+	public String edit(
+			@PathVariable("itemTypeId")int itemTypeId,
+			@PathVariable("itemId")Long itemId,
+			Model model) {
+				
+		model.addAttribute("itemType", ItemType.values()[itemTypeId]);
+		model.addAttribute("item", itemService.getItem( ItemType.values()[itemTypeId], itemId));
+		
+		return "item/edit";
 	}
 
 	@RequestMapping(value="/{itemId}/legalnotes", method=RequestMethod.POST)

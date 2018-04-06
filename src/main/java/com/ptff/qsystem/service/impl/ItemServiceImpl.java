@@ -14,6 +14,8 @@ import com.ptff.qsystem.data.ItemAirFreightRepository;
 import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemRepository;
+import com.ptff.qsystem.data.ItemSeaFreight;
+import com.ptff.qsystem.data.ItemSeaFreightRepository;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
@@ -33,6 +35,9 @@ public class ItemServiceImpl implements ItemService {
 	
 	@Autowired
 	private ItemAirFreightRepository itemAirFreightRepository;
+
+	@Autowired
+	private ItemSeaFreightRepository itemSeaFreightRepository;
 	
 	@Autowired
 	private LegalNoteRepository legalNoteRepository;
@@ -43,7 +48,6 @@ public class ItemServiceImpl implements ItemService {
 	
 	public Page<Item> list(ItemType itemType, Pageable pageable) {
 		return getRepository(itemType).findAll(pageable);
-		
 	}
 	
 	@Override
@@ -54,6 +58,10 @@ public class ItemServiceImpl implements ItemService {
 			
 		case AIR_FREIGHT:
 			return new ItemAirFreight();
+		
+		case SEA_FREIGHT:
+			return new ItemSeaFreight();
+			
 			
 		default:
 			return null;
@@ -72,6 +80,10 @@ public class ItemServiceImpl implements ItemService {
 			
 		case AIR_FREIGHT:
 			return itemAirFreightRepository;
+		
+		case SEA_FREIGHT:
+			return itemSeaFreightRepository;
+				
 			
 		default:
 			return null;
