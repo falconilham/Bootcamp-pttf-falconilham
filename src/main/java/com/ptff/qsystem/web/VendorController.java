@@ -1,7 +1,5 @@
 package com.ptff.qsystem.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +26,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ptff.qsystem.data.CustomerHistory;
-import com.ptff.qsystem.data.Document;
-import com.ptff.qsystem.data.DocumentRepository;
+import com.ptff.qsystem.data.ItemPurchase;
+import com.ptff.qsystem.data.ItemPurchaseRepository;
 import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorContactPerson;
 import com.ptff.qsystem.data.VendorContactPersonRepository;
 import com.ptff.qsystem.data.VendorContactPersonStatus;
 import com.ptff.qsystem.data.VendorContactType;
-import com.ptff.qsystem.data.VendorDocument;
 import com.ptff.qsystem.data.VendorDocumentRepository;
 import com.ptff.qsystem.data.VendorHistory;
 import com.ptff.qsystem.data.VendorHistoryRepository;
@@ -61,7 +55,7 @@ public class VendorController implements DefaultController {
 	private StorageService storageService;
 	
 	@Autowired
-	private DocumentRepository documentRepository;
+	private ItemPurchaseRepository itemPurchaseRepository;
 	
 	@Autowired
 	private VendorDocumentRepository vendorDocumentRepository;
@@ -160,6 +154,8 @@ public class VendorController implements DefaultController {
 		model.addAttribute("vendordocuments", vendorDocumentRepository.findByVendor(vendorRepository.findOne(id)));
 		model.addAttribute("vendorhistories", vendorHistoryRepository.findByVendorOrderByCreateTimeDesc(vendor));
 		
+		List<ItemPurchase> itemPurchases = itemPurchaseRepository.findAllByVendor(vendor);
+		model.addAttribute("pricehistories", itemPurchases);
 
 		return "purchasing/vendor/show";
 	}

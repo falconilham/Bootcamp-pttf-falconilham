@@ -9,5 +9,6 @@ public interface ItemPurchaseRepository extends JpaRepository<ItemPurchase, Long
 	List<ItemPurchase> findAllByItemAndStatus(ItemPermit itemPermit, ItemPriceStatus itemPurchaseStatus);
 	List<ItemPurchase> findAllByItem(ItemPermit itemPermit);
 	List<ItemPurchase> findAllByVendorAndItem(Vendor vendor, ItemPermit itemPermit);
+	List<ItemPurchase> findAllByVendor(Vendor vendor);
     
 }

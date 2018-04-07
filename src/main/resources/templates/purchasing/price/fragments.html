@@ -40,6 +40,50 @@
 		</table>
     </div>
     
+    <div th:fragment="purchasePriceHistoryTable(itemPurchases)" th:remove="tag">
+    	<h3>Purchase Price History</h3>
+    	<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Item Type</th>
+					<th>Item</th>
+					<th colspan="3">Price(s)</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="itemPurchase, itemPurchaseStat : ${itemPurchases}">
+					<tr th:each="pricingTier, pricingTierStat : ${itemPurchase.pricingTiers}">
+						<td> 
+							<span th:if="${pricingTierStat.first}" class="text-left" th:text="${itemPurchase.item.itemType.description}"></span>
+						</td>
+						<td class="text-left">
+							<a th:if="${pricingTierStat.first}" th:href="@{/item/{itemTypeId}/{itemId}(itemId=${itemPurchase.item.id},itemTypeId=${itemPurchase.item.itemType.ordinal()})}" href="#" th:text="${itemPurchase.item.name}"></a>
+						</td>
+						<td class="text-center" th:if="${(pricingTier.lowerLimit == null and pricingTier.upperLimit == null)}" colspan="2">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.lowerLimit != null)}" th:text="${pricingTier.lowerLimit}">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.upperLimit != null)}" th:text="${pricingTier.upperLimit}">
+							ALL
+						</td>
+						<td class="text-center" th:if="${(pricingTier.upperLimit == null and pricingTier.lowerLimit  != null)}">
+							ALL
+						</td>
+						<td class="text-right" th:text="${'Rp. ' + #numbers.formatDecimal(pricingTier.price, 0, 'COMMA', 0, 'POINT')}">
+						
+						</td>
+						<td class="text-center" > 
+							<span th:if="${pricingTierStat.first}" th:text="${itemPurchase.item.status}"> </span>
+						</td>
+				</tr>
+				</th:block>
+			</tbody>
+		</table>
+    </div>
+    
     <div th:fragment="purchasePriceStatistics" th:remove="tag">
     	<h3>Statistics</h3>
     	<div class="well well-sm">
