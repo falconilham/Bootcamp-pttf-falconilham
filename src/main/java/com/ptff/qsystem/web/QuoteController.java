@@ -1,9 +1,16 @@
 package com.ptff.qsystem.web;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -44,6 +51,14 @@ import com.ptff.qsystem.data.Seaport;
 import com.ptff.qsystem.data.validator.QuotationValidator;
 import com.ptff.qsystem.data.validator.ValidationMessage;
 import com.ptff.qsystem.form.ItemSearchForm;
+import com.ptff.qsystem.service.impl.ReportService;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 @Controller
 public class QuoteController implements DefaultController {
@@ -63,6 +78,13 @@ public class QuoteController implements DefaultController {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	@Autowired
+	private ReportService reportService;
+	
+    @Autowired
+    private DataSource dbSource;
+
 	
 	@InitBinder("quotation")
 	public void setupBinder(WebDataBinder binder) {
@@ -332,6 +354,25 @@ public class QuoteController implements DefaultController {
 		quotationRepository.save(original);
 		
 		return "redirect:/quotations/{quotationId}";
+	}
+	
+	@RequestMapping(value="/quotations/{quotationId}/report")
+	public void printQuotationPdf(
+			@PathVariable("quotationId") Long id,
+			final HttpServletResponse response)  throws JRException, IOException, ClassNotFoundException, SQLException {
+		
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("title", "Employee Report");
+		parameters.put("minSalary", 15000.0);
+		parameters.put("condition", " LAST_NAME ='Smith' ORDER BY FIRST_NAME");
+		 
+		
+		InputStream quotationReportStream = getClass().getResourceAsStream("/report/pttf_quotation.jrxml");
+		JasperReport jasperReport = JasperCompileManager.compileReport(quotationReportStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dbSource.getConnection());
+		
+		reportService.writePdfReport(jasperPrint, response, "quotation");
+		
 	}
 	
 }

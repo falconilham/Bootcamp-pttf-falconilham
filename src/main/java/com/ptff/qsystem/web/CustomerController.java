@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,10 @@ import com.ptff.qsystem.data.CustomerHistoryRepository;
 import com.ptff.qsystem.data.CustomerRepository;
 import com.ptff.qsystem.data.CustomerStatus;
 import com.ptff.qsystem.data.DocumentRepository;
+import com.ptff.qsystem.data.ItemPurchase;
+import com.ptff.qsystem.data.Quotation;
+import com.ptff.qsystem.data.QuotationRepository;
+import com.ptff.qsystem.data.User;
 import com.ptff.qsystem.service.StorageService;
 
 
@@ -54,7 +59,7 @@ public class CustomerController implements DefaultController {
 	private StorageService storageService;
 	
 	@Autowired
-	private DocumentRepository documentRepository;
+	private QuotationRepository quotationRepository;
 	
 	@Autowired
 	private CustomerDocumentRepository customerDocumentRepository;
@@ -80,8 +85,9 @@ public class CustomerController implements DefaultController {
 	
 	@RequestMapping("/customers/new")
 	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
-	public String newRole(Model model) {
+	public String newCustomer(Model model) {
 		Customer customer = new Customer();
+		customer.setSalesperson((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		customer.setStatus(CustomerStatus.DRAFT);
 		
 		model.addAttribute("customer", customer);
@@ -149,6 +155,9 @@ public class CustomerController implements DefaultController {
 				.collect(Collectors.toSet()));
 		model.addAttribute("customerdocuments", customerDocumentRepository.findByCustomer(customer));
 		model.addAttribute("customerhistories", customerHistoryRepository.findByCustomerOrderByCreateTimeDesc(customer));
+		
+		List<Quotation> quotations = quotationRepository.findAllByCustomer(customer);
+		model.addAttribute("quotations", quotations);
 		
 		return "sale/customer/show";
 	}

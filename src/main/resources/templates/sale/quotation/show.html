@@ -51,7 +51,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
-									<h6>Customer</h6> <span class="text-right" th:text="${quotation.customer.name}"></span>
+									<h6>Customer</h6> <a th:href="@{/customers/{customerId}(customerId=${quotation.customer.id})}"> <span class="text-right" th:text="${quotation.customer.name}"></span></a>
 								</div>
 							</div>
 							<div class="row">

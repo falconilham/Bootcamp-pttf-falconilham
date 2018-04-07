@@ -248,6 +248,9 @@
 						<li class="">
 							<a href="#tab-history" data-toggle="tab" aria-expanded="true">History</a>
 						</li>
+						<li class="">
+							<a href="#tab-quotations" data-toggle="tab" aria-expanded="true">Quotations</a>
+						</li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-document">
@@ -296,6 +299,31 @@
 									<td th:text="${#temporals.format(history.createTime, 'dd/MMM/yyyy HH:mm:ss')}"></td>
 									<td th:text="${history.message}"></td>
 									<td th:text="${history.createUser}"></td>
+								</tr>
+							</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="tab-quotations">
+							<h6>Quotations</h6>
+							<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Reference</th>
+								<th>Quote Date</th>
+								<th>Expiry Date</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr th:each="quotation : ${quotations}">
+									<td><a th:href="@{/quotations/{quotationId}(quotationId=${quotation.id})}" href="#" th:text="${quotation.reference}"></a></td>
+									<td th:text="${#temporals.format(quotation.quoteDate, 'dd/MMM/yyyy')}"></td>
+									<td th:text="${#temporals.format(quotation.expiryDate, 'dd/MMM/yyyy')}"></td>
+									<td class="text-center" th:text="${quotation.status}"></td>
+									<td>
+										
+									</td>
 								</tr>
 							</tbody>
 							</table>
