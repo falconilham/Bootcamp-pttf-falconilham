@@ -63,7 +63,12 @@
 							  <div th:case="'TRUCKING'">
 							     <!--/*/ <th:block th:include="/item/trucking/fragments :: show"></th:block> /*/-->
 							  </div>
-							</th:block>	
+							  <div th:case="'ADDITIONAL'">
+							     <!--/*/ <th:block th:include="/item/additional/fragments :: show"></th:block> /*/-->
+							  </div>
+							
+							</th:block>
+							
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<h6>Description</h6> <span class="text-right" th:text="${item.description}"></span>

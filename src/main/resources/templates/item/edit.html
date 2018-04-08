@@ -50,6 +50,12 @@
 					  <div th:case="'SEA_FREIGHT'">
 					     <!--/*/ <th:block th:include="/item/seafreight/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
 					  </div>
+					  <div th:case="'TRUCKING'">
+					     <!--/*/ <th:block th:include="/item/trucking/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
+					  </div>
+					  <div th:case="'ADDITIONAL'">
+					     <!--/*/ <th:block th:include="/item/additional/form :: form(@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}, POST)"></th:block> /*/-->
+					  </div>
 				</th:block>	
 				</div>
 			</section>

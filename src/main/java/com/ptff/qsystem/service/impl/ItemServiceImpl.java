@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.ptff.qsystem.data.Item;
+import com.ptff.qsystem.data.ItemAdditional;
+import com.ptff.qsystem.data.ItemAdditionalRepository;
 import com.ptff.qsystem.data.ItemAirFreight;
 import com.ptff.qsystem.data.ItemAirFreightRepository;
 import com.ptff.qsystem.data.ItemPermit;
@@ -16,6 +18,8 @@ import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemRepository;
 import com.ptff.qsystem.data.ItemSeaFreight;
 import com.ptff.qsystem.data.ItemSeaFreightRepository;
+import com.ptff.qsystem.data.ItemTrucking;
+import com.ptff.qsystem.data.ItemTruckingRepository;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
@@ -40,6 +44,13 @@ public class ItemServiceImpl implements ItemService {
 	private ItemSeaFreightRepository itemSeaFreightRepository;
 	
 	@Autowired
+	private ItemAdditionalRepository itemAdditionalRepository;
+	
+	@Autowired
+	private ItemTruckingRepository itemTruckingRepository;
+	
+	
+	@Autowired
 	private LegalNoteRepository legalNoteRepository;
 	
 
@@ -62,6 +73,12 @@ public class ItemServiceImpl implements ItemService {
 		case SEA_FREIGHT:
 			return new ItemSeaFreight();
 			
+		case ADDITIONAL:
+			return new ItemAdditional();
+		
+		case TRUCKING:
+			return new ItemTrucking();
+				
 			
 		default:
 			return null;
@@ -84,6 +101,11 @@ public class ItemServiceImpl implements ItemService {
 		case SEA_FREIGHT:
 			return itemSeaFreightRepository;
 				
+		case ADDITIONAL:
+			return itemAdditionalRepository;
+		
+		case TRUCKING:
+			return itemTruckingRepository;
 			
 		default:
 			return null;

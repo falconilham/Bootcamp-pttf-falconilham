@@ -100,6 +100,11 @@
 									<i class="fa fa-lg fa-fw fa-life-saver"></i> Sea Freight
 								</a>
 							</li>
+							<li>
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/item/4}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-plus"></i> Additional
+								</a>
+							</li>
 						</ul>
 					</li>
 					<li>

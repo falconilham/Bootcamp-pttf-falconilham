@@ -1,0 +1,33 @@
+<div th:remove="tag" xmlns:th="http://www.thymeleaf.org">
+      
+    <div th:fragment="itemTable(itemType)" th:remove="tag">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th th:include="/forms/table :: sortable ('Name', 'name', ${items})"> </th>
+					<th th:include="/forms/table :: sortable ('Description', 'description', ${items})"> </th>
+					<th th:include="/forms/table :: sortable ('Status', 'status', ${items})"> </th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr th:each="item : ${items}">
+				<td><a th:href="@{/item/{itemTypeId}/{itemId}(itemTypeId=${itemType.ordinal()}, itemId=${item.id})}" th:text="${item.name}"></a></td>
+				<td th:text="${item.description}"></td>
+				<td th:text="${item.status}"></td>
+			</tr>
+			</tbody>
+		</table>
+		
+		<div th:unless="${items.totalPages} == 0">
+			<!--/*/ <th:block th:include="/forms/table :: paginate ('/item/${itemType.ordinal()}', ${items})"></th:block> /*/-->
+		</div>
+    </div>
+    
+    <div th:fragment="show" th:remove="tag">
+		<div class="row">
+			<div class="col-sm-12 col-md-12 has-feedback">
+				<h6>Name</h6> <span class="text-right" th:text="${item.name}"></span>
+			</div>
+		</div>
+    </div>
+</div>
