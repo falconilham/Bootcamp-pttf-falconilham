@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ptff.qsystem.data.ItemAdditional;
 import com.ptff.qsystem.data.ItemAdditionalRepository;
+import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemType;
 
 
@@ -41,14 +42,19 @@ public class ItemAdditionalController implements DefaultController{
 	@RequestMapping(value="/item/4/{itemId}", method=RequestMethod.POST)
 	public String update(
 					@PathVariable("itemId") Long itemId,
-					@ModelAttribute("item") @Valid ItemAdditional itemAdditional, BindingResult bindingResult, 
+					@ModelAttribute("item") @Valid ItemAdditional itemAdditionalForm, BindingResult bindingResult, 
 					Model model) {
-		LOGGER.info("Updating Item Sea Freight {} - {}", itemAdditional.getId(), itemAdditional.getDescription());
+		LOGGER.info("Updating Item Sea Freight {} - {}", itemAdditionalForm.getId(), itemAdditionalForm.getDescription());
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("itemType", ItemType.ADDITIONAL);
 			return "/item/edit";
 		}
+		
+		ItemAdditional itemAdditional = itemAdditionalRepository.findOne(itemId);
+		itemAdditional.setName(itemAdditionalForm.getName());
+		itemAdditional.setDescription(itemAdditionalForm.getDescription());
+		itemAdditional.setPricingUnit(itemAdditionalForm.getPricingUnit());
 		
 		itemAdditionalRepository.save(itemAdditional);
 		return "redirect:/item/4/{itemId}";

@@ -18,6 +18,7 @@ import com.ptff.qsystem.data.ItemPermitRepository;
 import com.ptff.qsystem.data.ItemRepository;
 import com.ptff.qsystem.data.ItemSeaFreight;
 import com.ptff.qsystem.data.ItemSeaFreightRepository;
+import com.ptff.qsystem.data.ItemStatus;
 import com.ptff.qsystem.data.ItemTrucking;
 import com.ptff.qsystem.data.ItemTruckingRepository;
 import com.ptff.qsystem.data.ItemType;
@@ -142,6 +143,20 @@ public class ItemServiceImpl implements ItemService {
 		Item item = itemRepository.findOne(itemId);
 		ProductFeature productFeature = productFeatureRepository.findOne(productFeatureId);
 		item.getProductFeatures().remove(productFeature);
+		itemRepository.save(item);
+	}
+
+	@Override
+	public void submitForApproval(Long itemId) {
+		Item item = itemRepository.findOne(itemId);
+		item.setStatus(ItemStatus.AWAITING_APPROVAL);
+		itemRepository.save(item);
+	}
+	
+	@Override
+	public void availableForTransaction(Long itemId) {
+		Item item = itemRepository.findOne(itemId);
+		item.setStatus(ItemStatus.ACTIVE);
 		itemRepository.save(item);
 	}
 }

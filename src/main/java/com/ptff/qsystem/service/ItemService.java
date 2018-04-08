@@ -17,4 +17,7 @@ public interface ItemService {
 
 	public void removeLegalNote(Long itemId, Long legalNoteId);
 	public void removeProductFeature(Long itemId, Long productFeatureId);
+
+	public void submitForApproval(Long itemId);
+	public void availableForTransaction(Long itemId);
 }

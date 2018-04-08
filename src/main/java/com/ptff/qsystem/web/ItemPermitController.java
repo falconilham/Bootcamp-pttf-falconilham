@@ -42,14 +42,19 @@ public class ItemPermitController implements DefaultController {
 	@RequestMapping(value="/item/3/{itemId}", method=RequestMethod.POST)
 	public String update(
 					@PathVariable("itemId") Long itemId,
-					@ModelAttribute("item") @Valid ItemPermit itemPermit, BindingResult bindingResult, 
+					@ModelAttribute("item") @Valid ItemPermit itemPermitForm, BindingResult bindingResult, 
 					Model model) {
-		LOGGER.info("Updating Item Permit {} - {}", itemPermit.getId(), itemPermit.getDescription());
+		LOGGER.info("Updating Item Permit {} - {}", itemPermitForm.getId(), itemPermitForm.getDescription());
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("itemType", ItemType.PERMIT);
 			return "/item/edit";
 		}
+		
+		ItemPermit itemPermit = itemPermitRepository.findOne(itemId);
+		itemPermit.setName(itemPermitForm.getName());
+		itemPermit.setDescription(itemPermitForm.getDescription());
+		itemPermit.setPricingUnit(itemPermitForm.getPricingUnit());
 		
 		itemPermitRepository.save(itemPermit);
 		return "redirect:/item/3/{itemId}";

@@ -21,8 +21,11 @@ import com.ptff.qsystem.data.ItemPermit;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.LegalNote;
 import com.ptff.qsystem.data.LegalNoteRepository;
+import com.ptff.qsystem.data.PricingUnit;
+import com.ptff.qsystem.data.PricingUnitRepository;
 import com.ptff.qsystem.data.ProductFeature;
 import com.ptff.qsystem.data.ProductFeatureRepository;
+import com.ptff.qsystem.data.QuotationLineItemRepository;
 import com.ptff.qsystem.data.Seaport;
 import com.ptff.qsystem.data.SeaportRepository;
 import com.ptff.qsystem.data.Vendor;
@@ -34,6 +37,9 @@ import com.ptff.qsystem.service.ItemService;
 public class ItemController implements DefaultController{
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private QuotationLineItemRepository quotationLineItemRepository;
 	
 	@Autowired
 	private VendorRepository vendorRepository;
@@ -50,6 +56,8 @@ public class ItemController implements DefaultController{
 	@Autowired
 	private SeaportRepository seaportRepository;
 	
+	@Autowired
+	private PricingUnitRepository pricingUnitRepository;
 	
 	@ModelAttribute("airports")
     public List<Airport> airports() {
@@ -74,6 +82,11 @@ public class ItemController implements DefaultController{
 	@ModelAttribute("productFeatures")
     public List<ProductFeature> productFeatures() {
         return productFeatureRepository.findAll();
+    }
+	
+	@ModelAttribute("pricingUnits")
+    public List<PricingUnit> pricingUnits() {
+        return pricingUnitRepository.findAll();
     }
 	
 	@RequestMapping("")
@@ -109,7 +122,7 @@ public class ItemController implements DefaultController{
 				
 		model.addAttribute("itemType", ItemType.values()[itemTypeId]);
 		model.addAttribute("item", itemService.getItem( ItemType.values()[itemTypeId], itemId));
-		
+		model.addAttribute("quotations", quotationLineItemRepository.findAllByItem(itemService.getItem( ItemType.values()[itemTypeId], itemId)));
 		return "item/show";
 	}
 	
@@ -123,6 +136,28 @@ public class ItemController implements DefaultController{
 		model.addAttribute("item", itemService.getItem( ItemType.values()[itemTypeId], itemId));
 		
 		return "item/edit";
+	}
+	
+	@RequestMapping("/{itemId}/submit")
+	public String submitForApproval(
+			@PathVariable("itemTypeId")int itemTypeId,
+			@PathVariable("itemId")Long itemId,
+			Model model) {
+				
+		itemService.submitForApproval(itemId);
+		
+		return "redirect:/item/"+itemTypeId+"/"+itemId;
+	}
+	
+	@RequestMapping("/{itemId}/activate")
+	public String activate(
+			@PathVariable("itemTypeId")int itemTypeId,
+			@PathVariable("itemId")Long itemId,
+			Model model) {
+				
+		itemService.availableForTransaction(itemId);
+		
+		return "redirect:/item/"+itemTypeId+"/"+itemId;
 	}
 
 	@RequestMapping(value="/{itemId}/legalnotes", method=RequestMethod.POST)

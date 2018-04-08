@@ -44,14 +44,20 @@ public class ItemAirFreightController implements DefaultController {
 	@RequestMapping(value="/item/0/{itemId}", method=RequestMethod.POST)
 	public String update(
 					@PathVariable("itemId") Long itemId,
-					@ModelAttribute("item") @Valid ItemAirFreight itemAirFreight, BindingResult bindingResult, 
+					@ModelAttribute("item") @Valid ItemAirFreight itemAirFreightForm, BindingResult bindingResult, 
 					Model model) {
-		LOGGER.info("Updating Item Sea Freight {} - {}", itemAirFreight.getId(), itemAirFreight.getDescription());
+		LOGGER.info("Updating Item Sea Freight {} - {}", itemAirFreightForm.getId(), itemAirFreightForm.getDescription());
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("itemType", ItemType.AIR_FREIGHT);
 			return "/item/edit";
 		}
+		
+		ItemAirFreight itemAirFreight = itemAirFreightRepository.findOne(itemId);
+		itemAirFreight.setOrigin(itemAirFreightForm.getOrigin());
+		itemAirFreight.setDestination(itemAirFreightForm.getDestination());
+		itemAirFreight.setDescription(itemAirFreightForm.getDescription());
+		itemAirFreight.setPricingUnit(itemAirFreightForm.getPricingUnit());
 		
 		itemAirFreightRepository.save(itemAirFreight);
 		return "redirect:/item/0/{itemId}";

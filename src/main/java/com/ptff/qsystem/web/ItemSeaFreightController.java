@@ -42,14 +42,20 @@ public class ItemSeaFreightController implements DefaultController{
 	@RequestMapping(value="/item/1/{itemId}", method=RequestMethod.POST)
 	public String update(
 					@PathVariable("itemId") Long itemId,
-					@ModelAttribute("item") @Valid ItemSeaFreight itemSeaFreight, BindingResult bindingResult, 
+					@ModelAttribute("item") @Valid ItemSeaFreight itemSeaFreightForm, BindingResult bindingResult, 
 					Model model) {
-		LOGGER.info("Updating Item Sea Freight {} - {}", itemSeaFreight.getId(), itemSeaFreight.getDescription());
+		LOGGER.info("Updating Item Sea Freight {} - {}", itemSeaFreightForm.getId(), itemSeaFreightForm.getDescription());
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("itemType", ItemType.SEA_FREIGHT);
 			return "/item/edit";
 		}
+		
+		ItemSeaFreight itemSeaFreight = itemSeaFreightRepository.findOne(itemId);
+		itemSeaFreight.setOrigin(itemSeaFreightForm.getOrigin());
+		itemSeaFreight.setDestination(itemSeaFreightForm.getDestination());
+		itemSeaFreight.setDescription(itemSeaFreightForm.getDescription());
+		itemSeaFreight.setPricingUnit(itemSeaFreightForm.getPricingUnit());
 		
 		itemSeaFreightRepository.save(itemSeaFreight);
 		return "redirect:/item/1/{itemId}";

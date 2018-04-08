@@ -290,7 +290,7 @@ public class QuoteController implements DefaultController {
 			QuotationLineItem qli = quotation.getLineItem(qliToSave.getId());
 			
 			// set the price tiers
-			for (int j=0; j<qliToSave.getPricingTiers().size(); j++) {
+			for (int j=0; j<qli.getPricingTiers().size(); j++) {
 				QuotationPricingTier qpt = qli.getPricingTiers().get(j);
 				QuotationPricingTier qptToSave = qliToSave.getPriceTier(qpt.getId());
 				qptToSave.setPrice(qpt.getPrice());

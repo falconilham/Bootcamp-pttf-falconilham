@@ -5,7 +5,7 @@
             <div th:substituteby="/forms/controls :: label"></div>
             <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">
                 <select th:field="*{__${fieldName}__}" th:disabled="${fieldDisabled}?: 'false'" style="width: 100%;">
-                	<option th:each="option : ${pricingunits}" th:value="${option.id}" th:text="${option.name}" ></option>
+                	<option th:each="option : ${pricingUnits}" th:value="${option.id}" th:text="${option.name}" ></option>
             	</select>
             	<div th:substituteby="/forms/controls :: error"></div>
             </div>
