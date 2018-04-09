@@ -40,6 +40,21 @@
         <!-- plugin -->
         <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
 	</properties>
+	
+	<distributionManagement>
+	    <repository>
+	        <id>central</id>
+	        <name>jaspersoft-releases</name>
+	        <url>https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases</url>
+	    </repository>
+	</distributionManagement>
+	
+	<repositories>
+	    <repository>
+	      <id>jaspersoft</id>
+	      <url>https://jaspersoft.artifactoryonline.com/jaspersoft/webapp/#/jr-ce-releases/</url>
+	    </repository>
+	 </repositories>
 
 	<dependencies>
 		<dependency>
@@ -151,15 +166,25 @@
 		<dependency>
     		<groupId>net.sf.jasperreports</groupId>
     		<artifactId>jasperreports</artifactId>
-    		<version>5.6.1</version>
+    		<version>6.5.1</version>
 		</dependency>
-
 		<!-- http://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
 		<dependency>
 		    <groupId>net.sf.jasperreports</groupId>
 		    <artifactId>jasperreports-fonts</artifactId>
 		    <version>6.0.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-functions</artifactId>
+		    <version>6.5.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+		<dependency>
+		    <groupId>joda-time</groupId>
+		    <artifactId>joda-time</artifactId>
+		</dependency>
+				
 	</dependencies>
 
     <dependencyManagement>
@@ -173,7 +198,7 @@
     </dependencyManagement>
     
 	<build>
-		<plugins>
+		<plugins> 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

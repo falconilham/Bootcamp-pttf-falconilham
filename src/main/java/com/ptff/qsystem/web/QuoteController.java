@@ -140,15 +140,22 @@ public class QuoteController implements DefaultController {
 	@RequestMapping(value="/quotations/{quotationId}", method=RequestMethod.POST)
 	public String saveQuotationDetail(
 			@PathVariable("quotationId") Long id, 
-			@ModelAttribute("quotation") @Valid Quotation quotation,
+			@ModelAttribute("quotation") @Valid Quotation quotationForm,
 			BindingResult bindingResult,
 			Model model) {
-		LOGGER.info("Saving Quotation " + quotation.getReference());
+		LOGGER.info("Saving Quotation " + quotationForm.getReference());
+		
 		
 		if (bindingResult.hasErrors()) {
 			return "sale/quotation/edit";
 		}
-				
+
+		Quotation quotation = quotationRepository.findOne(quotationForm.getId());
+		quotation.setReference(quotationForm.getReference());
+		quotation.setCustomer(quotationForm.getCustomer());
+		quotation.setQuoteDate(quotationForm.getQuoteDate());
+		quotation.setExpiryDate(quotationForm.getExpiryDate());
+		
 		quotation = quotationRepository.save(quotation);
 		return "redirect:/quotations/{quotationId}";
 	}
@@ -362,9 +369,7 @@ public class QuoteController implements DefaultController {
 			final HttpServletResponse response)  throws JRException, IOException, ClassNotFoundException, SQLException {
 		
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("title", "Employee Report");
-		parameters.put("minSalary", 15000.0);
-		parameters.put("condition", " LAST_NAME ='Smith' ORDER BY FIRST_NAME");
+		parameters.put("quotationId", id);
 		 
 		
 		InputStream quotationReportStream = getClass().getResourceAsStream("/report/pttf_quotation.jrxml");

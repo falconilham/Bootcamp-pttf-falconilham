@@ -53,12 +53,7 @@
 		<div th:if="${(quotation.status == T(com.ptff.qsystem.data.QuotationStatus).ACTIVE)}">
 			<div class="row">
 				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/download(quotationId=${quotation.id})}"><i class="fa fa-fw fa-download"></i> Download</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-12 col-md-12 has-feedback">
-					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/download(quotationId=${quotation.id})}"><i class="fa fa-fw fa-envelope"></i> Send Email</a>
+					<a class="btn btn-lg btn-block btn-default text-left" th:href="@{/quotations/{quotationId}/report(quotationId=${quotation.id})}"><i class="fa fa-fw fa-download"></i> Download</a>
 				</div>
 			</div>
 			<div class="row">
