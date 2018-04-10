@@ -195,7 +195,7 @@ public class ItemController implements DefaultController{
 		return "redirect:/item/"+itemTypeId+"/"+itemId;
 	}
 	
-	@RequestMapping(value="/{itemId}/productfeatures/{legalNoteId}/remove")
+	@RequestMapping(value="/{itemId}/productfeatures/{productFeatureId}/remove")
 	public String removeProductFeature(
 				@PathVariable("itemTypeId")int itemTypeId,
 				@PathVariable("itemId")Long itemId,

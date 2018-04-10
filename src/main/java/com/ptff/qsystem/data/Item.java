@@ -85,10 +85,10 @@ public class Item {
 	@LastModifiedBy
 	private String lastUpdateUser;
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<LegalNote> legalNotes = new HashSet<LegalNote>();
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<ProductFeature> productFeatures = new HashSet<ProductFeature>();
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
