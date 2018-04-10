@@ -48,6 +48,7 @@ import com.ptff.qsystem.data.QuotationProductType;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
 import com.ptff.qsystem.data.Seaport;
+import com.ptff.qsystem.data.SettingsRepository;
 import com.ptff.qsystem.data.validator.QuotationValidator;
 import com.ptff.qsystem.data.validator.ValidationMessage;
 import com.ptff.qsystem.form.ItemSearchForm;
@@ -74,10 +75,10 @@ public class QuoteController implements DefaultController {
 	private QuotationValidator quotationValidator;
 	
 	@Autowired
-	private QuotationLineItemRepository quotationLineItemRepository;
+	private ItemRepository itemRepository;
 	
 	@Autowired
-	private ItemRepository itemRepository;
+	private SettingsRepository settingRepository;
 	
 	@Autowired
 	private ReportService reportService;
@@ -110,7 +111,12 @@ public class QuoteController implements DefaultController {
 	
 	@RequestMapping("/quotations/new")
 	public String newQuotation(Model model) {
-		model.addAttribute("quotation", new Quotation());
+		// Set Defaults
+		Quotation quotation = new Quotation();
+		quotation.setQuoteDate(LocalDate.now());
+		quotation.setExpiryDate(LocalDate.now().plusDays(settingRepository.findOne("DEFAULT_QUOTATION_EXPIRATION_DATE").getValueAsInteger()));
+		
+		model.addAttribute("quotation", quotation);
 		
 		return "sale/quotation/new";
 	}
@@ -324,7 +330,7 @@ public class QuoteController implements DefaultController {
 		Quotation newQuotation = new Quotation();
 		newQuotation.setReference(original.getReference() + " (Copy)");
 		newQuotation.setQuoteDate(LocalDate.now());
-		newQuotation.setExpiryDate(LocalDate.now().plusDays(30));
+		newQuotation.setExpiryDate(LocalDate.now().plusDays(settingRepository.findOne("DEFAULT_QUOTATION_EXPIRATION_DATE").getValueAsInteger()));
 		newQuotation.setCustomer(original.getCustomer());
 		newQuotation.setStatus(QuotationStatus.DRAFT);
 		for (QuotationLineItem qli: original.getQuotationLineItems()) {
