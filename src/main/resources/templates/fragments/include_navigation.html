@@ -69,6 +69,11 @@
 								</a>
 							</li>
 							<li>
+								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/productfeatures}" href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-star"></i> Product Features
+								</a>
+							</li>
+							<li>
 								<a sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_SU')" th:href="@{/legalnotes}" href="index.html" title="blank_">
 									<i class="fa fa-lg fa-fw fa-legal"></i> Legal Note
 								</a>

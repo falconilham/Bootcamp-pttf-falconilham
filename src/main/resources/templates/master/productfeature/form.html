@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="form(formAction, method)">
-		<form id="productFeatureForm" method="post" novalidate="novalidate" th:object="${note}" th:action="${formAction}" class="bv-form">
+		<form id="productFeatureForm" method="post" novalidate="novalidate" th:object="${feature}" th:action="${formAction}" class="bv-form">
 			
 			<fieldset>
 				<legend>Product Feature</legend>
