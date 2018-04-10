@@ -90,6 +90,7 @@
 				<tr>
 					<th>Item Type</th>
 					<th>Item</th>
+					<th>Pricing Unit</th>
 					<th colspan="3">Price(s)</th>
 					<th>Status</th>
 				</tr>
@@ -102,6 +103,9 @@
 						</td>
 						<td class="text-left">
 							<a th:if="${pricingTierStat.first}" th:href="@{/item/{itemTypeId}/{itemId}(itemId=${itemPurchase.item.id},itemTypeId=${itemPurchase.item.itemType.ordinal()})}" href="#" th:text="${itemPurchase.item.name}"></a>
+						</td>
+						<td>
+							<span th:if="${pricingTierStat.first}" th:text="${itemPurchase.item.pricingUnit.description}"></span>
 						</td>
 						<td class="text-center" th:if="${(pricingTier.lowerLimit == null and pricingTier.upperLimit == null)}" colspan="2">
 							ALL
