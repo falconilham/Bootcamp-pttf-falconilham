@@ -48,13 +48,18 @@
 						<thead>
 						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 							<th th:include="forms/table :: sortable ('Name', 'name', ${customers})"> </th>
+							<th>Sales People</th>
 							<th th:include="forms/table :: sortable ('Status', 'status', ${customers})"> </th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr th:each="customer : ${customers}">
 								<td><a th:href="@{|customers/${customer.id}|}" th:text="${customer.name}"></a></td>
-								
+								<td>
+									<ol class="list-unstyled">
+										<li th:each="salesperson : ${customer.salespersons}" th:text="${salesperson.fullName}"></li>
+									</ol>
+								</td>
 								<td>
 									<div th:if="${customer.status == T(com.ptff.qsystem.data.CustomerStatus).DRAFT}">
 									   <span  th:text="${customer.status}" class="label label-default">Draft</span>
