@@ -4,10 +4,10 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th th:include="/forms/table :: sortable ('Origin', 'origin.name', ${items})"> </th>
-					<th th:include="/forms/table :: sortable ('Destination', 'destination.name', ${items})"> </th>
-					<th th:include="/forms/table :: sortable ('Description', 'description', ${items})"> </th>
-					<th th:include="/forms/table :: sortable ('Status', 'status', ${items})"> </th>
+					<th th:include="forms/table :: sortable ('Origin', 'origin.name', ${items})"> </th>
+					<th th:include="forms/table :: sortable ('Destination', 'destination.name', ${items})"> </th>
+					<th th:include="forms/table :: sortable ('Description', 'description', ${items})"> </th>
+					<th th:include="forms/table :: sortable ('Status', 'status', ${items})"> </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -21,7 +21,7 @@
 		</table>
 		
 		<div th:unless="${items.totalPages} == 0">
-			<!--/*/ <th:block th:include="/forms/table :: paginate ('/item/${itemType.value}', ${items})"></th:block> /*/-->
+			<!--/*/ <th:block th:include="forms/table :: paginate ('/item/${itemType.value}', ${items})"></th:block> /*/-->
 		</div>
     </div>
     

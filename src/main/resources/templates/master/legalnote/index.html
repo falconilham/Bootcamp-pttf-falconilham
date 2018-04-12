@@ -47,8 +47,8 @@
 						<table class="table table-striped">
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th th:include="/forms/table :: sortable ('Name', 'name', ${notes})"></th>
-								<th th:include="/forms/table :: sortable ('Description', 'description', ${notes})"></th>
+								<th th:include="forms/table :: sortable ('Name', 'name', ${notes})"></th>
+								<th th:include="forms/table :: sortable ('Description', 'description', ${notes})"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,7 +60,7 @@
 						</table>
 						
 						<div th:unless="${notes.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/legalnotes', ${notes})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/legalnotes', ${notes})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

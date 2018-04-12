@@ -4,7 +4,7 @@
 	<div th:fragment="form(formAction)">
 		<form id="itemPermitForm" method="post" novalidate="novalidate" th:object="${itemPurchase}" th:action="${formAction}" class="bv-form">
 			
-			<!--/*/ <th:block th:include="/forms/controls :: globalError"></th:block> /*/-->
+			<!--/*/ <th:block th:include="forms/controls :: globalError"></th:block> /*/-->
 		
 			<fieldset>
 				<legend><span th:text="${itemType}"></span> - Purchase Price</legend>
@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-6 has-feedback">
 						<div class="form-group">
-			            	<div th:include="/purchasing/vendor/_controls :: vendors" th:with="fieldLabel='Vendor', fieldName='vendor'" th:remove="tag"></div>
+			            	<div th:include="purchasing/vendor/_controls :: vendors" th:with="fieldLabel='Vendor', fieldName='vendor'" th:remove="tag"></div>
 			        	</div>
 					</div>
 				</div>

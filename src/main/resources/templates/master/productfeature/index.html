@@ -47,8 +47,8 @@
 						<table class="table table-striped">
 						<thead>
 							<tr>
-								<th th:include="/forms/table :: sortable ('Name', 'name', ${features})"></th>
-								<th th:include="/forms/table :: sortable ('Description', 'description', ${features})"></th>
+								<th th:include="forms/table :: sortable ('Name', 'name', ${features})"></th>
+								<th th:include="forms/table :: sortable ('Description', 'description', ${features})"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,7 +60,7 @@
 						</table>
 						
 						<div th:unless="${features.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/productfeatures', ${features})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/productfeatures', ${features})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

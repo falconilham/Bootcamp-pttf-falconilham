@@ -52,19 +52,19 @@
 							<legend th:text="${itemType.description}">Permit</legend>
 							<th:block th:switch="${itemType.name()}">
 							  <div th:case="'PERMIT'">
-							     <!--/*/ <th:block th:include="/item/permit/fragments :: show"></th:block> /*/-->
+							     <!--/*/ <th:block th:include="item/permit/fragments :: show"></th:block> /*/-->
 							  </div>
 							  <div th:case="'AIR_FREIGHT'">
-							     <!--/*/ <th:block th:include="/item/airfreight/fragments :: show"></th:block> /*/-->
+							     <!--/*/ <th:block th:include="item/airfreight/fragments :: show"></th:block> /*/-->
 							  </div>
 							  <div th:case="'SEA_FREIGHT'">
-							     <!--/*/ <th:block th:include="/item/seafreight/fragments :: show"></th:block> /*/-->
+							     <!--/*/ <th:block th:include="item/seafreight/fragments :: show"></th:block> /*/-->
 							  </div>
 							  <div th:case="'TRUCKING'">
-							     <!--/*/ <th:block th:include="/item/trucking/fragments :: show"></th:block> /*/-->
+							     <!--/*/ <th:block th:include="item/trucking/fragments :: show"></th:block> /*/-->
 							  </div>
 							  <div th:case="'ADDITIONAL'">
-							     <!--/*/ <th:block th:include="/item/additional/fragments :: show"></th:block> /*/-->
+							     <!--/*/ <th:block th:include="item/additional/fragments :: show"></th:block> /*/-->
 							  </div>
 							
 							</th:block>
@@ -104,7 +104,7 @@
 						</fieldset>
 					</div>
 					<div class="col-sm-12 col-md-4 has-feedback">
-						<!--/*/ <th:block th:include="/item/action :: action(${itemType.ordinal()})"></th:block> /*/-->
+						<!--/*/ <th:block th:include="item/action :: action(${itemType.ordinal()})"></th:block> /*/-->
 					</div>
 					</div>
 				</div>
@@ -122,10 +122,10 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tab-purchaseprice">
-								<!--/*/ <th:block th:include="/purchasing/price/fragments :: purchasePriceTable(${item})"></th:block> /*/-->
+								<!--/*/ <th:block th:include="purchasing/price/fragments :: purchasePriceTable(${item})"></th:block> /*/-->
 							</div>
 							<div class="tab-pane" id="tab-purchasepricehistory">
-								<!--/*/ <th:block th:include="/purchasing/price/fragments :: vendorPurchasePriceHistoryTable(${item})"></th:block> /*/-->
+								<!--/*/ <th:block th:include="purchasing/price/fragments :: vendorPurchasePriceHistoryTable(${item})"></th:block> /*/-->
 							</div>
 						</div>
 						</div>
@@ -141,10 +141,10 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tab-minimumprice">
-								<!--/*/ <th:block th:include="/sale/price/fragments :: minimumPriceTable(${item})"></th:block> /*/-->
+								<!--/*/ <th:block th:include="sale/price/fragments :: minimumPriceTable(${item})"></th:block> /*/-->
 							</div>
 							<div class="tab-pane" id="tab-minimumpricehistory">
-								<!--/*/ <th:block th:include="/sale/price/fragments :: minimumPriceHistoryTable(${item})"></th:block> /*/-->
+								<!--/*/ <th:block th:include="sale/price/fragments :: minimumPriceHistoryTable(${item})"></th:block> /*/-->
 							</div>
 						</div>
 						</div>
@@ -205,7 +205,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="col-sm-12 col-md-12 has-feedback">
-						            	<div th:include="/master/legalnote/_controls :: legalNotesNoObject" th:with="fieldLabel='Legal Note', fieldName='legalNote'" th:remove="tag"></div>
+						            	<div th:include="master/legalnote/_controls :: legalNotesNoObject" th:with="fieldLabel='Legal Note', fieldName='legalNote'" th:remove="tag"></div>
 						        	</div>
 								</div>
 							</div>
@@ -237,7 +237,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="col-sm-12 col-md-12 has-feedback">
-						            	<div th:include="/master/productFeature/_controls :: productFeaturesNoObject" th:with="fieldLabel='Product Feature', fieldName='productFeature'" th:remove="tag"></div>
+						            	<div th:include="master/productFeature/_controls :: productFeaturesNoObject" th:with="fieldLabel='Product Feature', fieldName='productFeature'" th:remove="tag"></div>
 						        	</div>
 								</div>
 							</div>

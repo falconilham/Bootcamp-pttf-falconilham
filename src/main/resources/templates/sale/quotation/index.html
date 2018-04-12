@@ -48,11 +48,11 @@
 						<thead>
 						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th>
-								<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th>
-								<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th>
-								<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th>
-								<th th:include="/forms/table :: sortable ('Status', 'status', ${quotations})"> </th>
+								<th th:include="forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th>
+								<th th:include="forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th>
+								<th th:include="forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th>
+								<th th:include="forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th>
+								<th th:include="forms/table :: sortable ('Status', 'status', ${quotations})"> </th>
 							</tr>
 						</tr>
 						</thead>
@@ -68,7 +68,7 @@
 						</table>
 						
 						<div th:unless="${quotations.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/quotations', ${quotations})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/quotations', ${quotations})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

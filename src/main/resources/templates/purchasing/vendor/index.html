@@ -47,8 +47,8 @@
 						<table class="table table-striped">
 						<thead>
 						<tr>
-							<th th:include="/forms/table :: sortable ('Name', 'name', ${vendors})"></th>
-							<th th:include="/forms/table :: sortable ('Status', 'status', ${vendors})">Status</th>
+							<th th:include="forms/table :: sortable ('Name', 'name', ${vendors})"></th>
+							<th th:include="forms/table :: sortable ('Status', 'status', ${vendors})">Status</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -74,7 +74,7 @@
 						</table>
 						
 						<div th:unless="${vendors.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/vendors', ${vendors})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/vendors', ${vendors})"></th:block> /*/-->
 						</div>
 
 						</div>

@@ -7,10 +7,10 @@
 		<thead>
 		<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 <!-- 			<tr th:with="currentURL=(${#httpServletRequest.requestURI})"> -->
-<!-- 				<th th:include="/forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th> -->
-<!-- 				<th th:include="/forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th> -->
-<!-- 				<th th:include="/forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th> -->
-<!-- 				<th th:include="/forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th> -->
+<!-- 				<th th:include="forms/table :: sortable ('Reference', 'reference', ${quotations})"> </th> -->
+<!-- 				<th th:include="forms/table :: sortable ('Customer', 'customer.name', ${quotations})"> </th> -->
+<!-- 				<th th:include="forms/table :: sortable ('Quotation Date', 'quoteDate', ${quotations})"> </th> -->
+<!-- 				<th th:include="forms/table :: sortable ('Expiry Date', 'expiryDate', ${quotations})"> </th> -->
 <!-- 			</tr> -->
 		</tr>
 		</thead>
@@ -28,7 +28,7 @@
 		</table>
 		
 		<div th:unless="${items.totalPages} == 0">
-			<!--/*/ <th:block th:include="/forms/table :: paginate (${formAction}, ${items})"></th:block> /*/-->
+			<!--/*/ <th:block th:include="forms/table :: paginate (${formAction}, ${items})"></th:block> /*/-->
 		</div>
 	</div>
 

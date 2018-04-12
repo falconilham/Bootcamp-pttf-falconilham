@@ -41,10 +41,10 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="/item/permit/search_form :: searchForm(@{/quotations/{id}/permit(id=${quotation.id})})"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="item/permit/search_form :: searchForm(@{/quotations/{id}/permit(id=${quotation.id})})"></th:block> /*/-->
 				</div>
 				<div class="well" th:if="${items != null}">
-    				<!--/*/ <th:block th:include="/sale/quotation/search_result :: searchResult(@{/quotations/{id}/permit(id=${quotation.id})})"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="sale/quotation/search_result :: searchResult(@{/quotations/{id}/permit(id=${quotation.id})})"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

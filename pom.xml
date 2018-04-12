@@ -39,15 +39,11 @@
 
         <!-- plugin -->
         <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
+        
+        <!-- Beanstalker-->
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <beanstalk.versionLabel>${maven.build.timestamp}</beanstalk.versionLabel>
 	</properties>
-	
-	<distributionManagement>
-	    <repository>
-	        <id>central</id>
-	        <name>jaspersoft-releases</name>
-	        <url>https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases</url>
-	    </repository>
-	</distributionManagement>
 	
 	<repositories>
 	    <repository>
@@ -61,10 +57,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.flywaydb</groupId> -->
-<!-- 			<artifactId>flyway-core</artifactId> -->
-<!-- 		</dependency> -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
@@ -202,7 +195,36 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
+			<plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <dotGitDirectory>../.git</dotGitDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>br.com.ingenieux</groupId>
+                <artifactId>beanstalk-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                	<serverId>pttf.aws.amazon.com</serverId>
+                    <regionName>ap-southeast-1</regionName>
+                    <applicationName>qsystem</applicationName>
+                    <s3Bucket>qsystem</s3Bucket>
+                    <s3Key>build/${project.artifactId}/${project.build.finalName}.jar</s3Key>
+                    <cnamePrefix>qsystemprod</cnamePrefix>
+                    <environmentName>production</environmentName>
+                    <environmentRef>production</environmentRef>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 

@@ -45,7 +45,7 @@
 						<table class="table table-striped">
 						<thead>
 						<tr>
-							<th th:include="/forms/table :: sortable ('Role Name', 'name', ${roles})"> </th>
+							<th th:include="forms/table :: sortable ('Role Name', 'name', ${roles})"> </th>
 						</tr>
 						</thead>
 						<tbody>
@@ -55,7 +55,7 @@
 						</tbody>
 						</table>
 						<div th:unless="${roles.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/roles', ${roles})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/roles', ${roles})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

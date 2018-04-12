@@ -49,8 +49,8 @@
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 								
-								<th th:include="/forms/table :: sortable ('Code', 'code', ${countries})"> </th>
-								<th th:include="/forms/table :: sortable ('Name', 'name', ${countries})"> </th>
+								<th th:include="forms/table :: sortable ('Code', 'code', ${countries})"> </th>
+								<th th:include="forms/table :: sortable ('Name', 'name', ${countries})"> </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,7 +62,7 @@
 						</table>
 						
 						<div th:unless="${countries.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/countries', ${countries})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/countries', ${countries})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>

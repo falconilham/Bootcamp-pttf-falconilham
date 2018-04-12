@@ -45,10 +45,10 @@
 						<table class="table table-striped">
 						<thead>
 						<tr>
-							<th th:include="/forms/table :: sortable ('Username', 'username', ${users})"> </th>
-							<th th:include="/forms/table :: sortable ('Role', 'userGroup.name', ${users})"> </th>
-							<th th:include="/forms/table :: sortable ('Full Name', 'fullName', ${users})"> </th>
-							<th th:include="/forms/table :: sortable ('Enabled', 'enabled', ${users})"> </th>
+							<th th:include="forms/table :: sortable ('Username', 'username', ${users})"> </th>
+							<th th:include="forms/table :: sortable ('Role', 'userGroup.name', ${users})"> </th>
+							<th th:include="forms/table :: sortable ('Full Name', 'fullName', ${users})"> </th>
+							<th th:include="forms/table :: sortable ('Enabled', 'enabled', ${users})"> </th>
 						</tr>
 						</thead>
 						<tbody>
@@ -64,7 +64,7 @@
 						</table>
 									
 						<div th:unless="${users.totalPages} == 0">
-							<!--/*/ <th:block th:include="/forms/table :: paginate ('/roles', ${users})"></th:block> /*/-->
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/roles', ${users})"></th:block> /*/-->
 						</div>
 						</div>
 						

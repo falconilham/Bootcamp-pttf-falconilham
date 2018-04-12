@@ -4,7 +4,7 @@
 	<div th:fragment="form(formAction)">
 		<form id="itemPriceForm" method="post" novalidate="novalidate" th:object="${itemMinimum}" th:action="${formAction}" class="bv-form">
 			
-			<!--/*/ <th:block th:include="/forms/controls :: globalError"></th:block> /*/-->
+			<!--/*/ <th:block th:include="forms/controls :: globalError"></th:block> /*/-->
 		
 			<fieldset>
 				<legend><span th:text="${itemType}"></span> - Minimum Price</legend>
