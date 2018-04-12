@@ -41,7 +41,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="sale/customer/customer_form :: form(@{/customers/update}, POST)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="sale/customer/customer_form :: form(@{/customers/{customerId}(customerId=${customer.id})}, POST)"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

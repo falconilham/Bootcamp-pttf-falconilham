@@ -3,7 +3,10 @@ package com.ptff.qsystem.data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -12,10 +15,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedBy;
@@ -88,9 +94,11 @@ public class Customer {
 	@Column(name="approval_by")
 	private String approvalBy;
 	
-	@ManyToOne
-	@JoinColumn(name="salesperson_id")
-	private User salesperson;
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="customers_salesperson", 
+		joinColumns=@JoinColumn(name="customer_id", referencedColumnName="id"),
+		inverseJoinColumns=@JoinColumn(name="username", referencedColumnName="username"))
+	private Set<User> salespersons = new HashSet<User>();
 	
 	@Column(name="create_date")
 	@CreatedDate
@@ -110,4 +118,12 @@ public class Customer {
 	@LastModifiedBy
 	private String lastUpdateUser;
 	
+	
+	public void addSalesperson(User user) {
+		salespersons.add(user);
+	}
+
+	public void removeSalesperson(User user) {
+		salespersons.remove(user);
+	}
 }

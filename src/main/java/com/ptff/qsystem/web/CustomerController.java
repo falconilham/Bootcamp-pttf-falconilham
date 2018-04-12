@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ptff.qsystem.data.Customer;
@@ -44,6 +45,7 @@ import com.ptff.qsystem.data.ItemPurchase;
 import com.ptff.qsystem.data.Quotation;
 import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.User;
+import com.ptff.qsystem.data.UserRepository;
 import com.ptff.qsystem.service.StorageService;
 
 
@@ -56,9 +58,6 @@ public class CustomerController implements DefaultController {
 	private CustomerRepository customerRepository;
 	
 	@Autowired
-	private StorageService storageService;
-	
-	@Autowired
 	private QuotationRepository quotationRepository;
 	
 	@Autowired
@@ -69,6 +68,14 @@ public class CustomerController implements DefaultController {
 
 	@Autowired
 	private CustomerHistoryRepository customerHistoryRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@ModelAttribute("salespersons")
+	List<User> allSalesPersons() {
+		return userRepository.findByUserGroupNameIn(new String[] {"ROLE_SALESPERSON", "ROLE_SALESDIRECTOR"});
+	}
 	
 	@RequestMapping("/customers")
 	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
@@ -87,7 +94,8 @@ public class CustomerController implements DefaultController {
 	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
 	public String newCustomer(Model model) {
 		Customer customer = new Customer();
-		customer.setSalesperson((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		
+
 		customer.setStatus(CustomerStatus.DRAFT);
 		
 		model.addAttribute("customer", customer);
@@ -105,6 +113,9 @@ public class CustomerController implements DefaultController {
 			return "sale/customer/new";
 		}
 		
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (user != null)
+			customer.addSalesperson(userRepository.findOne(user.getUsername()));
 		customer.setRejectReason("");
 		customer = customerRepository.save(customer);		
 		
@@ -116,27 +127,29 @@ public class CustomerController implements DefaultController {
 		return "redirect:/customers/"+customer.getId();
 	}
 	
-	@RequestMapping("/customers/update")
+	@RequestMapping(value="/customers/{customerId}", method=RequestMethod.POST)
 	@Transactional
 	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_SU')")
-	public String updateCustomer(@Valid Customer customer, BindingResult bindingResult, Model model) {
-		LOGGER.info("Updating customer: " + customer.getName());
+	public String updateCustomer(@PathVariable("customerId") Long customerId, @Valid Customer customerForm, BindingResult bindingResult, Model model) {
+		LOGGER.info("Updating customer: " + customerForm.getName());
 
 		if (bindingResult.hasErrors()) {
 			return "sale/customer/edit";
 		}
+		Customer customer = customerRepository.findOne(customerId);
 		
 		// Updated Customer always goes to draft status
-		customer.setStatus(CustomerStatus.DRAFT);
-		customer.setRejectReason("");
-		customer = customerRepository.save(customer);
+		customerForm.setStatus(CustomerStatus.DRAFT);
+		customerForm.setRejectReason("");
+		customerForm.setSalespersons(customer.getSalespersons());
+		customerForm = customerRepository.save(customer);
 		
 		CustomerHistory customerHistory = new CustomerHistory();
 		customerHistory.setCustomer(customer);
 		customerHistory.setMessage(String.format("Customer %s is edited", customer.getName()));
 		customerHistoryRepository.save(customerHistory);
 		
-		return "redirect:/customers/"+customer.getId();
+		return "redirect:/customers/{customerId}";
 	}
 
 	@RequestMapping("/customers/{id}")
@@ -232,6 +245,41 @@ public class CustomerController implements DefaultController {
 		model.addAttribute("customercontact", customerContactPerson);
 		
 		return "sale/customer/edit_contact";
+	}
+	
+	@RequestMapping(value="/customers/{id}/salespersons", method=RequestMethod.POST)
+	@PreAuthorize("hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')")
+	public String assignSalePerson(@PathVariable("id") Long id, @RequestParam("salesperson") String salesperson, Model model) {
+		LOGGER.info("Assigning Salesperson {} to customer {}", salesperson, id);
+		
+		Customer customer = customerRepository.findOne(id);		
+		customer.addSalesperson(userRepository.findOne(salesperson));
+		customerRepository.save(customer);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage("Assigned " + salesperson + " to this customer" );
+		customerHistoryRepository.save(customerHistory);
+		
+		return "redirect:/customers/"+customer.getId();
+	}
+	
+	@RequestMapping(value="/customers/{id}/salespersons/{username}/remove", method=RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('ROLE_SALESDIRECTOR', 'ROLE_SU')")
+	public String removeSalePerson(@PathVariable("id") Long id, @PathVariable("username") String username, Model model) {
+		LOGGER.info("Removing Salesperson {} from customer {}", username, id);
+		
+		Customer customer = customerRepository.findOne(id);		
+		User user = userRepository.findOne(username);
+		customer.removeSalesperson(user);
+		customerRepository.save(customer);
+		
+		CustomerHistory customerHistory = new CustomerHistory();
+		customerHistory.setCustomer(customer);
+		customerHistory.setMessage("Removed " + username + " to this customer" );
+		customerHistoryRepository.save(customerHistory);
+		
+		return "redirect:/customers/"+customer.getId();
 	}
 	
 		
