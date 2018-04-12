@@ -23,7 +23,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import com.ptff.qsystem.data.converter.LocalDatePersistenceConverter;
 import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
 
 import lombok.Data;
@@ -61,6 +63,11 @@ public class Customer {
 	
 	@Column(name="credit_limit", length=255)
 	private BigDecimal creditLimit;
+	
+	@Column(name="active_date")
+	@Convert(converter = LocalDatePersistenceConverter.class)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate customerSince = LocalDate.now();
 	
 	@Column(name="operation_notes", length=255)
 	private String operationNotes;

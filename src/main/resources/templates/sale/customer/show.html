@@ -95,6 +95,11 @@
 									<h6>Credit Limit</h6> <span class="text-right" th:text="${#numbers.formatDecimal(customer.creditLimit, 3,'COMMA', 0, 'POINT')}"></span>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Customer Since</h6> <span class="text-right" th:if="${customer.customerSince != null}" th:text="${#temporals.format(customer.customerSince, 'dd/MMM/yyyy')}"></span>
+								</div>
+							</div>
 						</fieldset>
 					</div>
 					<div class="col-sm-12 col-md-4 has-feedback">
