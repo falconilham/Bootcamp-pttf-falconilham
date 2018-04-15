@@ -159,9 +159,16 @@
 						</ul>
 					</li>
 					<li sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_DIRECTOR', 'ROLE_SU')">
-						<a th:href="@{/settings}" href="index.html" title="Settings">
+						<a href="#" title="Settings">
 							<i class="fa fa-lg fa-fw fa-gear"></i> Settings
 						</a>
+						<ul>
+							<li sec:authorize="hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_DIRECTOR', 'ROLE_SU')">
+								<a th:href="@{/notifications/settings}"  href="index.html" title="blank_">
+									<i class="fa fa-lg fa-fw fa-bell"></i> Notifications
+								</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</nav>

@@ -1,7 +1,6 @@
 package com.ptff.qsystem.web;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -26,7 +25,6 @@ import com.ptff.qsystem.data.ItemPriceStatus;
 import com.ptff.qsystem.data.ItemRepository;
 import com.ptff.qsystem.data.ItemType;
 import com.ptff.qsystem.data.SettingsRepository;
-import com.ptff.qsystem.data.Vendor;
 import com.ptff.qsystem.data.VendorRepository;
 
 

@@ -18,6 +18,18 @@
 		<![endif]-->
 
 		<!-- MAIN APP JS FILE -->
-		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>>
+		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>
+		
+		<script th:inline="javascript">
+
+		      /*<![CDATA[*/
+			    
+		         var username = /*[[${currentUser}]]*/ 'Username';
+		
+		       /*]]>*/
+		</script> 
+		<script th:src="@{/js/sockjs/sockjs.min.js}" src="/js/sockjs/sockjs.min.js"></script>
+		<script th:src="@{/js/stomp/stomp.min.js}" src="/js/stomp/stomp.min.js"></script>
+		<script th:src="@{/js/app.websocket.js}" src="js/app.websocket.js"></script>>
 	</body>
 </html>

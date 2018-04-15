@@ -51,8 +51,8 @@ import com.ptff.qsystem.data.Seaport;
 import com.ptff.qsystem.data.SettingsRepository;
 import com.ptff.qsystem.data.validator.QuotationValidator;
 import com.ptff.qsystem.data.validator.ValidationMessage;
-import com.ptff.qsystem.form.ItemSearchForm;
 import com.ptff.qsystem.service.impl.ReportService;
+import com.ptff.qsystem.web.form.ItemSearchForm;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;

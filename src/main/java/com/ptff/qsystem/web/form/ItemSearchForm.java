@@ -1,4 +1,4 @@
-package com.ptff.qsystem.form;
+package com.ptff.qsystem.web.form;
 
 import com.ptff.qsystem.data.ItemType;
 

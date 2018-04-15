@@ -9,7 +9,7 @@
 				<!-- PLACE YOUR LOGO HERE -->
 				<span id="logo"> <img src="img/logo.png" th:attr="src=@{/img/logo.png},title=#{logo},alt=#{logo}" /> </span>
 				<!-- END LOGO PLACEHOLDER -->
-				<span id="activity" class="activity-dropdown"> <i class="fa fa-bell"></i> <b class="badge  bounceIn animated">0</b> </span>
+				<span id="activity" class="activity-dropdown"> <i class="fa fa-bell"></i> <b class="badge bounceIn animated">0</b> </span>
 
 				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
 				<div class="ajax-dropdown">
@@ -17,10 +17,10 @@
 					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default">
-							<input type="radio" name="activity" th:id="@{/notifications(group='x')}"/>
+							<input type="radio" name="activity" th:id="@{/notifications(user='user')}"/>
 							Personal </label>
 						<label class="btn btn-default">
-							<input type="radio" name="activity" th:id="@{/notifications(user='x')}"/>
+							<input type="radio" name="activity" th:id="@{/notifications(group='group')}"/>
 							Group </label>
 					</div>
 
@@ -63,7 +63,13 @@
 				
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="/login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+					<span>
+					<a href="javascript: disconnect(); document.logoutForm.submit();">
+					<i class="fa fa-sign-out"></i></a> 
+					</span>
+					<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+				      <input hidden="hidden" type="submit" value="Sign Out" />
+				   </form> 
 				</div>
 				<!-- end logout button -->
 
