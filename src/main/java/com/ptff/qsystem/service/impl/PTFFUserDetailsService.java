@@ -59,7 +59,7 @@ public class PTFFUserDetailsService implements UserDetailsService {
     		UserGroup userGroup = new UserGroup();
     		userGroup.setName("ROLE_SU");
     		
-    		user.setUserGroup(userGroup);
+    		user.addUserGroup(userGroup);
     		return user;
     	}
     	

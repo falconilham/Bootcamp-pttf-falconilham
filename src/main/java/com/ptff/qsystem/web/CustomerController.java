@@ -74,7 +74,7 @@ public class CustomerController implements DefaultController {
 	
 	@ModelAttribute("salespersons")
 	List<User> allSalesPersons() {
-		return userRepository.findByUserGroupNameIn(new String[] {"ROLE_SALESPERSON", "ROLE_SALESDIRECTOR"});
+		return userRepository.findByUserGroupsNameIn(new String[] {"ROLE_SALESPERSON", "ROLE_SALESDIRECTOR"});
 	}
 	
 	@RequestMapping("/customers")

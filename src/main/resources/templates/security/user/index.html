@@ -46,7 +46,7 @@
 						<thead>
 						<tr>
 							<th th:include="forms/table :: sortable ('Username', 'username', ${users})"> </th>
-							<th th:include="forms/table :: sortable ('Role', 'userGroup.name', ${users})"> </th>
+							<th th:include="forms/table :: sortable ('Role', 'userGroups.name', ${users})"> </th>
 							<th th:include="forms/table :: sortable ('Full Name', 'fullName', ${users})"> </th>
 							<th th:include="forms/table :: sortable ('Enabled', 'enabled', ${users})"> </th>
 						</tr>
@@ -54,7 +54,11 @@
 						<tbody>
 							<tr th:each="user : ${users}">
 								<td><a th:href="@{|users/${user.username}|}" th:text="${user.username}"></a></td>
-								<td th:text="${user.userGroup.name}"></td>
+								<td>
+								<ul class="list-unstyled">
+									<li th:each="usergroup : ${user.userGroups}" th:text="${usergroup.description}"></li>
+								</ul>
+								</td>
 								<td th:text="${user.fullName}"></td>
 								<td>
 									<span  th:classappend="${user.enabled == true? 'label-success' : 'label-danger'}"  th:text="${user.enabled == true? 'Active' : 'Inactive'}" class="label">Danger</span>

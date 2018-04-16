@@ -93,7 +93,7 @@
 				<div th:case="*" th:remove="tag">
 		        	<input type="text" th:type="${fieldType} ?: 'text'" th:field="*{__${fieldName}__}" 
 		        		th:class="${fieldClass}" 
-		                th:disabled="${fieldDisabled}?: 'false'" name="${fieldName}" />
+		                th:readonly="${fieldDisabled}?: 'false'" name="${fieldName}" />
 	             </div>
              </div>
         </div>

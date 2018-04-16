@@ -1,17 +1,24 @@
 package com.ptff.qsystem.data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
@@ -26,11 +33,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ptff.qsystem.data.converter.LocalDateTimePersistenceConverter;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="user")
-@Data
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -56,10 +65,15 @@ public class User implements UserDetails {
 	@NotEmpty
 	private String fullName;
 	
-	@ManyToOne
-	@JoinColumn(name="user_group_id")
-	@NotNull
-	private UserGroup userGroup;
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinTable(name="users_user_groups",
+        joinColumns = {@JoinColumn(name="username", referencedColumnName="username")},
+        inverseJoinColumns = {@JoinColumn(name="usergroup_id", referencedColumnName="id")}
+    )
+	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+	
+	@Transient
+	private UserGroup selectedUserGroup;
 	
 	@Column(name="enabled", columnDefinition="TINYINT")
 	private Boolean enabled;
@@ -84,7 +98,7 @@ public class User implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singleton(userGroup);
+		return userGroups;
 	}
 
 	@Override
@@ -115,5 +129,13 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return enabled==null?Boolean.TRUE:enabled;
+	}
+	
+	public void addUserGroup(UserGroup userGroup) {
+		userGroups.add(userGroup);
+	}
+	
+	public void removeUserGroup(UserGroup userGroup) {
+		userGroups.remove(userGroup);
 	}
 }

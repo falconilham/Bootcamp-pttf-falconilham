@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ptff.qsystem.data.Customer;
@@ -29,6 +30,7 @@ import com.ptff.qsystem.data.User;
 import com.ptff.qsystem.data.UserGroup;
 import com.ptff.qsystem.data.UserGroupRepository;
 import com.ptff.qsystem.data.UserRepository;
+
 
 @Controller
 public class UserController implements DefaultController {
@@ -43,7 +45,7 @@ public class UserController implements DefaultController {
 
 	
 	@ModelAttribute("roles")
-    public List<UserGroup> messages() {
+    public List<UserGroup> roles() {
         return userGroupRepository.findAll();
     }
 	
@@ -66,18 +68,16 @@ public class UserController implements DefaultController {
 	public String newUser(Model model) {
 		
 		model.addAttribute("user", new User());
-		model.addAttribute("roles", userGroupRepository.findAll());
 		
 		return "security/user/new";
 	}
 	
-	@RequestMapping("/users/save")
+	@RequestMapping(value="/users", method=RequestMethod.POST)
 	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_SU', 'ROLE_DIRECTOR')")
 	public String saveUser(@Valid User user, BindingResult bindingResult, Model model) {
 		LOGGER.info("Saving User " + user.getUsername());
 		
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("roles", userGroupRepository.findAll());
 			return "security/user/new";
 		}
 		
@@ -86,10 +86,15 @@ public class UserController implements DefaultController {
 		return "redirect:/users";
 	}
 	
-	@RequestMapping("/users/update")
+	
+	@RequestMapping(value="/users/{id}", method=RequestMethod.POST)
 	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_SU', 'ROLE_DIRECTOR')")
-	public String updateUser(@Valid User user, BindingResult bindingResult) {
+	public String updateUser(@Valid @ModelAttribute User user, BindingResult bindingResult) {
 		LOGGER.info("Updating user: " + user.getUsername());
+		
+		if (bindingResult.hasErrors()) {
+			return "security/user/edit";
+		}
 		
 		if (user.getPassword().length() != 60) {
 			user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -100,10 +105,9 @@ public class UserController implements DefaultController {
 	
 	@RequestMapping("/users/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_SU', 'ROLE_DIRECTOR')")
-	public String newUser(@PathVariable("id") String username, Model model) {
+	public String editUser(@PathVariable("id") String username, Model model) {
 		
 		model.addAttribute("user", userRepository.findOne(username));
-		model.addAttribute("roles", userGroupRepository.findAll());
 		
 		return "security/user/edit";
 	}

@@ -18,7 +18,7 @@
 				<!-- breadcrumb -->
 				<ol class="breadcrumb">
 					<li>Security</li>
-					<li><a th:href="@{/users}" href="#"></a>User</li>
+					<li><a th:href="@{/users}" href="#">User</a></li>
 					<li>New</li>
 				</ol>
 				<!-- end breadcrumb -->
@@ -37,7 +37,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="security/user/user_form :: form(@{/users/save}, POST)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="security/user/user_form :: form(@{/users}, POST)"></th:block> /*/-->
 				</div>
 			</section>
 			</div>
@@ -55,24 +55,13 @@
 		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
 
 
-		<!-- #PLUGINS -->
-		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-		<script  th:src="@{/js/libs/jquery-2.1.1.min.js}" src="js/libs/jquery-2.1.1.min.js"></script>
-		<script th:src="@{/js/libs/jquery-ui-1.10.3.min.js}" src="js/libs/jquery-ui-1.10.3.min.js"></script>
-
-		<!-- IMPORTANT: APP CONFIG -->
-		<script th:src="@{/js/app.config.seed.js}" src="js/app.config.seed.js"></script>
-
-		<!-- BOOTSTRAP JS -->
-		<script th:src="@{/js/bootstrap/bootstrap.min.js}" src="js/bootstrap/bootstrap.min.js"></script>
-
-		<!--[if IE 8]>
-			<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
-		<![endif]-->
-
-		<!-- MAIN APP JS FILE -->
-		<script th:src="@{/js/app.seed.js}" src="js/app.seed.js"></script>
-
+		<!--/*/ <th:block th:include="fragments/include_plugin :: plugin"></th:block> /*/-->
+		<script th:src="@{/js/plugin/select2/select2.min.js}" src="js/plugin/select2/select2.min.js"></script>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+			    $('#selectedUserGroup').select2();
+			});
+		</script> 
 	</body>
 
 </html>
