@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,8 +50,10 @@ import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.QuotationStatus;
 import com.ptff.qsystem.data.Seaport;
 import com.ptff.qsystem.data.SettingsRepository;
+import com.ptff.qsystem.data.User;
 import com.ptff.qsystem.data.validator.QuotationValidator;
 import com.ptff.qsystem.data.validator.ValidationMessage;
+import com.ptff.qsystem.service.impl.QuotationService;
 import com.ptff.qsystem.service.impl.ReportService;
 import com.ptff.qsystem.web.form.ItemSearchForm;
 
@@ -79,6 +82,9 @@ public class QuoteController implements DefaultController {
 	
 	@Autowired
 	private SettingsRepository settingRepository;
+	
+	@Autowired
+	private QuotationService quotationService;
 	
 	@Autowired
 	private ReportService reportService;
@@ -110,9 +116,11 @@ public class QuoteController implements DefaultController {
 	}
 	
 	@RequestMapping("/quotations/new")
-	public String newQuotation(Model model) {
+	public String newQuotation(@AuthenticationPrincipal User user, Model model) {
 		// Set Defaults
 		Quotation quotation = new Quotation();
+		quotation.setUser(user);
+		quotation.setReference(quotationService.generateReference(quotation));
 		quotation.setQuoteDate(LocalDate.now());
 		quotation.setExpiryDate(LocalDate.now().plusDays(settingRepository.findOne("DEFAULT_QUOTATION_EXPIRATION_DATE").getValueAsInteger()));
 		
