@@ -76,6 +76,10 @@ public class Quotation {
 	@JoinColumn(name="salesperson_id", referencedColumnName="username")
 	private User user;
 	
+	@ManyToOne
+	@JoinColumn(name="linked_quotation", referencedColumnName="id")
+	private Quotation linkedQuotation;
+	
 	@Column(name="create_date")
 	@CreatedDate
 	@Convert(converter = LocalDateTimePersistenceConverter.class)

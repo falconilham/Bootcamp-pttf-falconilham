@@ -326,6 +326,7 @@ public class QuoteController implements DefaultController {
 	
 	@RequestMapping(value="/quotations/{quotationId}/requote")
 	public String requoteQuotation(
+			@AuthenticationPrincipal User user,
 			@PathVariable("quotationId") Long id,
 			Model model) {
 		
@@ -336,11 +337,13 @@ public class QuoteController implements DefaultController {
 		quotationRepository.save(original);
 		
 		Quotation newQuotation = new Quotation();
-		newQuotation.setReference(original.getReference() + " (Copy)");
 		newQuotation.setQuoteDate(LocalDate.now());
 		newQuotation.setExpiryDate(LocalDate.now().plusDays(settingRepository.findOne("DEFAULT_QUOTATION_EXPIRATION_DATE").getValueAsInteger()));
 		newQuotation.setCustomer(original.getCustomer());
 		newQuotation.setStatus(QuotationStatus.DRAFT);
+		newQuotation.setUser(user);
+		newQuotation.setReference(quotationService.generateReference(newQuotation));
+		newQuotation.setLinkedQuotation(original);
 		for (QuotationLineItem qli: original.getQuotationLineItems()) {
 			QuotationLineItem newQli = new QuotationLineItem();
 			newQli.setItem(qli.getItem());

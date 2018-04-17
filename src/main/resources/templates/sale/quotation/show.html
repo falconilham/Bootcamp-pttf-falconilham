@@ -44,6 +44,12 @@
 						<div th:include="forms/element :: message(${message})" th:remove="tag"></div>
 						<fieldset>
 							<legend>Quotation</legend>
+							<div th:if="${quotation.linkedQuotation != null}" class="row bg-warning">
+								<div class="col-sm-12 col-md-12 has-feedback">
+									<h6>Original Quotation</h6> <span class="txt-right">
+										<a th:href="@{/quotations/{quotationId}(quotationId=${quotation.linkedQuotation.id})}" th:text="${quotation.linkedQuotation.reference}"></a></span>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-sm-12 col-md-12 has-feedback">
 									<h6>Reference</h6> <span class="text-right" th:text="${quotation.reference}"></span>

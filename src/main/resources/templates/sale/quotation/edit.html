@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Sale</li>
 					<li><a th:href="@{/quotations}" href="#">Quotation</a></li>
-					<li><a th:href="@{/quotations/{quotationId}(quotationId=${quotation.id})}" href="#">Quotation</a></li>
+					<li><a th:href="@{/quotations/{quotationId}(quotationId=${quotation.id})}" th:text="${quotation.reference}" href="#">Quotation</a></li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -46,6 +46,7 @@
 							<legend>Edit Quotation</legend>
 							<input type="hidden" th:field="*{id}" />
 							<input type="hidden" th:field="*{status}" />
+							<input type="hidden" th:field="*{user}" />
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12 col-md-6 has-feedback">
