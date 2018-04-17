@@ -65,12 +65,16 @@ public class User implements UserDetails {
 	@NotEmpty
 	private String fullName;
 	
+	@Column(name="user_code")
+	@NotNull
+	private String code;
+	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinTable(name="users_user_groups",
         joinColumns = {@JoinColumn(name="username", referencedColumnName="username")},
         inverseJoinColumns = {@JoinColumn(name="usergroup_id", referencedColumnName="id")}
     )
-	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+	private Set<UserGroup> userGroups = new HashSet<UserGroup>();
 	
 	@Transient
 	private UserGroup selectedUserGroup;

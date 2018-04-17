@@ -63,6 +63,9 @@ public class CustomerContactPerson {
 	@NotEmpty
 	private String email;
 	
+	@Column(name="is_correspondent", columnDefinition="TINYINT")
+	private Boolean isCorrespondent = Boolean.FALSE;
+	
 	@Column(name="status")
 	@NotNull
 	private CustomerContactPersonStatus status;

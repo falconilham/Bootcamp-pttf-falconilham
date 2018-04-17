@@ -72,6 +72,10 @@ public class Quotation {
 	@OrderBy("id")
 	private List<QuotationLineItem> quotationLineItems = new ArrayList<QuotationLineItem>();
 	
+	@ManyToOne
+	@JoinColumn(name="salesperson_id", referencedColumnName="username")
+	private User user;
+	
 	@Column(name="create_date")
 	@CreatedDate
 	@Convert(converter = LocalDateTimePersistenceConverter.class)
