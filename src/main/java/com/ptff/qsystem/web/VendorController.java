@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ptff.qsystem.data.Customer;
+import com.ptff.qsystem.data.CustomerStatus;
 import com.ptff.qsystem.data.ItemPurchase;
 import com.ptff.qsystem.data.ItemPurchaseRepository;
 import com.ptff.qsystem.data.Vendor;
@@ -41,6 +43,10 @@ import com.ptff.qsystem.data.VendorHistoryRepository;
 import com.ptff.qsystem.data.VendorRepository;
 import com.ptff.qsystem.data.VendorStatus;
 import com.ptff.qsystem.service.StorageService;
+import com.ptff.qsystem.web.form.CustomerSearchForm;
+import com.ptff.qsystem.web.form.CustomerSearchForm.CustomerSearchType;
+import com.ptff.qsystem.web.form.VendorSearchForm;
+import com.ptff.qsystem.web.form.VendorSearchForm.VendorSearchType;
 
 
 
@@ -68,6 +74,7 @@ public class VendorController implements DefaultController {
 
 	
 	@RequestMapping("/vendors")
+	@PreAuthorize("hasAnyRole('ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
 	public String listVendors(
 			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
 			Model model) {
@@ -76,11 +83,33 @@ public class VendorController implements DefaultController {
 		Page<Vendor> vendors = vendorRepository.findAll(pageable);
 		
 		model.addAttribute("vendors", vendors);
+		model.addAttribute("searchForm", new VendorSearchForm());
+		
+		return "purchasing/vendor/index";
+	}
+	
+	@RequestMapping(value="/vendors", method=RequestMethod.GET, params="search")
+	@PreAuthorize("hasAnyRole('ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
+	public String filterCustomers(
+			@ModelAttribute("searchForm") VendorSearchForm searchForm,
+			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
+			Model model) {
+		
+		VendorSearchForm processedSearchForm = searchForm.getSearchFilter();
+		LOGGER.info("Processing {}", processedSearchForm);
+		if (processedSearchForm.getType() == VendorSearchType.BY_ALL) {
+			Page<Vendor> vendors = vendorRepository.findBySearchCriteria(processedSearchForm.getName(), pageable);
+			model.addAttribute("vendors", vendors);
+		} else {
+			Page<Vendor> vendors = vendorRepository.findBySearchCriteria(processedSearchForm.getName(), VendorStatus.valueOf(processedSearchForm.getStatus()), pageable);
+			model.addAttribute("vendors", vendors);
+		}
 		
 		return "purchasing/vendor/index";
 	}
 	
 	@RequestMapping("/vendors/new")
+	@PreAuthorize("hasAnyRole('ROLE_PURCHASING', 'ROLE_PURCHASINGMANAGER', 'ROLE_SU')")
 	public String newVendor(Model model) {
 		Vendor vendor = new Vendor();
 		vendor.setStatus(VendorStatus.DRAFT);
