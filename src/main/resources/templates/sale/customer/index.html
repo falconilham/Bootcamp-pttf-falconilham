@@ -41,14 +41,64 @@
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 			<section id="widget-grid" class="">
+				
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="well">
+						
+						<div class="well">
+							<form id="customerForm" method="get" novalidate="novalidate" th:object="${searchForm}" th:action="@{/customers}" class="bv-form">
+							<h4>Filter</h4>
+							<fieldset>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12 col-md-6 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldLabel='Name', fieldName='name'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12 col-md-6 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldLabel='Salesperson', fieldName='salesperson'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-6 col-md-3 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Minimim Date', fieldName='minDate'" th:remove="tag"></div>
+									</div>
+									<div class="col-sm-6 col-md-3 has-feedback">
+										<div th:include="forms/controls :: input" th:with="fieldType='date', fieldLabel='Maximum Date', fieldName='maxDate'" th:remove="tag"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+							<div class="row">
+								<div class="col-md-4 selectContainer has-feedback">
+									<label class="control-label">Status</label>
+									<select class="form-control" name="status" data-bv-field="type " th:field="*{status}" >
+		                				<option th:value="ALL" th:text="ALL"></option>
+		                				<option th:each="val : ${T(com.ptff.qsystem.data.CustomerStatus).values()}" th:value="${val}" th:text="${val}">Credit card</option>
+						            </select>
+								</div>
+							</div>
+							</div>
+							<button name="search" th:value="search" class="btn btn-sm btn-default pull-right" type="submit">
+								<i class="fa fa-search"></i> Search
+							</button>
+							</fieldset>
+							
+							</form>
+						</div>
+						
 						<table class="table table-striped">
 						<thead>
 						<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
 							<th th:include="forms/table :: sortable ('Name', 'name', ${customers})"> </th>
-							<th>Sales People</th>
+							<th th:include="forms/table :: sortable ('SalesPerson', 'salespersons.fullName', ${customers})"> </th>
+							<th th:include="forms/table :: sortable ('Customer Since', 'customerSince', ${customers})"> </th>
 							<th th:include="forms/table :: sortable ('Status', 'status', ${customers})"> </th>
 						</tr>
 						</thead>
@@ -60,6 +110,7 @@
 										<li th:each="salesperson : ${customer.salespersons}" th:text="${salesperson.fullName}"></li>
 									</ol>
 								</td>
+								<td><span th:text="${#temporals.format(customer.customerSince,'dd/MM/yyyy')}"></span></td>
 								<td>
 									<div th:if="${customer.status == T(com.ptff.qsystem.data.CustomerStatus).DRAFT}">
 									   <span  th:text="${customer.status}" class="label label-default">Draft</span>

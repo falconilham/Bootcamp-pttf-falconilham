@@ -47,6 +47,8 @@ import com.ptff.qsystem.data.QuotationRepository;
 import com.ptff.qsystem.data.User;
 import com.ptff.qsystem.data.UserRepository;
 import com.ptff.qsystem.service.StorageService;
+import com.ptff.qsystem.web.form.CustomerSearchForm;
+import com.ptff.qsystem.web.form.CustomerSearchForm.CustomerSearchType;
 
 
 
@@ -86,6 +88,29 @@ public class CustomerController implements DefaultController {
 		Page<Customer> customers = customerRepository.findAll(pageable);
 		
 		model.addAttribute("customers", customers);
+		model.addAttribute("searchForm", new CustomerSearchForm());
+		
+		return "sale/customer/index";
+	}
+	
+	@RequestMapping(value="/customers", method=RequestMethod.GET, params="search")
+	@PreAuthorize("hasAnyRole('ROLE_SALESPERSON', 'ROLE_SALESDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_FINANCE', 'ROLE_SU')")
+	public String filterCustomers(
+			@ModelAttribute("searchForm") CustomerSearchForm searchForm,
+			@PageableDefault(sort="name", direction=Sort.Direction.ASC, page=INITIAL_PAGE, size=INITIAL_PAGE_SIZE) Pageable pageable,
+			Model model) {
+		
+		CustomerSearchForm processedSearchForm = searchForm.getSearchFilter();
+		LOGGER.info("Processing {}", processedSearchForm);
+		if (processedSearchForm.getType() == CustomerSearchType.BY_ALL) {
+			Page<Customer> customers = customerRepository.findBySearchCriteria(processedSearchForm.getName(), processedSearchForm.getMinDate(), 
+				processedSearchForm.getMaxDate(), processedSearchForm.getSalesperson(), pageable);
+			model.addAttribute("customers", customers);
+		} else {
+			Page<Customer> customers = customerRepository.findBySearchCriteria(processedSearchForm.getName(), processedSearchForm.getMinDate(), 
+					processedSearchForm.getMaxDate(), processedSearchForm.getSalesperson(), CustomerStatus.valueOf(processedSearchForm.getStatus()), pageable);
+			model.addAttribute("customers", customers);
+		}
 		
 		return "sale/customer/index";
 	}
