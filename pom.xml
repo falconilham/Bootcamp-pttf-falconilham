@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>qsystem-server</name>
-	<description>PT Tera Freight Forwarder Quotation System</description>
+	<description>PT Tera Forwarders Quotation System</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
