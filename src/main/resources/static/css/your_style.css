@@ -17,3 +17,14 @@
  * - BODY
  * - CUSTOM STYLES
  */
+ 
+ #extr-page .hero {
+    background-image: url(../img/gradient/img-content.png);
+    background-repeat: no-repeat;
+    background-position: 0 80px;
+    height: 600px;
+    width: 100%;
+    float: left;
+}
+
+ 
