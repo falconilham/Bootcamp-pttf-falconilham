@@ -2,19 +2,19 @@
     
     <div th:fragment="salespersons" th:remove="tag">
         <div class="form-group " th:classappend="*{#fields.hasErrors('__${fieldName}__')} ? 'has-error' : ''">
-            <div th:substituteby="/forms/controls :: label"></div>
+            <div th:substituteby="forms/controls :: label"></div>
             <div class="controls" th:with="fieldType=${fieldType ?: 'text'}">
                 <select th:field="*{__${fieldName}__}" th:disabled="${fieldDisabled}?: 'false'" style="width: 100%;">
                 	<option th:each="option : ${salespersons}" th:value="${option.username}" th:text="${option.fullName}" ></option>
             	</select>
-            	<div th:substituteby="/forms/controls :: error"></div>
+            	<div th:substituteby="forms/controls :: error"></div>
             </div>
         </div>
     </div>
     
     <div th:fragment="salespersonsNoObject" th:remove="tag">
         <div class="form-group">
-            <div th:substituteby="/forms/controls :: label"></div>
+            <div th:substituteby="forms/controls :: label"></div>
             <div class="controls">
                 <select th:id="${fieldName}" th:name="${fieldName}" th:disabled="${fieldDisabled}?: 'false'" style="width: 100%;">
                 	<option th:each="option : ${salespersons}" th:value="${option.username}" th:text="${option.fullName}" ></option>
