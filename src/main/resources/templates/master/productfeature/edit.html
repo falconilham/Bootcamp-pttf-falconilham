@@ -23,7 +23,7 @@
 				<ol class="breadcrumb">
 					<li>Master</li>
 					<li><a th:href="@{/productfeatures}" href="#">Product Features</a></li>
-					<li th:text="${note.name}">-</li>
+					<li th:text="${feature.name}">-</li>
 				</ol>
 				<!-- end breadcrumb -->
 				
@@ -41,7 +41,7 @@
 			<section id="widget-grid" class="">
 				
 				<div class="well">
-    				<!--/*/ <th:block th:include="master/productfeature/form :: form(@{/productfeatures/{id}(id=${note.id})}, PUT)"></th:block> /*/-->
+    				<!--/*/ <th:block th:include="master/productfeature/form :: form(@{/productfeatures/{id}(id=${feature.id})}, PUT)"></th:block> /*/-->
 				</div>
 			</section>
 			</div>

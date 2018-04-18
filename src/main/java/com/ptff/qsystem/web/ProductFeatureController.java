@@ -79,7 +79,7 @@ public class ProductFeatureController implements DefaultController {
 		
 		productFeature = productFeatureRepository.save(productFeature);
 		
-		return "redirect:/productfeature";
+		return "redirect:/productfeatures";
 	}
 
 }
