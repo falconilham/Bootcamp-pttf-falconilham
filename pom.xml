@@ -18,7 +18,7 @@
 	</parent>
 
 	  <scm>
-	    <developerConnection>scm:git:git@gitlab.com/thepaperflight/teraforwarders.git</developerConnection>
+	    <developerConnection>scm:git:ssh@gitlab.com/thepaperflight/teraforwarders.git</developerConnection>
 	    <tag>qsystem-server-1.0</tag>
   </scm>
 
