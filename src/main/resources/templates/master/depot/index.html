@@ -47,18 +47,20 @@
 						<table class="table table-striped">
 						<thead>
 							<tr th:with="currentURL=(${#httpServletRequest.requestURI})">
-								<th><a th:href="@{${currentURL}(sortDirection=${newSortDirection}, sortKey='name')}">Name</a></th>
+								<th th:include="forms/table :: sortable ('Code', 'code', ${depots})"> </th>
+								<th th:include="forms/table :: sortable ('Name', 'name', ${depots})"> </th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="depot : ${depots}">
-								<td><a th:href="@{|depots/${depot.id}|}" th:text="${depot.name}"></a></td>
+								<td><a th:href="@{|depots/${depot.id}|}" th:text="${depot.code}"></a></td>
+								<td th:text="${depot.name}"></td>
 							</tr>
 						</tbody>
 						</table>
 						
-						<div th:unless="${pager.totalPages} == 0">
-							<!--/*/ <th:block th:include="fragments/include_pagination :: paginate ('/depots', ${pageSizes}, ${page}, ${selectedPageSize}, ${depots})"></th:block> /*/-->
+						<div th:unless="${depots.totalPages} == 0">
+							<!--/*/ <th:block th:include="forms/table :: paginate ('/depots', ${depots})"></th:block> /*/-->
 						</div>
 						</div>
 					</div>
